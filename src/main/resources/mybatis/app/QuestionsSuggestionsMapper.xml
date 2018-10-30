@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.app.dao.QuestionsSuggestionsDao">
+
+	<select id="get" resultType="com.bootdo.app.domain.QuestionsSuggestionsDO">
+		select `id`,`content`,`create_time`,`create_user`,`update_time`,`update_user`,`contact` from app_questions_suggestions where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.app.domain.QuestionsSuggestionsDO">
+		select `id`,`content`,`create_time`,`create_user`,`update_time`,`update_user`,`contact` from app_questions_suggestions
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="content != null and content != ''"> and content = #{content} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+		  		  <if test="contact != null and contact != ''"> and contact = #{contact} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from app_questions_suggestions
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="content != null and content != ''"> and content = #{content} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+		  		  <if test="contact != null and contact != ''"> and contact = #{contact} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.app.domain.QuestionsSuggestionsDO" useGeneratedKeys="true" keyProperty="id">
+		insert into app_questions_suggestions
+		(
+			`content`, 
+			`create_time`, 
+			`create_user`, 
+			`update_time`, 
+			`update_user`, 
+			`contact`
+		)
+		values
+		(
+			#{content}, 
+			#{createTime}, 
+			#{createUser}, 
+			#{updateTime}, 
+			#{updateUser}, 
+			#{contact}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.app.domain.QuestionsSuggestionsDO">
+		update app_questions_suggestions 
+		<set>
+			<if test="content != null">`content` = #{content}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}, </if>
+			<if test="contact != null">`contact` = #{contact}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from app_questions_suggestions where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from app_questions_suggestions where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

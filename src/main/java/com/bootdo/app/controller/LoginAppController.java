@@ -11,6 +11,7 @@ import com.bootdo.common.utils.ShiroUtils;
 import com.bootdo.system.domain.MenuDO;
 import com.bootdo.system.domain.UserDO;
 import com.bootdo.system.service.MenuService;
+import com.bootdo.system.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -25,24 +26,28 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/app")
 public class LoginAppController extends BaseController {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	@Resource
+	private UserService userService;
 
 	@PostMapping("/login")
 	@ResponseBody
 	R ajaxLogin(String username, String password) {
-
 		password = MD5Utils.encrypt(username, password);
-		UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-		Subject subject = SecurityUtils.getSubject();
-		try {
-			subject.login(token);
+		Map<String,Object> userMap = new HashMap<String,Object>();
+		userMap.put("username",username);
+		userMap.put("password",password);
+		if(userService.exit(userMap)){
 			return R.ok();
-		} catch (AuthenticationException e) {
+		}else{
 			return R.error("用户或密码错误");
 		}
 	}

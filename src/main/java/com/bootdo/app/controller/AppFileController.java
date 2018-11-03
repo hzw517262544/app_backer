@@ -1,5 +1,6 @@
 package com.bootdo.app.controller;
 
+import com.bootdo.app.common.AppConstants;
 import com.bootdo.common.config.BootdoConfig;
 import com.bootdo.common.controller.BaseController;
 import com.bootdo.common.domain.FileDO;
@@ -134,44 +135,17 @@ public class AppFileController extends BaseController {
 
 	@ResponseBody
 	@PostMapping("/upload")
-	R upload(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
-		if ("test".equals(getUsername())) {
-			return R.error(1, "演示系统不允许修改,完整体验请部署程序");
-		}
+	R upload(@RequestParam("file") MultipartFile file,@RequestParam("sourceId") Long sourceId, HttpServletRequest request) {
 		String fileName = file.getOriginalFilename();
 		fileName = FileUtil.renameToUUID(fileName);
 		FileDO sysFile = new FileDO(FileType.fileType(fileName), "/files/" + fileName, new Date());
+		sysFile.setSourceId(sourceId);
+		sysFile.setName(file.getOriginalFilename());
+		sysFile.setSourceType(AppConstants.APP_QUESTIONS_SUGGESTIONS);
 		try {
 			FileUtil.uploadFile(file.getBytes(), bootdoConfig.getUploadPath(), fileName);
 		} catch (Exception e) {
 			return R.error();
-		}
-
-		if (sysFileService.save(sysFile) > 0) {
-			return R.ok().put("fileName",sysFile.getUrl());
-		}
-		return R.error();
-	}
-
-	@ResponseBody
-	@PostMapping("/uploadBase64")
-	R uploadBase64(@RequestParam("fileBase64") String fileBase64,@RequestParam("fileName")String fileName, HttpServletRequest request) {
-		BASE64Decoder decoder = new BASE64Decoder();
-		FileDO sysFile = new FileDO(FileType.fileType(fileName), "/files/" + fileName, new Date());
-		try{
-			//Base64解码
-			byte[] b = decoder.decodeBuffer(fileBase64);
-			for(int i=0;i<b.length;++i)
-			{
-				if(b[i]<0)
-				{//调整异常数据
-					b[i]+=256;
-				}
-			}
-			fileName = FileUtil.renameToUUID(fileName);
-			FileUtil.uploadFile(b, bootdoConfig.getUploadPath(), fileName);
-		}catch (Exception e){
-			e.printStackTrace();
 		}
 		if (sysFileService.save(sysFile) > 0) {
 			return R.ok().put("fileName",sysFile.getUrl());

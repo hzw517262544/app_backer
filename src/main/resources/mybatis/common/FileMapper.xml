@@ -43,13 +43,19 @@
 		(
 			`type`, 
 			`url`, 
-			`create_date`
+			`create_date`,
+			`name`,
+			`source_id`,
+			`source_type`
 		)
 		values
 		(
 			#{type}, 
 			#{url}, 
-			#{createDate}
+			#{createDate},
+			#{name},
+			#{sourceId},
+			#{sourceType}
 		)
 	</insert>
 	 

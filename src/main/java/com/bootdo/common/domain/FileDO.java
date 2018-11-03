@@ -22,6 +22,12 @@ public class FileDO implements Serializable {
     // 创建时间
     private Date createDate;
 
+    private Long sourceId;
+
+    private Long sourceType;
+
+    private String name;
+
 
     public FileDO() {
         super();
@@ -92,6 +98,30 @@ public class FileDO implements Serializable {
         return createDate;
     }
 
+    public Long getSourceId() {
+        return sourceId;
+    }
+
+    public void setSourceId(Long sourceId) {
+        this.sourceId = sourceId;
+    }
+
+    public Long getSourceType() {
+        return sourceType;
+    }
+
+    public void setSourceType(Long sourceType) {
+        this.sourceType = sourceType;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         return "FileDO{" +
@@ -99,6 +129,9 @@ public class FileDO implements Serializable {
                 ", type=" + type +
                 ", url='" + url + '\'' +
                 ", createDate=" + createDate +
+                ", sourceId=" + sourceId +
+                ", sourceType=" + sourceType +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

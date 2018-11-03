@@ -75,7 +75,9 @@ public class QuestionsSuggestionsController {
 //	@RequiresPermissions("app:questionsSuggestions:add")
 	public R save( QuestionsSuggestionsDO questionsSuggestions){
 		if(questionsSuggestionsService.save(questionsSuggestions)>0){
-			return R.ok();
+			R r = R.ok();
+			r.put("id",questionsSuggestions.getId());
+			return r;
 		}
 		return R.error();
 	}

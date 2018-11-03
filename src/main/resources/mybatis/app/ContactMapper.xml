@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.app.dao.ContactDao">
+
+	<select id="get" resultType="com.bootdo.app.domain.ContactDO">
+		select `id`,`user_id`,`mobile_1`,`remark`,`create_date`,`create_user`,`update_date`,`update_user`,`contact_user_name`,`mobile_2`,`mobile_3`,`mobile_4`,`mobile_5`,`email` from app_contact where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.app.domain.ContactDO">
+		select `id`,`user_id`,`mobile_1`,`remark`,`create_date`,`create_user`,`update_date`,`update_user`,`contact_user_name`,`mobile_2`,`mobile_3`,`mobile_4`,`mobile_5`,`email` from app_contact
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+		  		  <if test="mobile1 != null and mobile1 != ''"> and mobile_1 = #{mobile1} </if>
+		  		  <if test="remark != null and remark != ''"> and remark = #{remark} </if>
+		  		  <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="updateDate != null and updateDate != ''"> and update_date = #{updateDate} </if>
+		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+		  		  <if test="contactUserName != null and contactUserName != ''"> and contact_user_name = #{contactUserName} </if>
+		  		  <if test="mobile2 != null and mobile2 != ''"> and mobile_2 = #{mobile2} </if>
+		  		  <if test="mobile3 != null and mobile3 != ''"> and mobile_3 = #{mobile3} </if>
+		  		  <if test="mobile4 != null and mobile4 != ''"> and mobile_4 = #{mobile4} </if>
+		  		  <if test="mobile5 != null and mobile5 != ''"> and mobile_5 = #{mobile5} </if>
+		  		  <if test="email != null and email != ''"> and email = #{email} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from app_contact
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+		  		  <if test="mobile1 != null and mobile1 != ''"> and mobile_1 = #{mobile1} </if>
+		  		  <if test="remark != null and remark != ''"> and remark = #{remark} </if>
+		  		  <if test="createDate != null and createDate != ''"> and create_date = #{createDate} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="updateDate != null and updateDate != ''"> and update_date = #{updateDate} </if>
+		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+		  		  <if test="contactUserName != null and contactUserName != ''"> and contact_user_name = #{contactUserName} </if>
+		  		  <if test="mobile2 != null and mobile2 != ''"> and mobile_2 = #{mobile2} </if>
+		  		  <if test="mobile3 != null and mobile3 != ''"> and mobile_3 = #{mobile3} </if>
+		  		  <if test="mobile4 != null and mobile4 != ''"> and mobile_4 = #{mobile4} </if>
+		  		  <if test="mobile5 != null and mobile5 != ''"> and mobile_5 = #{mobile5} </if>
+		  		  <if test="email != null and email != ''"> and email = #{email} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.app.domain.ContactDO" useGeneratedKeys="true" keyProperty="id">
+		insert into app_contact
+		(
+			`user_id`, 
+			`mobile_1`, 
+			`remark`, 
+			`create_date`, 
+			`create_user`, 
+			`update_date`, 
+			`update_user`, 
+			`contact_user_name`, 
+			`mobile_2`, 
+			`mobile_3`, 
+			`mobile_4`, 
+			`mobile_5`, 
+			`email`
+		)
+		values
+		(
+			#{userId}, 
+			#{mobile1}, 
+			#{remark}, 
+			#{createDate}, 
+			#{createUser}, 
+			#{updateDate}, 
+			#{updateUser}, 
+			#{contactUserName}, 
+			#{mobile2}, 
+			#{mobile3}, 
+			#{mobile4}, 
+			#{mobile5}, 
+			#{email}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.app.domain.ContactDO">
+		update app_contact 
+		<set>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="mobile1 != null">`mobile_1` = #{mobile1}, </if>
+			<if test="remark != null">`remark` = #{remark}, </if>
+			<if test="createDate != null">`create_date` = #{createDate}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="updateDate != null">`update_date` = #{updateDate}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}, </if>
+			<if test="contactUserName != null">`contact_user_name` = #{contactUserName}, </if>
+			<if test="mobile2 != null">`mobile_2` = #{mobile2}, </if>
+			<if test="mobile3 != null">`mobile_3` = #{mobile3}, </if>
+			<if test="mobile4 != null">`mobile_4` = #{mobile4}, </if>
+			<if test="mobile5 != null">`mobile_5` = #{mobile5}, </if>
+			<if test="email != null">`email` = #{email}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from app_contact where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from app_contact where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="id" name="id" th:value="${applyInfo.id}"  type="hidden">
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">用户账号：</label>
+								<div class="col-sm-8">
+									<input id="username" name="username" th:value="${applyInfo.username}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">用户姓名：</label>
+								<div class="col-sm-8">
+									<input id="name" name="name" th:value="${applyInfo.name}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">申请类型：</label>
+								<div class="col-sm-8">
+									<input id="applyType" name="applyType" th:value="${applyInfo.applyType}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">申请类型名称：</label>
+								<div class="col-sm-8">
+									<input id="applyTypeName" name="applyTypeName" th:value="${applyInfo.applyTypeName}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">申请子类型：</label>
+								<div class="col-sm-8">
+									<input id="applySecodType" name="applySecodType" th:value="${applyInfo.applySecodType}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">申请子类型名称：</label>
+								<div class="col-sm-8">
+									<input id="applySecodTypeName" name="applySecodTypeName" th:value="${applyInfo.applySecodTypeName}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">申请开始时间：</label>
+								<div class="col-sm-8">
+									<input id="applyStartTime" name="applyStartTime" th:value="${applyInfo.applyStartTime}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">申请结束时间：</label>
+								<div class="col-sm-8">
+									<input id="applyEndTime" name="applyEndTime" th:value="${applyInfo.applyEndTime}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">申请内容：</label>
+								<div class="col-sm-8">
+									<input id="applyContent" name="applyContent" th:value="${applyInfo.applyContent}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">申请状态：</label>
+								<div class="col-sm-8">
+									<input id="applyStatus" name="applyStatus" th:value="${applyInfo.applyStatus}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">创建时间：</label>
+								<div class="col-sm-8">
+									<input id="createTime" name="createTime" th:value="${applyInfo.createTime}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">创建人：</label>
+								<div class="col-sm-8">
+									<input id="createUser" name="createUser" th:value="${applyInfo.createUser}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">更新时间：</label>
+								<div class="col-sm-8">
+									<input id="updateTime" name="updateTime" th:value="${applyInfo.updateTime}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">更新人：</label>
+								<div class="col-sm-8">
+									<input id="updateUser" name="updateUser" th:value="${applyInfo.updateUser}" class="form-control" type="text">
+								</div>
+							</div>
+																					<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/app/applyInfo/edit.js">
+	</script>
+</body>
+</html>

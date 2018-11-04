@@ -1,7 +1,9 @@
 package com.bootdo.app.controller;
 
 import com.bootdo.common.controller.BaseController;
+import com.bootdo.common.domain.DictDO;
 import com.bootdo.common.domain.FileDO;
+import com.bootdo.common.service.DictService;
 import com.bootdo.common.service.FileService;
 import com.bootdo.common.utils.MD5Utils;
 import com.bootdo.common.utils.R;
@@ -13,6 +15,7 @@ import com.bootdo.system.domain.UserRoleDO;
 import com.bootdo.system.service.DeptService;
 import com.bootdo.system.service.RoleService;
 import com.bootdo.system.service.UserService;
+import com.bootdo.system.vo.UserVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -38,6 +41,8 @@ public class LoginAppController extends BaseController {
 	private DeptService deptService;
 	@Resource
 	private FileService fileService;
+	@Resource
+	private DictService dictService;
 
 	@PostMapping("/login")
 	@ResponseBody
@@ -60,6 +65,10 @@ public class LoginAppController extends BaseController {
 			userDO.setRoleNames(userRoleNames);
 			DeptDO deptDO = deptService.get(userDO.getDeptId());
 			userDO.setDeptName(deptDO.getName());
+			FileDO fileDO = fileService.get(userDO.getPicId());
+			if(fileDO!=null){
+				userDO.setPicUrl(fileDO.getUrl());
+			}
 			r.put("userInfo",userDO);
 			return r;
 		}else{
@@ -86,6 +95,29 @@ public class LoginAppController extends BaseController {
 			return r;
 		}
 		return R.error();
+	}
+
+	@ResponseBody
+	@PostMapping("/restAppPwd")
+	R restAppPwd(Long userId,String password){
+		UserDO userDO = userService.get(userId);
+		UserVO userVO = new UserVO();
+		userVO.setUserDO(userDO);
+		userVO.setPwdNew(password);
+		try {
+			userService.adminResetPwd(userVO);
+		}catch (Exception e){
+			e.printStackTrace();
+			return R.error();
+		}
+		return R.ok();
+	}
+
+	@ResponseBody
+	@PostMapping("/loadDict")
+	R loadDict(String type){
+		List<DictDO> dictDOS = dictService.listByType(type);
+		return R.ok().put("dictType",dictDOS);
 	}
 
 }

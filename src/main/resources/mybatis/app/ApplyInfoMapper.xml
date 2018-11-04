@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.app.dao.ApplyInfoDao">
+
+	<select id="get" resultType="com.bootdo.app.domain.ApplyInfoDO">
+		select `id`,`username`,`name`,`apply_type`,`apply_type_name`,`apply_secod_type`,`apply_secod_type_name`,`apply_start_time`,`apply_end_time`,`apply_content`,`apply_status`,`create_time`,`create_user`,`update_time`,`update_user` from app_apply_info where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.app.domain.ApplyInfoDO">
+		select `id`,`username`,`name`,`apply_type`,`apply_type_name`,`apply_secod_type`,`apply_secod_type_name`,`apply_start_time`,`apply_end_time`,`apply_content`,`apply_status`,`create_time`,`create_user`,`update_time`,`update_user` from app_apply_info
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="username != null and username != ''"> and username = #{username} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="applyType != null and applyType != ''"> and apply_type = #{applyType} </if>
+		  		  <if test="applyTypeName != null and applyTypeName != ''"> and apply_type_name = #{applyTypeName} </if>
+		  		  <if test="applySecodType != null and applySecodType != ''"> and apply_secod_type = #{applySecodType} </if>
+		  		  <if test="applySecodTypeName != null and applySecodTypeName != ''"> and apply_secod_type_name = #{applySecodTypeName} </if>
+		  		  <if test="applyStartTime != null and applyStartTime != ''"> and apply_start_time = #{applyStartTime} </if>
+		  		  <if test="applyEndTime != null and applyEndTime != ''"> and apply_end_time = #{applyEndTime} </if>
+		  		  <if test="applyContent != null and applyContent != ''"> and apply_content = #{applyContent} </if>
+		  		  <if test="applyStatus != null and applyStatus != ''"> and apply_status = #{applyStatus} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from app_apply_info
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="username != null and username != ''"> and username = #{username} </if>
+		  		  <if test="name != null and name != ''"> and name = #{name} </if>
+		  		  <if test="applyType != null and applyType != ''"> and apply_type = #{applyType} </if>
+		  		  <if test="applyTypeName != null and applyTypeName != ''"> and apply_type_name = #{applyTypeName} </if>
+		  		  <if test="applySecodType != null and applySecodType != ''"> and apply_secod_type = #{applySecodType} </if>
+		  		  <if test="applySecodTypeName != null and applySecodTypeName != ''"> and apply_secod_type_name = #{applySecodTypeName} </if>
+		  		  <if test="applyStartTime != null and applyStartTime != ''"> and apply_start_time = #{applyStartTime} </if>
+		  		  <if test="applyEndTime != null and applyEndTime != ''"> and apply_end_time = #{applyEndTime} </if>
+		  		  <if test="applyContent != null and applyContent != ''"> and apply_content = #{applyContent} </if>
+		  		  <if test="applyStatus != null and applyStatus != ''"> and apply_status = #{applyStatus} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.app.domain.ApplyInfoDO" useGeneratedKeys="true" keyProperty="id">
+		insert into app_apply_info
+		(
+			`username`, 
+			`name`, 
+			`apply_type`, 
+			`apply_type_name`, 
+			`apply_secod_type`, 
+			`apply_secod_type_name`, 
+			`apply_start_time`, 
+			`apply_end_time`, 
+			`apply_content`, 
+			`apply_status`, 
+			`create_time`, 
+			`create_user`, 
+			`update_time`, 
+			`update_user`
+		)
+		values
+		(
+			#{username}, 
+			#{name}, 
+			#{applyType}, 
+			#{applyTypeName}, 
+			#{applySecodType}, 
+			#{applySecodTypeName}, 
+			#{applyStartTime}, 
+			#{applyEndTime}, 
+			#{applyContent}, 
+			#{applyStatus}, 
+			#{createTime}, 
+			#{createUser}, 
+			#{updateTime}, 
+			#{updateUser}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.app.domain.ApplyInfoDO">
+		update app_apply_info 
+		<set>
+			<if test="username != null">`username` = #{username}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="applyType != null">`apply_type` = #{applyType}, </if>
+			<if test="applyTypeName != null">`apply_type_name` = #{applyTypeName}, </if>
+			<if test="applySecodType != null">`apply_secod_type` = #{applySecodType}, </if>
+			<if test="applySecodTypeName != null">`apply_secod_type_name` = #{applySecodTypeName}, </if>
+			<if test="applyStartTime != null">`apply_start_time` = #{applyStartTime}, </if>
+			<if test="applyEndTime != null">`apply_end_time` = #{applyEndTime}, </if>
+			<if test="applyContent != null">`apply_content` = #{applyContent}, </if>
+			<if test="applyStatus != null">`apply_status` = #{applyStatus}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from app_apply_info where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from app_apply_info where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -52,6 +52,8 @@ public class UserDO implements Serializable {
     private String city;
     //所在地区
     private String district;
+    //头像url
+    private String picUrl;
 
     public Long getUserId() {
         return userId;
@@ -227,6 +229,14 @@ public class UserDO implements Serializable {
 
     public void setRoleNames(String roleNames) {
         this.roleNames = roleNames;
+    }
+
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
     }
 
     @Override

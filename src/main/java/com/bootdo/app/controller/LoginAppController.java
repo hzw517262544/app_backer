@@ -1,26 +1,21 @@
 package com.bootdo.app.controller;
 
-import com.bootdo.common.annotation.Log;
 import com.bootdo.common.controller.BaseController;
 import com.bootdo.common.domain.FileDO;
-import com.bootdo.common.domain.Tree;
 import com.bootdo.common.service.FileService;
 import com.bootdo.common.utils.MD5Utils;
 import com.bootdo.common.utils.R;
 import com.bootdo.common.utils.ShiroUtils;
-import com.bootdo.system.domain.MenuDO;
+import com.bootdo.system.domain.DeptDO;
+import com.bootdo.system.domain.RoleDO;
 import com.bootdo.system.domain.UserDO;
-import com.bootdo.system.service.MenuService;
+import com.bootdo.system.domain.UserRoleDO;
+import com.bootdo.system.service.DeptService;
+import com.bootdo.system.service.RoleService;
 import com.bootdo.system.service.UserService;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,6 +32,12 @@ public class LoginAppController extends BaseController {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Resource
 	private UserService userService;
+	@Resource
+	private RoleService roleService;
+	@Resource
+	private DeptService deptService;
+	@Resource
+	private FileService fileService;
 
 	@PostMapping("/login")
 	@ResponseBody
@@ -46,7 +47,21 @@ public class LoginAppController extends BaseController {
 		userMap.put("username",username);
 		userMap.put("password",password);
 		if(userService.exit(userMap)){
-			return R.ok();
+			R r = R.ok();
+			List<UserDO> userDOS = userService.list(userMap);
+			UserDO userDO = userDOS.get(0);
+			userMap.put("userId",userDO.getUserId());
+			List<UserRoleDO> userRoleDOS = userService.listUserRole(userMap);
+			String userRoleNames = "";
+			for(UserRoleDO userRoleDO : userRoleDOS){
+				RoleDO roleDO = roleService.get(userRoleDO.getRoleId());
+				userRoleNames += roleDO.getRoleName();
+			}
+			userDO.setRoleNames(userRoleNames);
+			DeptDO deptDO = deptService.get(userDO.getDeptId());
+			userDO.setDeptName(deptDO.getName());
+			r.put("userInfo",userDO);
+			return r;
 		}else{
 			return R.error("用户或密码错误");
 		}
@@ -57,6 +72,20 @@ public class LoginAppController extends BaseController {
 	R logout() {
 		ShiroUtils.logout();
 		return R.ok();
+	}
+	@ResponseBody
+	@GetMapping("/getUserImg")
+	R getUserImg(String username){
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("username",username);
+		List<UserDO> userDOS = userService.list(map);
+		FileDO fileDO = fileService.get(userDOS.get(0).getPicId());
+		if(fileDO != null){
+			R r = R.ok();
+			r.put("img",fileDO);
+			return r;
+		}
+		return R.error();
 	}
 
 }

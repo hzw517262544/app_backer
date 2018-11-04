@@ -6,6 +6,8 @@ import com.bootdo.common.controller.BaseController;
 import com.bootdo.common.domain.FileDO;
 import com.bootdo.common.service.FileService;
 import com.bootdo.common.utils.*;
+import com.bootdo.system.domain.UserDO;
+import com.bootdo.system.service.UserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sun.misc.BASE64Decoder;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
@@ -38,6 +41,8 @@ public class AppFileController extends BaseController {
 
 	@Autowired
 	private BootdoConfig bootdoConfig;
+	@Resource
+	private UserService userService;
 
 	@GetMapping()
 	String sysFile(Model model) {
@@ -141,7 +146,7 @@ public class AppFileController extends BaseController {
 		FileDO sysFile = new FileDO(FileType.fileType(fileName), "/files/" + fileName, new Date());
 		sysFile.setSourceId(sourceId);
 		sysFile.setName(file.getOriginalFilename());
-		sysFile.setSourceType(AppConstants.APP_QUESTIONS_SUGGESTIONS);
+		sysFile.setSourceType(AppConstants.APP_FILE_QUESTIONS_SUGGESTIONS);
 		try {
 			FileUtil.uploadFile(file.getBytes(), bootdoConfig.getUploadPath(), fileName);
 		} catch (Exception e) {
@@ -152,5 +157,48 @@ public class AppFileController extends BaseController {
 		}
 		return R.error();
 	}
+
+	@ResponseBody
+	@PostMapping("/uploadBase64")
+	R uploadBase64(Long userId,String imgData,Long sourceType) {
+		imgData = imgData.split(",")[1];
+		if (imgData == null) //图像数据为空
+			{
+				return R.error();
+			}
+		BASE64Decoder decoder = new BASE64Decoder();
+		try
+		{
+			//Base64解码
+			byte[] b = decoder.decodeBuffer(imgData);
+			for(int i=0;i<b.length;++i)
+			{
+				if(b[i]<0)
+				{//调整异常数据
+					b[i]+=256;
+				}
+			}
+			UserDO userDO = userService.get(userId);
+			String fileName = userDO.getUsername()+".jpg";
+			fileName = FileUtil.renameToUUID(fileName);
+			FileDO sysFile = new FileDO(FileType.fileType(fileName), "/files/" + fileName, new Date());
+			if(userDO != null){
+				sysFile.setSourceId(userDO.getUserId());
+			}
+			sysFile.setSourceType(sourceType);
+			FileUtil.uploadFile(b, bootdoConfig.getUploadPath(), fileName);
+			if(sysFileService.save(sysFile) > 0){
+				userDO.setPicId(sysFile.getId());
+				userService.update(userDO);
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return R.error();
+		}
+		return R.ok();
+	}
+
 
 }

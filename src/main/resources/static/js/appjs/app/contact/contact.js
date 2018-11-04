@@ -69,7 +69,7 @@ function load() {
 								},
 																{
 									field : 'createUser', 
-									title : '' 
+									title : '联系人姓名'
 								},
 																{
 									field : 'updateDate', 

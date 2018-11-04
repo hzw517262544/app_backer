@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.bootdo.system.domain.UserRoleDO;
 import com.bootdo.system.vo.UserVO;
 import org.springframework.stereotype.Service;
 
@@ -51,4 +52,11 @@ public interface UserService {
 	 * @throws Exception
 	 */
     Map<String, Object> updatePersonalImg(MultipartFile file, String avatar_data, Long userId) throws Exception;
+
+	/**
+	 * 插叙用户角色信息
+	 * @param map
+	 * @return
+	 */
+	List<UserRoleDO> listUserRole(Map<String, Object> map);
 }

@@ -18,7 +18,7 @@ public class ContactDO implements Serializable {
 	//
 	private Long id;
 	//用户id
-	private Long userId;
+	private String userId;
 	//电话_1
 	private String mobile1;
 	//备注
@@ -59,13 +59,13 @@ public class ContactDO implements Serializable {
 	/**
 	 * 设置：用户id
 	 */
-	public void setUserId(Long userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 	/**
 	 * 获取：用户id
 	 */
-	public Long getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 	/**

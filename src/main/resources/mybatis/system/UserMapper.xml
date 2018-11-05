@@ -152,4 +152,11 @@
 	<select id="listAllDept" resultType="long">
 				select DISTINCT dept_id from sys_user
 	</select>
+
+	<select id="listUserNames" resultType="java.lang.String">
+		select name from sys_user where user_id in
+		<foreach item="userId" collection="array" open="(" separator="," close=")">
+			#{userId}
+		</foreach>
+	</select>
 </mapper>

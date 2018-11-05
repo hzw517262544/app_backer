@@ -57,7 +57,7 @@ function load() {
 						field : 'title',
 						title : '标题',
 						formatter: function(value,row,index){
-							return '<a href="#" onclick="edit(\''+row.id+'\')">'+row.title+'</a>';
+							return '<a href="#" onclick="detail(\''+row.id+'\')">'+row.title+'</a>';
 						}
 					},
 					{
@@ -138,7 +138,7 @@ function reLoad() {
 	$('#exampleTable').bootstrapTable('refresh');
 }
 function add() {
-	layer.open({
+	var addWin = layer.open({
 		type : 2,
 		title : '增加',
 		maxmin : true,
@@ -146,9 +146,10 @@ function add() {
 		area : [ '800px', '520px' ],
 		content : prefix + '/add' // iframe的url
 	});
+	layer.full(addWin);
 }
 function edit(id) {
-	layer.open({
+	var editWin = layer.open({
 		type : 2,
 		title : '编辑',
 		maxmin : true,
@@ -156,6 +157,18 @@ function edit(id) {
 		area : [ '800px', '520px' ],
 		content : prefix + '/edit/' + id // iframe的url
 	});
+	layer.full(editWin);
+}
+function detail(id) {
+    var detailWin = layer.open({
+        type : 2,
+        title : '通知详情',
+        maxmin : true,
+        shadeClose : false, // 点击遮罩关闭层
+        area : [ '800px', '520px' ],
+        content : prefix + '/detail/' + id // iframe的url
+    });
+    layer.full(detailWin);
 }
 function remove(id) {
 	layer.confirm('确定要删除选中的记录？', {

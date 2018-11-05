@@ -59,4 +59,6 @@ public interface UserService {
 	 * @return
 	 */
 	List<UserRoleDO> listUserRole(Map<String, Object> map);
+
+	List<String> listUserNames(Long[] userIds);
 }

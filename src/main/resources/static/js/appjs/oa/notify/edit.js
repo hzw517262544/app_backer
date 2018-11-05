@@ -1,4 +1,15 @@
 $().ready(function() {
+    $('.summernote').summernote({
+        height : '500px',
+        lang : 'zh-CN',
+        callbacks: {
+            onImageUpload: function(files, editor, $editable) {
+                sendFile(files);
+            }
+        }
+    });
+    var content = $("#content").val();
+    $('#content_sn').summernote('code', content);
 	//loadType();
 	validateRule();
 });
@@ -9,6 +20,8 @@ $.validator.setDefaults({
 	}
 });
 function update() {
+    var content_sn = $("#content_sn").summernote('code');
+    $("#content").val(content_sn);
 	$.ajax({
 		cache : true,
 		type : "POST",
@@ -72,3 +85,17 @@ function loadType(){
 	});
 }
 
+var openUser = function(){
+    var selectUsers = layer.open({
+        type:2,
+        title:"选择人员",
+        area : [ '300px', '450px' ],
+        content:"/sys/user/treeView"
+    });
+    layer.full(selectUsers);
+}
+
+function loadUser(userIds,userNames){
+    $("#userIds").val(userIds);
+    $("#userNames").val(userNames);
+}

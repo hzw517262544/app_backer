@@ -25,7 +25,7 @@ function load() {
 				// //发送到服务器的数据编码类型
 				pageSize : 10, // 如果设置了分页，每页数据条数
 				pageNumber : 1, // 如果设置了分布，首页页码
-				//search : true, // 是否显示搜索框
+				// search : true, // 是否显示搜索框
 				showColumns : false, // 是否显示内容下拉框（选择显示的列）
 				sidePagination : "server", // 设置在哪里进行分页，可选值为"client" 或者 "server"
 				queryParams : function(params) {
@@ -62,10 +62,11 @@ function load() {
 						width: '20%',
 						title : '标题',
 						formatter:function (value,row,index) {
-                            return '<a href="#" onclick="read(\''+ row.id+ '\')">'+row.title+'</a>';
+                            return '<a href="#" onclick="detail(\''+ row.id+ '\')">'+row.title+'</a>';
                         }
 					},
 					{
+						visible:false,
 						field : 'content',
 						width: '30%',
 						title : '内容'
@@ -121,7 +122,7 @@ function load() {
 						field : 'opera',
 						align : 'center',
 						formatter : function(value, row, index) {
-							var e = '<a class="btn btn-primary btn-sm" href="#" mce_href="#" title="打开" onclick="read(\''
+							var e = '<a class="btn btn-primary btn-sm" href="#" mce_href="#" title="打开" onclick="detail(\''
 								+ row.id
 								+ '\')"><i class="fa fa-book"></i></a> ';
 							var d = '<a class="btn btn-warning btn-sm ' + s_remove_h + '" href="#" title="删除"  mce_href="#" onclick="remove(\''
@@ -213,4 +214,16 @@ function batchRemove() {
 			}
 		});
 	}, function() {});
+}
+
+function detail(id) {
+    var detailWin = layer.open({
+        type : 2,
+        title : '通知详情',
+        maxmin : true,
+        shadeClose : false, // 点击遮罩关闭层
+        area : [ '800px', '520px' ],
+        content : prefix + '/detail/' + id // iframe的url
+    });
+    layer.full(detailWin);
 }

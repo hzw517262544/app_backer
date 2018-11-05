@@ -11,13 +11,13 @@ import com.bootdo.oa.domain.NotifyDO;
 import com.bootdo.oa.domain.NotifyRecordDO;
 import com.bootdo.oa.service.NotifyRecordService;
 import com.bootdo.oa.service.NotifyService;
+import com.bootdo.system.service.UserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +40,8 @@ public class NotifyController extends BaseController {
 	private NotifyRecordService notifyRecordService;
 	@Autowired
 	private DictService dictService;
+	@Autowired
+	private UserService userService;
 
 	@GetMapping()
 	@RequiresPermissions("oa:notify:notify")
@@ -76,6 +78,23 @@ public class NotifyController extends BaseController {
 				dictDO.setRemarks("checked");
 			}
 		}
+		//加载发送人id
+		Map<String,Object> recordMap = new HashMap<String,Object>(16);
+		recordMap.put("notifyId",id);
+		List<NotifyRecordDO> recordDOS = notifyRecordService.list(recordMap);
+		if(recordDOS != null && !recordDOS.isEmpty()){
+			int size = recordDOS.size();
+			Long [] userIds = new Long[size];
+			for(int i=0;i<size;i++){
+				userIds[i] = recordDOS.get(i).getUserId();
+			}
+			notify.setUserIds(userIds);
+		}
+		//加载发送人姓名
+		if(notify.getUserIds() != null&&notify.getUserIds().length>0){
+			notify.setUserNames(userService.listUserNames(notify.getUserIds()));
+		}
+
 		model.addAttribute("oaNotifyTypes",dictDOS);
 		model.addAttribute("notify", notify);
 		return "oa/notify/edit";
@@ -91,10 +110,15 @@ public class NotifyController extends BaseController {
 		if (Constant.DEMO_ACCOUNT.equals(getUsername())) {
 			return R.error(1, "演示系统不允许修改,完整体验请部署程序");
 		}
+		Date currDate = new Date();
 		notify.setCreateBy(getUserId());
+		notify.setCreateDate(currDate);
+		notify.setUpdateBy(getUserId().toString());
+		notify.setUpdateDate(currDate);
 		if (notifyService.save(notify) > 0) {
 			return R.ok();
 		}
+
 		return R.error();
 	}
 
@@ -108,6 +132,8 @@ public class NotifyController extends BaseController {
 		if (Constant.DEMO_ACCOUNT.equals(getUsername())) {
 			return R.error(1, "演示系统不允许修改,完整体验请部署程序");
 		}
+		notify.setUpdateBy(getUserId().toString());
+		notify.setUpdateDate(new Date());
 		notifyService.update(notify);
 		return R.ok();
 	}
@@ -183,6 +209,23 @@ public class NotifyController extends BaseController {
 		return "oa/notify/read";
 	}
 
+	@GetMapping("/detail/{id}")
+//	@RequiresPermissions("oa:notify:edit")
+	String detail(@PathVariable("id") Long id, Model model) {
+		NotifyDO notify = notifyService.get(id);
+		//更改阅读状态
+		NotifyRecordDO notifyRecordDO = new NotifyRecordDO();
+		notifyRecordDO.setNotifyId(id);
+		notifyRecordDO.setUserId(getUserId());
+		notifyRecordDO.setReadDate(new Date());
+		notifyRecordDO.setIsRead(Constant.OA_NOTIFY_READ_YES);
+		notifyRecordService.changeRead(notifyRecordDO);
+		model.addAttribute("notify", notify);
+		//加载附件
+		Map<String,Object> fileMap = new HashMap<String,Object>();
+		fileMap.put("",notify.getId());
+		return "oa/notify/detail";
+	}
 
 
 }

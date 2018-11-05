@@ -1,7 +1,11 @@
 package com.bootdo.oa.service.impl;
 
+import com.bootdo.common.config.Constant;
+import com.bootdo.common.domain.FileDO;
+import com.bootdo.common.service.FileService;
 import com.bootdo.system.domain.UserDO;
 import com.bootdo.system.service.SessionService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +43,8 @@ public class NotifyServiceImpl implements NotifyService {
     private SessionService sessionService;
     @Autowired
     private SimpMessagingTemplate template;
+    @Autowired
+    private FileService fileService;
 
     @Override
     public NotifyDO get(Long id) {
@@ -64,8 +70,19 @@ public class NotifyServiceImpl implements NotifyService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public int save(NotifyDO notify) {
-        notify.setUpdateDate(new Date());
         int r = notifyDao.save(notify);
+        //根据文件的id
+        String fileIds = notify.getFileIds();
+        if(StringUtils.isNotEmpty(fileIds)){
+            String[] ids = fileIds.split(",");
+            FileDO fileDO = new FileDO();
+            for(String id : ids){
+                fileDO.setId(Long.valueOf(id));
+                fileDO.setSourceId(notify.getId());
+                fileDO.setSourceType(Constant.SOURCE_TYPE_NOTIFY);
+                fileService.update(fileDO);
+            }
+        }
         // 保存到接受者列表中
         Long[] userIds = notify.getUserIds();
         Long notifyId = notify.getId();

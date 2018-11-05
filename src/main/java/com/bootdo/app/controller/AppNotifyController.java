@@ -164,19 +164,19 @@ public class AppNotifyController extends BaseController {
 		return notifyService.selfList(query);
 	}
 
-	@GetMapping("/read/{id}")
+	@ResponseBody
+	@GetMapping("/read")
 //	@RequiresPermissions("oa:notify:edit")
-	String read(@PathVariable("id") Long id, Model model) {
+	R read(Long id,Long userId) {
 		NotifyDO notify = notifyService.get(id);
 		//更改阅读状态
 		NotifyRecordDO notifyRecordDO = new NotifyRecordDO();
 		notifyRecordDO.setNotifyId(id);
-		notifyRecordDO.setUserId(getUserId());
+		notifyRecordDO.setUserId(userId);
 		notifyRecordDO.setReadDate(new Date());
 		notifyRecordDO.setIsRead(Constant.OA_NOTIFY_READ_YES);
 		notifyRecordService.changeRead(notifyRecordDO);
-		model.addAttribute("notify", notify);
-		return "oa/notify/read";
+		return R.ok().put("notify",notify);
 	}
 
 

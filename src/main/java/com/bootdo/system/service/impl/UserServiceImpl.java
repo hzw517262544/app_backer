@@ -241,4 +241,9 @@ public class UserServiceImpl implements UserService {
     public List<UserRoleDO> listUserRole(Map<String, Object> map) {
         return userRoleMapper.list(map);
     }
+
+    @Override
+    public List<String> listUserNames(Long[] userIds){
+        return userMapper.listUserNames(userIds);
+    }
 }

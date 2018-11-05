@@ -20,5 +20,8 @@ public class Constant {
 
     public static String LOG_ERROR = "error";
 
-    
+    //附件类型：1-通知
+    public static final Long SOURCE_TYPE_NOTIFY = 1L;
+    //附件类型：2-博客
+    public static final Long SOURCE_TYPE_BLOG = 2L;
 }

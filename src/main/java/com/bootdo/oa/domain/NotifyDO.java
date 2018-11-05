@@ -3,7 +3,7 @@ package com.bootdo.oa.domain;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
-
+import java.util.List;
 
 
 /**
@@ -40,8 +40,12 @@ public class NotifyDO implements Serializable {
 	private String remarks;
 	//删除标记
 	private String delFlag;
-	
+	//接收人id
 	private Long[] userIds;
+	//接收人姓名
+	private List<String> userNames;
+	//文件的url
+	private String fileIds;
 
 	/**
 	 * 设置：编号
@@ -192,6 +196,22 @@ public class NotifyDO implements Serializable {
 	}
 	public void setUserIds(Long[] userIds) {
 		this.userIds = userIds;
+	}
+
+	public String getFileIds() {
+		return fileIds;
+	}
+
+	public void setFileIds(String fileIds) {
+		this.fileIds = fileIds;
+	}
+
+	public List<String> getUserNames() {
+		return userNames;
+	}
+
+	public void setUserNames(List<String> userNames) {
+		this.userNames = userNames;
 	}
 
 	@Override

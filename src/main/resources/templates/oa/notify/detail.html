@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<meta charset="utf-8">
+<head th:include="blog/index/include_blog::header"></head>
+<body>
+	<!--Content -->
+	<article>
+		<div class="container">
+			<div class="row">
+				<h3 th:text="${notify.title}" style="text-align: center;"></h3>
+				<h6 th:text="${#dates.format(notify.updateDate,'yyyy-MM-dd HH:mm:ss')}" style="text-align: center;"></h6>
+			</div>
+			<div class="row">
+				<div class="col-sm-11">
+					<div id="content" class="summernote"></div>
+				</div>
+			</div>
+		</div>
+
+	</article>
+	<hr>
+	<div th:include="blog/index/include_blog::footer"></div>
+	<script type="text/javascript" th:inline="javascript">
+        $().ready(function() {
+            $('.summernote').summernote({
+                lang : 'zh-CN'
+            });
+            var content = /*[[${notify.content}]]*/
+                $('#content').code(content);
+            $('.summernote').destroy();
+        });
+	</script>
+	<!--<script type="text/javascript" src="/js/appjs/blog/index/post.js"></script>-->
+</body>
+</html>

@@ -32,4 +32,7 @@ public interface UserDao {
 	
 	Long[] listAllDept();
 
+	List<String> listUserNames(Long[] userIds);
+
+
 }

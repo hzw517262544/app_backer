@@ -136,8 +136,8 @@
 		from
 		oa_notify_record r right JOIN oa_notify n on r.notify_id
 		= n.id where
-		r.user_id =#{userId} and
-		r.is_read = #{isRead}
+		r.user_id =#{userId}
+		<if test="isRead != null and isRead != ''">and `r.is_read` = #{isRead}</if>
 	</select>
 
 	<select id="listDTO" resultType="com.bootdo.oa.domain.NotifyDTO">

@@ -167,6 +167,7 @@ public class AppFileController extends BaseController {
 				return R.error();
 			}
 		BASE64Decoder decoder = new BASE64Decoder();
+		FileDO sysFile = null;
 		try
 		{
 			//Base64解码
@@ -181,7 +182,7 @@ public class AppFileController extends BaseController {
 			UserDO userDO = userService.get(userId);
 			String fileName = userDO.getUsername()+".jpg";
 			fileName = FileUtil.renameToUUID(fileName);
-			FileDO sysFile = new FileDO(FileType.fileType(fileName), "/files/" + fileName, new Date());
+			sysFile = new FileDO(FileType.fileType(fileName), "/files/" + fileName, new Date());
 			if(userDO != null){
 				sysFile.setSourceId(userDO.getUserId());
 			}
@@ -197,7 +198,7 @@ public class AppFileController extends BaseController {
 			e.printStackTrace();
 			return R.error();
 		}
-		return R.ok();
+		return R.ok().put("file",sysFile);
 	}
 
 

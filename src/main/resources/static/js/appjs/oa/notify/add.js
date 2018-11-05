@@ -91,13 +91,13 @@ function loadType(){
 }
 
 var openUser = function(){
-	var selectUsers = layer.open({
+	layer.open({
 		type:2,
 		title:"选择人员",
 		area : [ '300px', '450px' ],
 		content:"/sys/user/treeView"
 	});
-	layer.full(selectUsers);
+	// layer.full(selectUsers);
 }
 
 function loadUser(userIds,userNames){

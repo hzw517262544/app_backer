@@ -10,7 +10,7 @@ $().ready(function() {
     });
     var content = $("#content").val();
     $('#content_sn').summernote('code', content);
-	//loadType();
+	loadType();
 	validateRule();
 });
 

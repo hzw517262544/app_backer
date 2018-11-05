@@ -29,26 +29,29 @@ import com.bootdo.oa.domain.NotifyRecordDO;
 import com.bootdo.oa.service.NotifyService;
 import com.bootdo.system.dao.UserDao;
 
+import javax.annotation.Resource;
+
 @Service
 public class NotifyServiceImpl implements NotifyService {
-    @Autowired
+    @Resource
     private NotifyDao notifyDao;
-    @Autowired
+    @Resource
     private NotifyRecordDao recordDao;
-    @Autowired
+    @Resource
     private UserDao userDao;
-    @Autowired
+    @Resource
     private DictService dictService;
-    @Autowired
+    @Resource
     private SessionService sessionService;
-    @Autowired
+    @Resource
     private SimpMessagingTemplate template;
-    @Autowired
+    @Resource
     private FileService fileService;
 
     @Override
     public NotifyDO get(Long id) {
         NotifyDO rDO = notifyDao.get(id);
+        rDO.setCreateByName(userDao.get(rDO.getCreateBy()).getName());
         rDO.setType(dictService.getName("oa_notify_type", rDO.getType()));
         return rDO;
     }
@@ -137,6 +140,7 @@ public class NotifyServiceImpl implements NotifyService {
     public PageUtils selfList(Map<String, Object> map) {
         List<NotifyDTO> rows = notifyDao.listDTO(map);
         for (NotifyDTO notifyDTO : rows) {
+            notifyDTO.setCreateByName(userDao.get(notifyDTO.getCreateBy()).getName());
             notifyDTO.setBefore(DateUtils.getTimeBefore(notifyDTO.getUpdateDate()));
             notifyDTO.setSender(userDao.get(notifyDTO.getCreateBy()).getName());
         }

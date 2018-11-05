@@ -30,6 +30,8 @@ public class NotifyDO implements Serializable {
 	private String status;
 	//创建者
 	private Long createBy;
+	//创建者姓名
+	private String createByName;
 	//创建时间
 	private Date createDate;
 	//更新者
@@ -214,6 +216,14 @@ public class NotifyDO implements Serializable {
 		this.userNames = userNames;
 	}
 
+	public String getCreateByName() {
+		return createByName;
+	}
+
+	public void setCreateByName(String createByName) {
+		this.createByName = createByName;
+	}
+
 	@Override
 	public String toString() {
 		return "NotifyDO{" +
@@ -224,12 +234,15 @@ public class NotifyDO implements Serializable {
 				", files='" + files + '\'' +
 				", status='" + status + '\'' +
 				", createBy=" + createBy +
+				", createByName='" + createByName + '\'' +
 				", createDate=" + createDate +
 				", updateBy='" + updateBy + '\'' +
 				", updateDate=" + updateDate +
 				", remarks='" + remarks + '\'' +
 				", delFlag='" + delFlag + '\'' +
 				", userIds=" + Arrays.toString(userIds) +
+				", userNames=" + userNames +
+				", fileIds='" + fileIds + '\'' +
 				'}';
 	}
 }

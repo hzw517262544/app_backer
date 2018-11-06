@@ -32,7 +32,7 @@ import com.bootdo.common.utils.R;
  
 @Controller
 @RequestMapping("/app/applyInfo")
-public class ApplyInfoController {
+public class AppApplyInfoController {
 	@Autowired
 	private ApplyInfoService applyInfoService;
 	

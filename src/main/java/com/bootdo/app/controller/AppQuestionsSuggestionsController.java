@@ -31,7 +31,7 @@ import com.bootdo.common.utils.R;
  
 @Controller
 @RequestMapping("/app/questionsSuggestions")
-public class QuestionsSuggestionsController {
+public class AppQuestionsSuggestionsController {
 	@Autowired
 	private QuestionsSuggestionsService questionsSuggestionsService;
 	

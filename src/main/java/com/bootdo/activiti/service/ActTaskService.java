@@ -20,4 +20,6 @@ public interface ActTaskService {
     String getFormKey(String procDefId, String taskDefKey);
 
     InputStream tracePhoto(String processDefinitionId, String executionId);
+
+    String startAppProcess(String procDefKey, String businessTable, String businessId, String title, Map<String, Object> vars);
 }

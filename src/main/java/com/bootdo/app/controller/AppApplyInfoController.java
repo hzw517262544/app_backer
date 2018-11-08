@@ -1,26 +1,25 @@
 package com.bootdo.app.controller;
 
-import java.util.List;
-import java.util.Map;
-
-import com.bootdo.common.utils.DateUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
+import com.bootdo.activiti.config.ActivitiConstant;
+import com.bootdo.activiti.utils.ActivitiUtils;
+import com.bootdo.activiti.vo.TaskVO;
 import com.bootdo.app.domain.ApplyInfoDO;
 import com.bootdo.app.service.ApplyInfoService;
+import com.bootdo.common.utils.DateUtils;
 import com.bootdo.common.utils.PageUtils;
 import com.bootdo.common.utils.Query;
 import com.bootdo.common.utils.R;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.task.Task;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -35,6 +34,12 @@ import com.bootdo.common.utils.R;
 public class AppApplyInfoController {
 	@Autowired
 	private ApplyInfoService applyInfoService;
+
+	@Autowired
+	ActivitiUtils activitiUtils;
+
+	@Autowired
+	TaskService taskService;
 	
 	@GetMapping()
 //	@RequiresPermissions("app:applyInfo:applyInfo")
@@ -115,6 +120,27 @@ public class AppApplyInfoController {
 	public R remove(@RequestParam("ids[]") Long[] ids){
 		applyInfoService.batchRemove(ids);
 		return R.ok();
+	}
+
+	@ResponseBody
+	@GetMapping("/get")
+//	@RequiresPermissions("app:applyInfo:edit")
+	public R get( Long id){
+		ApplyInfoDO applyInfoDO = applyInfoService.get(id);
+		return R.ok().put("applyInfo",applyInfoDO);
+	}
+	@ResponseBody
+	@GetMapping("/todoList")
+	List<ApplyInfoDO> todoList(String username){
+		List<Task> tasks = taskService.createTaskQuery().taskAssignee(username).list();
+		List<ApplyInfoDO> applyInfoDOS =  new ArrayList<>();
+		for(Task task : tasks){
+			if(task.getProcessDefinitionId().contains(ActivitiConstant.ACTIVITI_LEAVE_APPLY_ID)){
+				ApplyInfoDO applyInfoDO = applyInfoService.get(Long.valueOf(activitiUtils.getBusinessKeyByTaskId(task.getId())));
+				applyInfoDOS.add(applyInfoDO);
+			}
+		}
+		return applyInfoDOS;
 	}
 	
 }

@@ -1,6 +1,7 @@
 package com.bootdo.app.controller;
 
 import com.bootdo.activiti.config.ActivitiConstant;
+import com.bootdo.activiti.service.ActTaskService;
 import com.bootdo.activiti.utils.ActivitiUtils;
 import com.bootdo.activiti.vo.TaskVO;
 import com.bootdo.app.domain.ApplyInfoDO;
@@ -18,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +42,9 @@ public class AppApplyInfoController {
 
 	@Autowired
 	TaskService taskService;
+
+	@Autowired
+	private ActTaskService actTaskService;
 	
 	@GetMapping()
 //	@RequiresPermissions("app:applyInfo:applyInfo")
@@ -137,10 +142,29 @@ public class AppApplyInfoController {
 		for(Task task : tasks){
 			if(task.getProcessDefinitionId().contains(ActivitiConstant.ACTIVITI_LEAVE_APPLY_ID)){
 				ApplyInfoDO applyInfoDO = applyInfoService.get(Long.valueOf(activitiUtils.getBusinessKeyByTaskId(task.getId())));
+				applyInfoDO.setTaskVO(new TaskVO(task));
 				applyInfoDOS.add(applyInfoDO);
 			}
 		}
 		return applyInfoDOS;
+	}
+
+	@ResponseBody
+	@PostMapping("/apply")
+	R apply(String taskId,String auditOpinion,String passFlag){
+		Map<String,Object> vars = new HashMap<>(16);
+		vars.put("pass",passFlag);
+		vars.put("auditOpinion",auditOpinion);
+		actTaskService.complete(taskId,vars);
+		return R.ok();
+	}
+
+	@ResponseBody
+	@GetMapping("/getByTaskId")
+//	@RequiresPermissions("app:applyInfo:edit")
+	public R getByTaskId( String taskId){
+		ApplyInfoDO applyInfoDO = applyInfoService.get(Long.valueOf(activitiUtils.getBusinessKeyByTaskId(taskId)));
+		return R.ok().put("applyInfo",applyInfoDO);
 	}
 	
 }

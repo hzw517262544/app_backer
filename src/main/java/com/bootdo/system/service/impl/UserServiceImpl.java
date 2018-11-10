@@ -9,8 +9,10 @@ import com.bootdo.system.dao.DeptDao;
 import com.bootdo.system.dao.UserDao;
 import com.bootdo.system.dao.UserRoleDao;
 import com.bootdo.system.domain.DeptDO;
+import com.bootdo.system.domain.RoleDO;
 import com.bootdo.system.domain.UserDO;
 import com.bootdo.system.domain.UserRoleDO;
+import com.bootdo.system.service.RoleService;
 import com.bootdo.system.service.UserService;
 import com.bootdo.system.vo.UserVO;
 import org.apache.commons.lang.ArrayUtils;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -29,14 +32,18 @@ import java.util.*;
 @Transactional
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
+    @Resource
     UserDao userMapper;
-    @Autowired
+    @Resource
     UserRoleDao userRoleMapper;
-    @Autowired
+    @Resource
     DeptDao deptMapper;
     @Autowired
     private FileService sysFileService;
+    @Autowired
+    private FileService fileService;
+    @Autowired
+    private RoleService roleService;
     @Autowired
     private BootdoConfig bootdoConfig;
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
@@ -48,6 +55,20 @@ public class UserServiceImpl implements UserService {
         UserDO user = userMapper.get(id);
         user.setDeptName(deptMapper.get(user.getDeptId()).getName());
         user.setRoleIds(roleIds);
+        if(roleIds != null&&!roleIds.isEmpty()){
+            String roleName = "";
+            for(Long roleId : roleIds){
+                RoleDO roleDO = roleService.get(roleId);
+                if(roleDO != null){
+                    roleName += roleDO.getRoleName();
+                }
+            }
+            user.setRoleNames(roleName);
+        }
+        FileDO fileDO = fileService.get(user.getPicId());
+        if(fileDO!=null){
+            user.setPicUrl(fileDO.getUrl());
+        }
         return user;
     }
 

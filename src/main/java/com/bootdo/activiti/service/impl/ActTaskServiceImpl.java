@@ -294,7 +294,7 @@ public class ActTaskServiceImpl implements ActTaskService {
         // 启动流程
         ProcessInstance procIns = runtimeService.startProcessInstanceByKey(procDefKey, businessId, vars);
 
-        return null;
+        return procIns.getId();
     }
 }
 

@@ -35,7 +35,7 @@
                 order by ${sort} ${order}
             </when>
 			<otherwise>
-                order by user_id desc
+                order by convert(`name` using gbk) asc
 			</otherwise>
         </choose>
 		<if test="offset != null and limit != null">

@@ -1,5 +1,8 @@
 package com.bootdo.app.domain;
 
+import com.bootdo.activiti.vo.TaskVO;
+import org.activiti.engine.task.Task;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -45,6 +48,8 @@ public class ApplyInfoDO implements Serializable {
 	private Date updateTime;
 	//更新人
 	private String updateUser;
+
+	private TaskVO taskVO;
 
 	/**
 	 * 设置：id
@@ -225,5 +230,13 @@ public class ApplyInfoDO implements Serializable {
 	 */
 	public String getUpdateUser() {
 		return updateUser;
+	}
+
+	public TaskVO getTaskVO() {
+		return taskVO;
+	}
+
+	public void setTaskVO(TaskVO taskVO) {
+		this.taskVO = taskVO;
 	}
 }

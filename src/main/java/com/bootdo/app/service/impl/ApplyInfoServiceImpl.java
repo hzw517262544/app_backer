@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import com.bootdo.app.dao.ApplyInfoDao;
 import com.bootdo.app.domain.ApplyInfoDO;
@@ -25,7 +26,7 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 	private ActTaskServiceImpl actTaskService;
 	
 	@Override
-	public ApplyInfoDO get(Long id){
+	public ApplyInfoDO get(String id){
 		return applyInfoDao.get(id);
 	}
 	
@@ -40,8 +41,10 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 	}
 	
 	@Override
-	public int save(ApplyInfoDO applyInfo){
-		int result = applyInfoDao.save(applyInfo);
+	public String save(ApplyInfoDO applyInfo){
+		String result = UUID.randomUUID().toString();
+		applyInfo.setId(result);
+		applyInfoDao.save(applyInfo);
 		Map<String,Object> var = new HashMap<String,Object>();
         var.put("userId",applyInfo.getUsername());
 		actTaskService.startAppProcess(ActivitiConstant.ACTIVITI_LEAVE_APPLY[0],ActivitiConstant.ACTIVITI_LEAVE_APPLY[1],applyInfo.getId()+"","请假申请流程",var);

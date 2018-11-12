@@ -19,7 +19,7 @@ public class ApplyInfoDO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	//id
-	private Long id;
+	private String id;
 	//用户账号
 	private String username;
 	//用户姓名
@@ -54,15 +54,14 @@ public class ApplyInfoDO implements Serializable {
 	/**
 	 * 设置：id
 	 */
-	public void setId(Long id) {
-		this.id = id;
-	}
-	/**
-	 * 获取：id
-	 */
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	/**
 	 * 设置：用户账号
 	 */

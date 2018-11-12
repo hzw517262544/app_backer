@@ -14,13 +14,13 @@ import java.util.Map;
  */
 public interface ApplyInfoService {
 	
-	ApplyInfoDO get(Long id);
+	ApplyInfoDO get(String id);
 	
 	List<ApplyInfoDO> list(Map<String, Object> map);
 	
 	int count(Map<String, Object> map);
 	
-	int save(ApplyInfoDO applyInfo);
+	String save(ApplyInfoDO applyInfo);
 	
 	int update(ApplyInfoDO applyInfo);
 	

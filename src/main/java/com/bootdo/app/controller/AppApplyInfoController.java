@@ -72,7 +72,7 @@ public class AppApplyInfoController {
 
 	@GetMapping("/edit/{id}")
 	@RequiresPermissions("app:applyInfo:edit")
-	String edit(@PathVariable("id") Long id,Model model){
+	String edit(@PathVariable("id") String id,Model model){
 		ApplyInfoDO applyInfo = applyInfoService.get(id);
 		model.addAttribute("applyInfo", applyInfo);
 	    return "app/applyInfo/edit";
@@ -87,7 +87,7 @@ public class AppApplyInfoController {
 	public R save( ApplyInfoDO applyInfo){
 		applyInfo.setCreateTime(DateUtils.getCurTimestamp());
 		applyInfo.setCreateUser(applyInfo.getUsername());
-		if(applyInfoService.save(applyInfo)>0){
+		if(applyInfoService.save(applyInfo) != null){
 			return R.ok();
 		}
 		return R.error();
@@ -130,7 +130,7 @@ public class AppApplyInfoController {
 	@ResponseBody
 	@GetMapping("/get")
 //	@RequiresPermissions("app:applyInfo:edit")
-	public R get( Long id){
+	public R get( String id){
 		ApplyInfoDO applyInfoDO = applyInfoService.get(id);
 		return R.ok().put("applyInfo",applyInfoDO);
 	}
@@ -141,7 +141,7 @@ public class AppApplyInfoController {
 		List<ApplyInfoDO> applyInfoDOS =  new ArrayList<>();
 		for(Task task : tasks){
 			if(task.getProcessDefinitionId().contains(ActivitiConstant.ACTIVITI_LEAVE_APPLY_ID)){
-				ApplyInfoDO applyInfoDO = applyInfoService.get(Long.valueOf(activitiUtils.getBusinessKeyByTaskId(task.getId())));
+				ApplyInfoDO applyInfoDO = applyInfoService.get(activitiUtils.getBusinessKeyByTaskId(task.getId()));
 				applyInfoDO.setTaskVO(new TaskVO(task));
 				applyInfoDOS.add(applyInfoDO);
 			}
@@ -163,7 +163,7 @@ public class AppApplyInfoController {
 	@GetMapping("/getByTaskId")
 //	@RequiresPermissions("app:applyInfo:edit")
 	public R getByTaskId( String taskId){
-		ApplyInfoDO applyInfoDO = applyInfoService.get(Long.valueOf(activitiUtils.getBusinessKeyByTaskId(taskId)));
+		ApplyInfoDO applyInfoDO = applyInfoService.get(activitiUtils.getBusinessKeyByTaskId(taskId));
 		return R.ok().put("applyInfo",applyInfoDO);
 	}
 	

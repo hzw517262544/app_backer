@@ -63,6 +63,7 @@
 	<insert id="save" parameterType="com.bootdo.app.domain.ApplyInfoDO" useGeneratedKeys="true" keyProperty="id">
 		insert into app_apply_info
 		(
+			`id`,
 			`username`, 
 			`name`, 
 			`apply_type`, 
@@ -80,6 +81,7 @@
 		)
 		values
 		(
+			#{id},
 			#{username}, 
 			#{name}, 
 			#{applyType}, 

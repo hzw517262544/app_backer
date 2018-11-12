@@ -16,7 +16,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ApplyInfoDao {
 
-	ApplyInfoDO get(Long id);
+	ApplyInfoDO get(String id);
 	
 	List<ApplyInfoDO> list(Map<String, Object> map);
 	

@@ -293,8 +293,17 @@ public class ActTaskServiceImpl implements ActTaskService {
 
         // 启动流程
         ProcessInstance procIns = runtimeService.startProcessInstanceByKey(procDefKey, businessId, vars);
-
         return procIns.getId();
     }
+
+    /**
+     * 根据流程实例id完成任务
+     */
+    public void completeByProInsId(String procInsId, Map<String, Object> vars){
+        Task task = processEngine.getTaskService().createTaskQuery().processInstanceId(procInsId).active().singleResult();
+        complete(task.getId(),vars);
+    }
+
+
 }
 

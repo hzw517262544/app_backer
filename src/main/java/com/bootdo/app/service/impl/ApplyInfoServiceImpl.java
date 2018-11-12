@@ -47,7 +47,9 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 		applyInfoDao.save(applyInfo);
 		Map<String,Object> var = new HashMap<String,Object>();
         var.put("userId",applyInfo.getUsername());
-		actTaskService.startAppProcess(ActivitiConstant.ACTIVITI_LEAVE_APPLY[0],ActivitiConstant.ACTIVITI_LEAVE_APPLY[1],applyInfo.getId()+"","请假申请流程",var);
+        var.put("assignee",applyInfo.getUsername());
+		String processInstId = actTaskService.startAppProcess(ActivitiConstant.ACTIVITI_LEAVE_APPLY[0],ActivitiConstant.ACTIVITI_LEAVE_APPLY[1],applyInfo.getId()+"","请假申请流程",var);
+        actTaskService.completeByProInsId(processInstId,var);
 		return result;
 	}
 	

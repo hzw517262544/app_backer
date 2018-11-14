@@ -29,6 +29,8 @@ public class WorkDO implements Serializable {
 	private String reportContent;
 	//完成情况
 	private String completeStatus;
+
+	private String completeStatusName;
 	//自我评分
 	private String selfRating;
 	//领导评分
@@ -281,5 +283,13 @@ public class WorkDO implements Serializable {
 	 */
 	public String getStandby5() {
 		return standby5;
+	}
+
+	public String getCompleteStatusName() {
+		return completeStatusName;
+	}
+
+	public void setCompleteStatusName(String completeStatusName) {
+		this.completeStatusName = completeStatusName;
 	}
 }

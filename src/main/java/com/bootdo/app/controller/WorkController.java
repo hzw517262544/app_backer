@@ -3,6 +3,7 @@ package com.bootdo.app.controller;
 import java.util.List;
 import java.util.Map;
 
+import com.bootdo.common.service.DictService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -34,6 +35,8 @@ import com.bootdo.common.utils.R;
 public class WorkController {
 	@Autowired
 	private WorkService workService;
+	@Autowired
+	private DictService dictService;
 	
 	@GetMapping()
 //	@RequiresPermissions("app:work:work")
@@ -113,5 +116,26 @@ public class WorkController {
 		workService.batchRemove(ids);
 		return R.ok();
 	}
-	
+
+	@ResponseBody
+	@RequestMapping("/get")
+//	@RequiresPermissions("app:work:edit")
+	public WorkDO get( Long id){
+		WorkDO workDO = workService.get(id);
+		String completeStatusName = dictService.getName("APP_TASK_COMPLETE_STATUS",workDO.getCompleteStatus());
+		workDO.setCompleteStatusName(completeStatusName);
+		return workDO;
+	}
+
+	@ResponseBody
+	@GetMapping("/listByDept")
+//	@RequiresPermissions("app:work:work")
+	public PageUtils listByDept(@RequestParam Map<String, Object> params){
+		//查询列表数据
+		Query query = new Query(params);
+		List<WorkDO> workList = workService.list(query);
+		int total = workService.count(query);
+		PageUtils pageUtils = new PageUtils(workList, total);
+		return pageUtils;
+	}
 }

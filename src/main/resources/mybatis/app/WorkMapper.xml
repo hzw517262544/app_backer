@@ -29,6 +29,7 @@
 		  		  <if test="standby3 != null and standby3 != ''"> and standby_3 = #{standby3} </if>
 		  		  <if test="standby4 != null and standby4 != ''"> and standby_4 = #{standby4} </if>
 		  		  <if test="standby5 != null and standby5 != ''"> and standby_5 = #{standby5} </if>
+			      <if test="deptId != null and deptId != ''"> and EXISTS (select 1 from sys_user t2 where user_id = t2.user_id and t2.dept_id = #{deptId})</if>
 		  		</where>
         <choose>
             <when test="sort != null and sort.trim() != ''">

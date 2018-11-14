@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.app.dao.WorkDao">
+
+	<select id="get" resultType="com.bootdo.app.domain.WorkDO">
+		select `id`,`user_id`,`user_name`,`title`,`task_content`,`report_content`,`complete_status`,`Self_rating`,`leader_rating`,`leader_comment`,`create_user`,`create_time`,`upadte_user`,`update_time`,`standby_1`,`standby_2`,`standby_3`,`standby_4`,`standby_5` from app_work where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.app.domain.WorkDO">
+		select `id`,`user_id`,`user_name`,`title`,`task_content`,`report_content`,`complete_status`,`Self_rating`,`leader_rating`,`leader_comment`,`create_user`,`create_time`,`upadte_user`,`update_time`,`standby_1`,`standby_2`,`standby_3`,`standby_4`,`standby_5` from app_work
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+		  		  <if test="userName != null and userName != ''"> and user_name = #{userName} </if>
+		  		  <if test="title != null and title != ''"> and title = #{title} </if>
+		  		  <if test="taskContent != null and taskContent != ''"> and task_content = #{taskContent} </if>
+		  		  <if test="reportContent != null and reportContent != ''"> and report_content = #{reportContent} </if>
+		  		  <if test="completeStatus != null and completeStatus != ''"> and complete_status = #{completeStatus} </if>
+		  		  <if test="selfRating != null and selfRating != ''"> and Self_rating = #{selfRating} </if>
+		  		  <if test="leaderRating != null and leaderRating != ''"> and leader_rating = #{leaderRating} </if>
+		  		  <if test="leaderComment != null and leaderComment != ''"> and leader_comment = #{leaderComment} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="upadteUser != null and upadteUser != ''"> and upadte_user = #{upadteUser} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="standby1 != null and standby1 != ''"> and standby_1 = #{standby1} </if>
+		  		  <if test="standby2 != null and standby2 != ''"> and standby_2 = #{standby2} </if>
+		  		  <if test="standby3 != null and standby3 != ''"> and standby_3 = #{standby3} </if>
+		  		  <if test="standby4 != null and standby4 != ''"> and standby_4 = #{standby4} </if>
+		  		  <if test="standby5 != null and standby5 != ''"> and standby_5 = #{standby5} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from app_work
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+		  		  <if test="userName != null and userName != ''"> and user_name = #{userName} </if>
+		  		  <if test="title != null and title != ''"> and title = #{title} </if>
+		  		  <if test="taskContent != null and taskContent != ''"> and task_content = #{taskContent} </if>
+		  		  <if test="reportContent != null and reportContent != ''"> and report_content = #{reportContent} </if>
+		  		  <if test="completeStatus != null and completeStatus != ''"> and complete_status = #{completeStatus} </if>
+		  		  <if test="selfRating != null and selfRating != ''"> and Self_rating = #{selfRating} </if>
+		  		  <if test="leaderRating != null and leaderRating != ''"> and leader_rating = #{leaderRating} </if>
+		  		  <if test="leaderComment != null and leaderComment != ''"> and leader_comment = #{leaderComment} </if>
+		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="upadteUser != null and upadteUser != ''"> and upadte_user = #{upadteUser} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="standby1 != null and standby1 != ''"> and standby_1 = #{standby1} </if>
+		  		  <if test="standby2 != null and standby2 != ''"> and standby_2 = #{standby2} </if>
+		  		  <if test="standby3 != null and standby3 != ''"> and standby_3 = #{standby3} </if>
+		  		  <if test="standby4 != null and standby4 != ''"> and standby_4 = #{standby4} </if>
+		  		  <if test="standby5 != null and standby5 != ''"> and standby_5 = #{standby5} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.app.domain.WorkDO" useGeneratedKeys="true" keyProperty="id">
+		insert into app_work
+		(
+			`user_id`, 
+			`user_name`, 
+			`title`, 
+			`task_content`, 
+			`report_content`, 
+			`complete_status`, 
+			`Self_rating`, 
+			`leader_rating`, 
+			`leader_comment`, 
+			`create_user`, 
+			`create_time`, 
+			`upadte_user`, 
+			`update_time`, 
+			`standby_1`, 
+			`standby_2`, 
+			`standby_3`, 
+			`standby_4`, 
+			`standby_5`
+		)
+		values
+		(
+			#{userId}, 
+			#{userName}, 
+			#{title}, 
+			#{taskContent}, 
+			#{reportContent}, 
+			#{completeStatus}, 
+			#{selfRating}, 
+			#{leaderRating}, 
+			#{leaderComment}, 
+			#{createUser}, 
+			#{createTime}, 
+			#{upadteUser}, 
+			#{updateTime}, 
+			#{standby1}, 
+			#{standby2}, 
+			#{standby3}, 
+			#{standby4}, 
+			#{standby5}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.app.domain.WorkDO">
+		update app_work 
+		<set>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="userName != null">`user_name` = #{userName}, </if>
+			<if test="title != null">`title` = #{title}, </if>
+			<if test="taskContent != null">`task_content` = #{taskContent}, </if>
+			<if test="reportContent != null">`report_content` = #{reportContent}, </if>
+			<if test="completeStatus != null">`complete_status` = #{completeStatus}, </if>
+			<if test="selfRating != null">`Self_rating` = #{selfRating}, </if>
+			<if test="leaderRating != null">`leader_rating` = #{leaderRating}, </if>
+			<if test="leaderComment != null">`leader_comment` = #{leaderComment}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="upadteUser != null">`upadte_user` = #{upadteUser}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="standby1 != null">`standby_1` = #{standby1}, </if>
+			<if test="standby2 != null">`standby_2` = #{standby2}, </if>
+			<if test="standby3 != null">`standby_3` = #{standby3}, </if>
+			<if test="standby4 != null">`standby_4` = #{standby4}, </if>
+			<if test="standby5 != null">`standby_5` = #{standby5}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from app_work where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from app_work where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

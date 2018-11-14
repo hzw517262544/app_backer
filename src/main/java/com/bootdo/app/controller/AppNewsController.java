@@ -5,6 +5,7 @@ import com.bootdo.blog.service.ContentService;
 import com.bootdo.common.utils.DateUtils;
 import com.bootdo.common.utils.PageUtils;
 import com.bootdo.common.utils.Query;
+import com.bootdo.common.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,12 +37,11 @@ public class AppNewsController {
 		return pageUtils;
 	}
 
-	@GetMapping("/open/post/{cid}")
-	String post(@PathVariable("cid") Long cid, Model model) {
-		ContentDO bContentDO = bContentService.get(cid);
-		model.addAttribute("bContent", bContentDO);
-		model.addAttribute("gtmModified", DateUtils.format(bContentDO.getGtmModified()));
-		return "blog/index/post";
+	@ResponseBody
+	@GetMapping("/get")
+	public R get(Long id) {
+		ContentDO bContentDO = bContentService.get(id);
+		return R.ok().put("newDo",bContentDO);
 	}
 	@GetMapping("/open/page/{categories}")
 	String about(@PathVariable("categories") String categories, Model model) {

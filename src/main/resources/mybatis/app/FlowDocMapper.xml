@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.app.dao.FlowDocDao">
+
+	<select id="get" resultType="com.bootdo.app.domain.FlowDocDO">
+		select `id`,`business_id`,`business_type`,`hdl_action_id`,`hdl_action`,`hdl_content`,`create_user_id`,`create_user_name`,`create_time`,`update_user_id`,`update_user_name`,`update_time`,`standby_1`,`standby_2`,`standby_3`,`standby_4`,`standby_5` from app_flow_doc where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.app.domain.FlowDocDO">
+		select `id`,`business_id`,`business_type`,`hdl_action_id`,`hdl_action`,`hdl_content`,`create_user_id`,`create_user_name`,`create_time`,`update_user_id`,`update_user_name`,`update_time`,`standby_1`,`standby_2`,`standby_3`,`standby_4`,`standby_5` from app_flow_doc
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="businessId != null and businessId != ''"> and business_id = #{businessId} </if>
+		  		  <if test="businessType != null and businessType != ''"> and business_type = #{businessType} </if>
+		  		  <if test="hdlActionId != null and hdlActionId != ''"> and hdl_action_id = #{hdlActionId} </if>
+		  		  <if test="hdlAction != null and hdlAction != ''"> and hdl_action = #{hdlAction} </if>
+		  		  <if test="hdlContent != null and hdlContent != ''"> and hdl_content = #{hdlContent} </if>
+		  		  <if test="createUserId != null and createUserId != ''"> and create_user_id = #{createUserId} </if>
+		  		  <if test="createUserName != null and createUserName != ''"> and create_user_name = #{createUserName} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateUserId != null and updateUserId != ''"> and update_user_id = #{updateUserId} </if>
+		  		  <if test="updateUserName != null and updateUserName != ''"> and update_user_name = #{updateUserName} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="standby1 != null and standby1 != ''"> and standby_1 = #{standby1} </if>
+		  		  <if test="standby2 != null and standby2 != ''"> and standby_2 = #{standby2} </if>
+		  		  <if test="standby3 != null and standby3 != ''"> and standby_3 = #{standby3} </if>
+		  		  <if test="standby4 != null and standby4 != ''"> and standby_4 = #{standby4} </if>
+		  		  <if test="standby5 != null and standby5 != ''"> and standby_5 = #{standby5} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from app_flow_doc
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="businessId != null and businessId != ''"> and business_id = #{businessId} </if>
+		  		  <if test="businessType != null and businessType != ''"> and business_type = #{businessType} </if>
+		  		  <if test="hdlActionId != null and hdlActionId != ''"> and hdl_action_id = #{hdlActionId} </if>
+		  		  <if test="hdlAction != null and hdlAction != ''"> and hdl_action = #{hdlAction} </if>
+		  		  <if test="hdlContent != null and hdlContent != ''"> and hdl_content = #{hdlContent} </if>
+		  		  <if test="createUserId != null and createUserId != ''"> and create_user_id = #{createUserId} </if>
+		  		  <if test="createUserName != null and createUserName != ''"> and create_user_name = #{createUserName} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="updateUserId != null and updateUserId != ''"> and update_user_id = #{updateUserId} </if>
+		  		  <if test="updateUserName != null and updateUserName != ''"> and update_user_name = #{updateUserName} </if>
+		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+		  		  <if test="standby1 != null and standby1 != ''"> and standby_1 = #{standby1} </if>
+		  		  <if test="standby2 != null and standby2 != ''"> and standby_2 = #{standby2} </if>
+		  		  <if test="standby3 != null and standby3 != ''"> and standby_3 = #{standby3} </if>
+		  		  <if test="standby4 != null and standby4 != ''"> and standby_4 = #{standby4} </if>
+		  		  <if test="standby5 != null and standby5 != ''"> and standby_5 = #{standby5} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.app.domain.FlowDocDO" useGeneratedKeys="true" keyProperty="id">
+		insert into app_flow_doc
+		(
+			`business_id`, 
+			`business_type`, 
+			`hdl_action_id`, 
+			`hdl_action`, 
+			`hdl_content`, 
+			`create_user_id`, 
+			`create_user_name`, 
+			`create_time`, 
+			`update_user_id`, 
+			`update_user_name`, 
+			`update_time`, 
+			`standby_1`, 
+			`standby_2`, 
+			`standby_3`, 
+			`standby_4`, 
+			`standby_5`
+		)
+		values
+		(
+			#{businessId}, 
+			#{businessType}, 
+			#{hdlActionId}, 
+			#{hdlAction}, 
+			#{hdlContent}, 
+			#{createUserId}, 
+			#{createUserName}, 
+			#{createTime}, 
+			#{updateUserId}, 
+			#{updateUserName}, 
+			#{updateTime}, 
+			#{standby1}, 
+			#{standby2}, 
+			#{standby3}, 
+			#{standby4}, 
+			#{standby5}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.app.domain.FlowDocDO">
+		update app_flow_doc 
+		<set>
+			<if test="businessId != null">`business_id` = #{businessId}, </if>
+			<if test="businessType != null">`business_type` = #{businessType}, </if>
+			<if test="hdlActionId != null">`hdl_action_id` = #{hdlActionId}, </if>
+			<if test="hdlAction != null">`hdl_action` = #{hdlAction}, </if>
+			<if test="hdlContent != null">`hdl_content` = #{hdlContent}, </if>
+			<if test="createUserId != null">`create_user_id` = #{createUserId}, </if>
+			<if test="createUserName != null">`create_user_name` = #{createUserName}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateUserId != null">`update_user_id` = #{updateUserId}, </if>
+			<if test="updateUserName != null">`update_user_name` = #{updateUserName}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="standby1 != null">`standby_1` = #{standby1}, </if>
+			<if test="standby2 != null">`standby_2` = #{standby2}, </if>
+			<if test="standby3 != null">`standby_3` = #{standby3}, </if>
+			<if test="standby4 != null">`standby_4` = #{standby4}, </if>
+			<if test="standby5 != null">`standby_5` = #{standby5}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from app_flow_doc where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from app_flow_doc where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

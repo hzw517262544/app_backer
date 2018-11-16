@@ -1,5 +1,6 @@
 bootdo:
-  uploadPath: E:/App/BOOTDO/uploaded_files/
+#  uploadPath: E:/App/BOOTDO/uploaded_files/
+  uploadPath: C:/uploaded_files/
 logging:
   level:
     root: info

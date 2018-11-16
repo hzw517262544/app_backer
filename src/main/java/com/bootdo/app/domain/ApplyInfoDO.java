@@ -40,6 +40,8 @@ public class ApplyInfoDO implements Serializable {
 	private String applyContent;
 	//申请状态
 	private String applyStatus;
+
+	private String applyStatusName;
 	//创建时间
 	private Date createTime;
 	//创建人
@@ -237,5 +239,13 @@ public class ApplyInfoDO implements Serializable {
 
 	public void setTaskVO(TaskVO taskVO) {
 		this.taskVO = taskVO;
+	}
+
+	public String getApplyStatusName() {
+		return applyStatusName;
+	}
+
+	public void setApplyStatusName(String applyStatusName) {
+		this.applyStatusName = applyStatusName;
 	}
 }

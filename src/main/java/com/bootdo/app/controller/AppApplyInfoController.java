@@ -152,7 +152,13 @@ public class AppApplyInfoController {
 	@ResponseBody
 	@PostMapping("/apply")
 	R apply(String taskId,String auditOpinion,String passFlag){
+		String taskKey = activitiUtils.getTaskByTaskId(taskId).getTaskDefinitionKey();
 		Map<String,Object> vars = new HashMap<>(16);
+		if("audit_1".equals(taskKey)){
+			vars.put("assignee","app004");
+		}else if("audit_2".equals(taskKey)){
+
+		}
 		vars.put("pass",passFlag);
 		vars.put("auditOpinion",auditOpinion);
 		actTaskService.complete(taskId,vars);

@@ -15,56 +15,56 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bootdo.app.domain.FlowDocDO;
-import com.bootdo.app.service.FlowDocService;
+import com.bootdo.app.domain.ContactDO;
+import com.bootdo.app.service.ContactService;
 import com.bootdo.common.utils.PageUtils;
 import com.bootdo.common.utils.Query;
 import com.bootdo.common.utils.R;
 
 /**
- * 流程流转记录表
+ * app联系人表
  * 
  * @author haozw
  * @email hao17681124518@163.com
- * @date 2018-11-16 10:56:15
+ * @date 2018-11-03 09:33:06
  */
  
 @Controller
-@RequestMapping("/app/flowDoc")
-public class FlowDocController {
+@RequestMapping("/app/contact")
+public class AppContactController {
 	@Autowired
-	private FlowDocService flowDocService;
+	private ContactService contactService;
 	
 	@GetMapping()
-	@RequiresPermissions("app:flowDoc:flowDoc")
-	String FlowDoc(){
-	    return "app/flowDoc/flowDoc";
+//	@RequiresPermissions("app:contact:contact")
+	String Contact(){
+	    return "app/contact/contact";
 	}
 	
 	@ResponseBody
 	@GetMapping("/list")
-	@RequiresPermissions("app:flowDoc:flowDoc")
+//	@RequiresPermissions("app:contact:contact")
 	public PageUtils list(@RequestParam Map<String, Object> params){
 		//查询列表数据
         Query query = new Query(params);
-		List<FlowDocDO> flowDocList = flowDocService.list(query);
-		int total = flowDocService.count(query);
-		PageUtils pageUtils = new PageUtils(flowDocList, total);
+		List<ContactDO> contactList = contactService.list(query);
+		int total = contactService.count(query);
+		PageUtils pageUtils = new PageUtils(contactList, total);
 		return pageUtils;
 	}
 	
 	@GetMapping("/add")
-	@RequiresPermissions("app:flowDoc:add")
+//	@RequiresPermissions("app:contact:add")
 	String add(){
-	    return "app/flowDoc/add";
+	    return "app/contact/add";
 	}
 
 	@GetMapping("/edit/{id}")
-	@RequiresPermissions("app:flowDoc:edit")
+//	@RequiresPermissions("app:contact:edit")
 	String edit(@PathVariable("id") Long id,Model model){
-		FlowDocDO flowDoc = flowDocService.get(id);
-		model.addAttribute("flowDoc", flowDoc);
-	    return "app/flowDoc/edit";
+		ContactDO contact = contactService.get(id);
+		model.addAttribute("contact", contact);
+	    return "app/contact/edit";
 	}
 	
 	/**
@@ -72,9 +72,9 @@ public class FlowDocController {
 	 */
 	@ResponseBody
 	@PostMapping("/save")
-	@RequiresPermissions("app:flowDoc:add")
-	public R save( FlowDocDO flowDoc){
-		if(flowDocService.save(flowDoc)>0){
+//	@RequiresPermissions("app:contact:add")
+	public R save( ContactDO contact){
+		if(contactService.save(contact)>0){
 			return R.ok();
 		}
 		return R.error();
@@ -84,9 +84,9 @@ public class FlowDocController {
 	 */
 	@ResponseBody
 	@RequestMapping("/update")
-	@RequiresPermissions("app:flowDoc:edit")
-	public R update( FlowDocDO flowDoc){
-		flowDocService.update(flowDoc);
+//	@RequiresPermissions("app:contact:edit")
+	public R update( ContactDO contact){
+		contactService.update(contact);
 		return R.ok();
 	}
 	
@@ -95,9 +95,9 @@ public class FlowDocController {
 	 */
 	@PostMapping( "/remove")
 	@ResponseBody
-	@RequiresPermissions("app:flowDoc:remove")
+//	@RequiresPermissions("app:contact:remove")
 	public R remove( Long id){
-		if(flowDocService.remove(id)>0){
+		if(contactService.remove(id)>0){
 		return R.ok();
 		}
 		return R.error();
@@ -108,9 +108,9 @@ public class FlowDocController {
 	 */
 	@PostMapping( "/batchRemove")
 	@ResponseBody
-	@RequiresPermissions("app:flowDoc:batchRemove")
+//	@RequiresPermissions("app:contact:batchRemove")
 	public R remove(@RequestParam("ids[]") Long[] ids){
-		flowDocService.batchRemove(ids);
+		contactService.batchRemove(ids);
 		return R.ok();
 	}
 	

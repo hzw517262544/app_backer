@@ -4,12 +4,18 @@ import com.bootdo.activiti.config.ActivitiConstant;
 import com.bootdo.activiti.service.ActTaskService;
 import com.bootdo.activiti.utils.ActivitiUtils;
 import com.bootdo.activiti.vo.TaskVO;
+import com.bootdo.app.common.AppConstants;
 import com.bootdo.app.domain.ApplyInfoDO;
+import com.bootdo.app.domain.FlowDocDO;
 import com.bootdo.app.service.ApplyInfoService;
+import com.bootdo.app.service.FlowDocService;
+import com.bootdo.common.service.DictService;
 import com.bootdo.common.utils.DateUtils;
 import com.bootdo.common.utils.PageUtils;
 import com.bootdo.common.utils.Query;
 import com.bootdo.common.utils.R;
+import com.bootdo.system.domain.UserDO;
+import com.bootdo.system.service.UserService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -18,10 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 
@@ -45,6 +48,15 @@ public class AppApplyInfoController {
 
 	@Autowired
 	private ActTaskService actTaskService;
+
+	@Autowired
+	private FlowDocService flowDocService;
+
+	@Autowired
+	private DictService dictService;
+
+	@Autowired
+	private UserService userService;
 	
 	@GetMapping()
 //	@RequiresPermissions("app:applyInfo:applyInfo")
@@ -151,7 +163,7 @@ public class AppApplyInfoController {
 
 	@ResponseBody
 	@PostMapping("/apply")
-	R apply(String taskId,String auditOpinion,String passFlag){
+	R apply(String taskId,String auditOpinion,String passFlag,String applyId,Long userId){
 		String taskKey = activitiUtils.getTaskByTaskId(taskId).getTaskDefinitionKey();
 		Map<String,Object> vars = new HashMap<>(16);
 		if("audit_1".equals(taskKey)){
@@ -162,6 +174,18 @@ public class AppApplyInfoController {
 		vars.put("pass",passFlag);
 		vars.put("auditOpinion",auditOpinion);
 		actTaskService.complete(taskId,vars);
+		//新增流转记录
+		FlowDocDO flowDocDO = new FlowDocDO();
+		flowDocDO.setHdlActionId(passFlag);
+		flowDocDO.setHdlAction(dictService.getName(AppConstants.APP_APLLY_ACTION_ID,passFlag));
+		UserDO userDO = userService.get(userId);
+		flowDocDO.setCreateUserId(userId+"");
+		flowDocDO.setCreateUserName(userDO.getName());
+		flowDocDO.setCreateTime(new Date());
+		flowDocDO.setBusinessId(applyId);
+		flowDocDO.setBusinessType(AppConstants.BUSINESS_TYPE_APPLY);
+		flowDocDO.setHdlContent(auditOpinion);
+		flowDocService.save(flowDocDO);
 		return R.ok();
 	}
 

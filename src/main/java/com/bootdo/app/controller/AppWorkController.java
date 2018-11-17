@@ -32,7 +32,7 @@ import com.bootdo.common.utils.R;
  
 @Controller
 @RequestMapping("/app/work")
-public class WorkController {
+public class AppWorkController {
 	@Autowired
 	private WorkService workService;
 	@Autowired

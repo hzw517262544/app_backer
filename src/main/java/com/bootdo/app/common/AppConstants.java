@@ -39,4 +39,36 @@ public class AppConstants {
      * action_id
      */
     public static final String APP_APLLY_ACTION_ID = "APP_APLLY_ACTION_ID";
+    /**
+     *驳回
+     */
+    public static final String APP_APLLY_ACTION_ID_0 = "0";
+    /**
+     *审核通过
+     */
+    public static final String APP_APLLY_ACTION_ID_1 = "1";
+    /**
+     *审核不通过
+     */
+    public static final String APP_APLLY_ACTION_ID_2 = "2";
+    /**
+     *提交
+     */
+    public static final String APP_APLLY_ACTION_ID_3 = "3";
+    /**
+     *驳回
+     */
+    public static final String APP_APLLY_ACTION_0 = "驳回";
+    /**
+     *审核通过
+     */
+    public static final String APP_APLLY_ACTION_1 = "审核通过";
+    /**
+     *审核不通过
+     */
+    public static final String APP_APLLY_ACTION_2 = "审核不通过";
+    /**
+     *提交
+     */
+    public static final String APP_APLLY_ACTION_3 = "提交";
 }

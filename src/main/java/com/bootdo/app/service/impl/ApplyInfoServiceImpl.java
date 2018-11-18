@@ -2,15 +2,16 @@ package com.bootdo.app.service.impl;
 
 import com.bootdo.activiti.config.ActivitiConstant;
 import com.bootdo.activiti.service.impl.ActTaskServiceImpl;
+import com.bootdo.app.common.AppConstants;
+import com.bootdo.app.domain.FlowDocDO;
 import com.bootdo.app.service.FlowDocService;
 import com.bootdo.common.service.DictService;
+import com.bootdo.system.domain.UserDO;
+import com.bootdo.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import com.bootdo.app.dao.ApplyInfoDao;
 import com.bootdo.app.domain.ApplyInfoDO;
@@ -29,6 +30,8 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 	private DictService dictService;
 	@Resource
 	private FlowDocService flowDocService;
+	@Resource
+	private UserService userService;
 	
 	@Override
 	public ApplyInfoDO get(String id){
@@ -66,13 +69,7 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 		applyInfo.setId(result);
 		applyInfo.setApplyStatus("2");
 		applyInfoDao.save(applyInfo);
-		Map<String,Object> var = new HashMap<String,Object>();
-        var.put("userId",applyInfo.getUsername());
-        var.put("applyer",applyInfo.getUsername());
-		String processInstId = actTaskService.startAppProcess(ActivitiConstant.ACTIVITI_LEAVE_APPLY[0],ActivitiConstant.ACTIVITI_LEAVE_APPLY[1],applyInfo.getId()+"","请假申请流程",var);
-		var.put("assignee","app003");
-		var.put("pass","1");
-		actTaskService.completeByProInsId(processInstId,var);
+		commit(applyInfo);
 		return result;
 	}
 	
@@ -90,5 +87,35 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 	public int batchRemove(Long[] ids){
 		return applyInfoDao.batchRemove(ids);
 	}
-	
+
+	@Override
+	public void commit(ApplyInfoDO applyInfo) {
+		Map<String,Object> var = new HashMap<String,Object>();
+		var.put("userId",applyInfo.getUsername());
+		var.put("applyer",applyInfo.getUsername());
+		String processInstId = actTaskService.startAppProcess(ActivitiConstant.ACTIVITI_LEAVE_APPLY[0],ActivitiConstant.ACTIVITI_LEAVE_APPLY[1],applyInfo.getId()+"","请假申请流程",var);
+		var.put("assignee","app003");
+		var.put("pass","1");
+		actTaskService.completeByProInsId(processInstId,var);
+		//记录流转记录
+		FlowDocDO flowDocDO = new FlowDocDO();
+		flowDocDO.setHdlActionId(AppConstants.APP_APLLY_ACTION_ID_3);
+		flowDocDO.setHdlAction(AppConstants.APP_APLLY_ACTION_3);
+		Map<String,Object> userPar = new HashMap<String,Object>();
+		userPar.put("username",applyInfo.getUsername());
+		List<UserDO> userDOS = userService.list(userPar);
+		UserDO userDO;
+		if(userDOS != null&&!userDOS.isEmpty()){
+			userDO = userDOS.get(0);
+		}else{
+			userDO = new UserDO();
+		}
+		flowDocDO.setCreateUserId(userDO.getUserId()+"");
+		flowDocDO.setCreateUserName(userDO.getName());
+		flowDocDO.setCreateTime(new Date());
+		flowDocDO.setBusinessId(applyInfo.getId());
+		flowDocDO.setBusinessType(AppConstants.BUSINESS_TYPE_APPLY);
+		flowDocDO.setHdlContent(AppConstants.APP_APLLY_ACTION_3);
+		flowDocService.save(flowDocDO);
+	}
 }

@@ -27,4 +27,6 @@ public interface ApplyInfoService {
 	int remove(Long id);
 	
 	int batchRemove(Long[] ids);
+
+	void commit(ApplyInfoDO applyInfo);
 }

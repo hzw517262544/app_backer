@@ -5,7 +5,7 @@ import org.activiti.engine.task.Task;
 
 import java.io.Serializable;
 import java.util.Date;
-
+import java.util.List;
 
 
 /**
@@ -52,6 +52,8 @@ public class ApplyInfoDO implements Serializable {
 	private String updateUser;
 
 	private TaskVO taskVO;
+	//流转记录
+	private List<FlowDocDO> flowDocs;
 
 	/**
 	 * 设置：id
@@ -247,5 +249,13 @@ public class ApplyInfoDO implements Serializable {
 
 	public void setApplyStatusName(String applyStatusName) {
 		this.applyStatusName = applyStatusName;
+	}
+
+	public List<FlowDocDO> getFlowDocs() {
+		return flowDocs;
+	}
+
+	public void setFlowDocs(List<FlowDocDO> flowDocs) {
+		this.flowDocs = flowDocs;
 	}
 }

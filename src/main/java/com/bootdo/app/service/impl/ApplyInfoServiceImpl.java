@@ -2,6 +2,7 @@ package com.bootdo.app.service.impl;
 
 import com.bootdo.activiti.config.ActivitiConstant;
 import com.bootdo.activiti.service.impl.ActTaskServiceImpl;
+import com.bootdo.app.service.FlowDocService;
 import com.bootdo.common.service.DictService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,11 +27,20 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 	private ActTaskServiceImpl actTaskService;
 	@Resource
 	private DictService dictService;
+	@Resource
+	private FlowDocService flowDocService;
 	
 	@Override
 	public ApplyInfoDO get(String id){
 		ApplyInfoDO applyInfoDO = applyInfoDao.get(id);
+		if(applyInfoDO == null){
+			return null;
+		}
 		applyInfoDO.setApplyStatusName(dictService.getName("APP_LEAVE_APLLY_STATUS",applyInfoDO.getApplyStatus()));
+		Map<String,Object> flowDocMap = new HashMap<String,Object>();
+		flowDocMap.put("businessId",id);
+		flowDocMap.put("businessType","1");
+		applyInfoDO.setFlowDocs(flowDocService.list(flowDocMap));
 		return applyInfoDO;
 	}
 	
@@ -61,6 +71,7 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
         var.put("applyer",applyInfo.getUsername());
 		String processInstId = actTaskService.startAppProcess(ActivitiConstant.ACTIVITI_LEAVE_APPLY[0],ActivitiConstant.ACTIVITI_LEAVE_APPLY[1],applyInfo.getId()+"","请假申请流程",var);
 		var.put("assignee","app003");
+		var.put("pass","1");
 		actTaskService.completeByProInsId(processInstId,var);
 		return result;
 	}

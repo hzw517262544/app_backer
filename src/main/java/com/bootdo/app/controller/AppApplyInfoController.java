@@ -148,12 +148,15 @@ public class AppApplyInfoController {
 	}
 	@ResponseBody
 	@GetMapping("/todoList")
-	List<ApplyInfoDO> todoList(String username){
+	public List<ApplyInfoDO> todoList(String username){
 		List<Task> tasks = taskService.createTaskQuery().taskAssignee(username).list();
 		List<ApplyInfoDO> applyInfoDOS =  new ArrayList<>();
 		for(Task task : tasks){
 			if(task.getProcessDefinitionId().contains(ActivitiConstant.ACTIVITI_LEAVE_APPLY_ID)){
 				ApplyInfoDO applyInfoDO = applyInfoService.get(activitiUtils.getBusinessKeyByTaskId(task.getId()));
+				if(applyInfoDO == null){
+					continue;
+				}
 				applyInfoDO.setTaskVO(new TaskVO(task));
 				applyInfoDOS.add(applyInfoDO);
 			}
@@ -163,7 +166,7 @@ public class AppApplyInfoController {
 
 	@ResponseBody
 	@PostMapping("/apply")
-	R apply(String taskId,String auditOpinion,String passFlag,String applyId,Long userId){
+	public R apply(String taskId,String auditOpinion,String passFlag,String applyId,Long userId){
 		String taskKey = activitiUtils.getTaskByTaskId(taskId).getTaskDefinitionKey();
 		Map<String,Object> vars = new HashMap<>(16);
 		if("audit_1".equals(taskKey)){

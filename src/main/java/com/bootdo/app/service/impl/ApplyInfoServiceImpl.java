@@ -160,4 +160,31 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 		vars.put("pass","1");
 		actTaskService.complete(applyInfo.getTaskId(),vars);
 	}
+
+	@Override
+	public void cancel(ApplyInfoDO applyInfo) {
+		FlowDocDO flowDocDO = new FlowDocDO();
+		flowDocDO.setHdlActionId(AppConstants.APP_APLLY_ACTION_ID_4);
+		flowDocDO.setHdlAction(AppConstants.APP_APLLY_ACTION_4);
+		Map<String,Object> userPar = new HashMap<String,Object>();
+		userPar.put("username",applyInfo.getUsername());
+		List<UserDO> userDOS = userService.list(userPar);
+		UserDO userDO;
+		if(userDOS != null&&!userDOS.isEmpty()){
+			userDO = userDOS.get(0);
+		}else{
+			userDO = new UserDO();
+		}
+		flowDocDO.setCreateUserId(userDO.getUserId()+"");
+		flowDocDO.setCreateUserName(userDO.getName());
+		flowDocDO.setCreateTime(new Date());
+		flowDocDO.setBusinessId(applyInfo.getId());
+		flowDocDO.setBusinessType(AppConstants.BUSINESS_TYPE_APPLY);
+		flowDocDO.setHdlContent(AppConstants.APP_APLLY_ACTION_4);
+		flowDocService.save(flowDocDO);
+
+		Map<String,Object> vars = new HashMap<>(16);
+		vars.put("pass","0");
+		actTaskService.complete(applyInfo.getTaskId(),vars);
+	}
 }

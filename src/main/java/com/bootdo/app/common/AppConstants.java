@@ -56,6 +56,10 @@ public class AppConstants {
      */
     public static final String APP_APLLY_ACTION_ID_3 = "3";
     /**
+     *取消
+     */
+    public static final String APP_APLLY_ACTION_ID_4 = "4";
+    /**
      *驳回
      */
     public static final String APP_APLLY_ACTION_0 = "驳回";
@@ -71,4 +75,12 @@ public class AppConstants {
      *提交
      */
     public static final String APP_APLLY_ACTION_3 = "提交";
+    /**
+     *取消
+     */
+    public static final String APP_APLLY_ACTION_4 = "取消";
+    /**
+     * 取消
+     */
+    public static final String APP_LEAVE_APLLY_STATUS_0 = "0";
 }

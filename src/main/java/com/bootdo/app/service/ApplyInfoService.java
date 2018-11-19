@@ -31,4 +31,6 @@ public interface ApplyInfoService {
 	void commit(ApplyInfoDO applyInfo);
 
 	void backCommit(ApplyInfoDO applyInfo);
+
+    void cancel(ApplyInfoDO applyInfo);
 }

@@ -209,5 +209,17 @@ public class AppApplyInfoController {
 		applyInfoService.backCommit(applyInfo);
 		return R.ok();
 	}
+
+	/**
+	 * 取消流程
+	 * @param applyInfo
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/cancel")
+	public R cancel( ApplyInfoDO applyInfo){
+		applyInfoService.cancel(applyInfo);
+		return R.ok();
+	}
 	
 }

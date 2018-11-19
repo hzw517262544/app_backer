@@ -1,5 +1,6 @@
 package com.bootdo.app.executionlistener;
 
+import com.bootdo.app.common.AppConstants;
 import com.bootdo.app.domain.ApplyInfoDO;
 import com.bootdo.app.service.ApplyInfoService;
 import com.bootdo.common.config.ApplicationContextRegister;
@@ -19,7 +20,7 @@ public class ApplyCancelExecutionListener implements ExecutionListener {
         String businessKey = delegateExecution.getProcessBusinessKey();
         ApplyInfoDO applyInfo = new ApplyInfoDO();
         applyInfo.setId(businessKey);
-        applyInfo.setApplyStatus("6");
+        applyInfo.setApplyStatus(AppConstants.APP_LEAVE_APLLY_STATUS_0);
         if(applyInfoService == null){
             applyInfoService = ApplicationContextRegister.getBean(ApplyInfoService.class);
         }

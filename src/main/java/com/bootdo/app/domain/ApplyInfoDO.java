@@ -55,6 +55,8 @@ public class ApplyInfoDO implements Serializable {
 	//流转记录
 	private List<FlowDocDO> flowDocs;
 
+	private String taskId;
+
 	/**
 	 * 设置：id
 	 */
@@ -257,5 +259,13 @@ public class ApplyInfoDO implements Serializable {
 
 	public void setFlowDocs(List<FlowDocDO> flowDocs) {
 		this.flowDocs = flowDocs;
+	}
+
+	public String getTaskId() {
+		return taskId;
+	}
+
+	public void setTaskId(String taskId) {
+		this.taskId = taskId;
 	}
 }

@@ -2,12 +2,14 @@ package com.bootdo.app.service.impl;
 
 import com.bootdo.activiti.config.ActivitiConstant;
 import com.bootdo.activiti.service.impl.ActTaskServiceImpl;
+import com.bootdo.activiti.utils.ActivitiUtils;
 import com.bootdo.app.common.AppConstants;
 import com.bootdo.app.domain.FlowDocDO;
 import com.bootdo.app.service.FlowDocService;
 import com.bootdo.common.service.DictService;
 import com.bootdo.system.domain.UserDO;
 import com.bootdo.system.service.UserService;
+import org.activiti.engine.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +34,10 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 	private FlowDocService flowDocService;
 	@Resource
 	private UserService userService;
+	@Autowired
+	TaskService taskService;
+	@Autowired
+	ActivitiUtils activitiUtils;
 	
 	@Override
 	public ApplyInfoDO get(String id){
@@ -117,5 +123,41 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 		flowDocDO.setBusinessType(AppConstants.BUSINESS_TYPE_APPLY);
 		flowDocDO.setHdlContent(AppConstants.APP_APLLY_ACTION_3);
 		flowDocService.save(flowDocDO);
+	}
+
+	/**
+	 * 退回后提交
+	 * @param applyInfo
+	 */
+	@Override
+	public void backCommit(ApplyInfoDO applyInfo){
+		applyInfo.setApplyStatus("2");
+		applyInfoDao.update(applyInfo);
+		//流转记录
+		FlowDocDO flowDocDO = new FlowDocDO();
+		flowDocDO.setHdlActionId(AppConstants.APP_APLLY_ACTION_ID_3);
+		flowDocDO.setHdlAction(AppConstants.APP_APLLY_ACTION_3);
+		Map<String,Object> userPar = new HashMap<String,Object>();
+		userPar.put("username",applyInfo.getUsername());
+		List<UserDO> userDOS = userService.list(userPar);
+		UserDO userDO;
+		if(userDOS != null&&!userDOS.isEmpty()){
+			userDO = userDOS.get(0);
+		}else{
+			userDO = new UserDO();
+		}
+		flowDocDO.setCreateUserId(userDO.getUserId()+"");
+		flowDocDO.setCreateUserName(userDO.getName());
+		flowDocDO.setCreateTime(new Date());
+		flowDocDO.setBusinessId(applyInfo.getId());
+		flowDocDO.setBusinessType(AppConstants.BUSINESS_TYPE_APPLY);
+		flowDocDO.setHdlContent(AppConstants.APP_APLLY_ACTION_3);
+		flowDocService.save(flowDocDO);
+		//工作流
+		String taskKey = activitiUtils.getTaskByTaskId(applyInfo.getTaskId()).getTaskDefinitionKey();
+		Map<String,Object> vars = new HashMap<>(16);
+		vars.put("assignee","app003");
+		vars.put("pass","1");
+		actTaskService.complete(applyInfo.getTaskId(),vars);
 	}
 }

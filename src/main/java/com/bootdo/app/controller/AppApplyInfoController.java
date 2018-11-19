@@ -199,5 +199,15 @@ public class AppApplyInfoController {
 		ApplyInfoDO applyInfoDO = applyInfoService.get(activitiUtils.getBusinessKeyByTaskId(taskId));
 		return R.ok().put("applyInfo",applyInfoDO);
 	}
+
+	/**
+	 * 修改
+	 */
+	@ResponseBody
+	@RequestMapping("/backCommit")
+	public R backCommit( ApplyInfoDO applyInfo){
+		applyInfoService.backCommit(applyInfo);
+		return R.ok();
+	}
 	
 }

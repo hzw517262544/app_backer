@@ -73,9 +73,8 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 	public String save(ApplyInfoDO applyInfo){
 		String result = UUID.randomUUID().toString();
 		applyInfo.setId(result);
-		applyInfo.setApplyStatus("2");
+		applyInfo.setApplyStatus("1");
 		applyInfoDao.save(applyInfo);
-		commit(applyInfo);
 		return result;
 	}
 	
@@ -85,17 +84,21 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 	}
 	
 	@Override
-	public int remove(Long id){
+	public int remove(String id){
 		return applyInfoDao.remove(id);
 	}
 	
 	@Override
-	public int batchRemove(Long[] ids){
+	public int batchRemove(String[] ids){
 		return applyInfoDao.batchRemove(ids);
 	}
 
 	@Override
 	public void commit(ApplyInfoDO applyInfo) {
+		String result = UUID.randomUUID().toString();
+		applyInfo.setId(result);
+		applyInfo.setApplyStatus("2");
+		applyInfoDao.save(applyInfo);
 		Map<String,Object> var = new HashMap<String,Object>();
 		var.put("userId",applyInfo.getUsername());
 		var.put("applyer",applyInfo.getUsername());

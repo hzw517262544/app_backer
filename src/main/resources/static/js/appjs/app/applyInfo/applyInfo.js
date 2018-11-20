@@ -47,13 +47,21 @@ function load() {
 								{
 									checkbox : true
 								},
-																{
-									field : 'id', 
-									title : 'id' 
-								},
+                            {
+                                field : 'Number',
+                                title : '序号',
+                                align: 'center',
+                                width: 20,
+                                formatter : function(value, row, index) {
+                                    //return index + 1;
+                                    var pageSize=$('#exampleTable').bootstrapTable('getOptions').pageSize;//通过表的#id 可以得到每页多少条
+                                    var pageNumber=$('#exampleTable').bootstrapTable('getOptions').pageNumber;//通过表的#id 可以得到当前第几页
+                                    return pageSize * (pageNumber - 1) + index + 1;//返回每条的序号： 每页条数 * （当前页 - 1 ）+ 序号
+                                }
+                            },
 																{
 									field : 'username', 
-									title : '用户账号' 
+									title : '用户账号'
 								},
 																{
 									field : 'name', 
@@ -61,27 +69,32 @@ function load() {
 								},
 																{
 									field : 'applyType', 
-									title : '申请类型' 
+									title : '申请类型' ,
+									visible: false
 								},
 																{
 									field : 'applyTypeName', 
-									title : '申请类型名称' 
+									title : '申请类型'
 								},
 																{
 									field : 'applySecodType', 
-									title : '申请子类型' 
+									title : '申请子类型'  ,
+									visible: false
 								},
 																{
 									field : 'applySecodTypeName', 
-									title : '申请子类型名称' 
+									title : '申请子类型'
 								},
 																{
 									field : 'applyStartTime', 
-									title : '申请开始时间' 
+									title : '申请开始时间' ,
+									visible: false
+
 								},
 																{
 									field : 'applyEndTime', 
-									title : '申请结束时间' 
+									title : '申请结束时间' ,
+									visible: false
 								},
 																{
 									field : 'applyContent', 
@@ -123,14 +136,14 @@ function load() {
 												+ '\')"><i class="fa fa-key"></i></a> ';
 										return e + d ;
 									}
-								} ]
+								}]
 					});
 }
 function reLoad() {
 	$('#exampleTable').bootstrapTable('refresh');
 }
 function add() {
-	layer.open({
+	var addPage = layer.open({
 		type : 2,
 		title : '增加',
 		maxmin : true,
@@ -138,9 +151,10 @@ function add() {
 		area : [ '800px', '520px' ],
 		content : prefix + '/add' // iframe的url
 	});
+    layer.full(addPage);
 }
 function edit(id) {
-	layer.open({
+	var editPage = layer.open({
 		type : 2,
 		title : '编辑',
 		maxmin : true,
@@ -148,6 +162,7 @@ function edit(id) {
 		area : [ '800px', '520px' ],
 		content : prefix + '/edit/' + id // iframe的url
 	});
+    layer.full(editPage);
 }
 function remove(id) {
 	layer.confirm('确定要删除选中的记录？', {

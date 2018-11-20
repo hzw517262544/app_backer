@@ -26,7 +26,7 @@ public interface ApplyInfoDao {
 	
 	int update(ApplyInfoDO applyInfo);
 	
-	int remove(Long id);
+	int remove(String id);
 	
-	int batchRemove(Long[] ids);
+	int batchRemove(String[] ids);
 }

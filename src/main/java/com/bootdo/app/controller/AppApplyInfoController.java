@@ -9,6 +9,8 @@ import com.bootdo.app.domain.ApplyInfoDO;
 import com.bootdo.app.domain.FlowDocDO;
 import com.bootdo.app.service.ApplyInfoService;
 import com.bootdo.app.service.FlowDocService;
+import com.bootdo.common.controller.BaseController;
+import com.bootdo.common.domain.DictDO;
 import com.bootdo.common.service.DictService;
 import com.bootdo.common.utils.DateUtils;
 import com.bootdo.common.utils.PageUtils;
@@ -36,7 +38,7 @@ import java.util.*;
  
 @Controller
 @RequestMapping("/app/applyInfo")
-public class AppApplyInfoController {
+public class AppApplyInfoController extends BaseController {
 	@Autowired
 	private ApplyInfoService applyInfoService;
 
@@ -57,7 +59,7 @@ public class AppApplyInfoController {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@GetMapping()
 //	@RequiresPermissions("app:applyInfo:applyInfo")
 	String ApplyInfo(){
@@ -86,7 +88,21 @@ public class AppApplyInfoController {
 	@RequiresPermissions("app:applyInfo:edit")
 	String edit(@PathVariable("id") String id,Model model){
 		ApplyInfoDO applyInfo = applyInfoService.get(id);
+		List<DictDO> mediaApllyType = dictService.listByType(AppConstants.APP_MEDIA_APLLY_TYPE);
+		for (DictDO dictDO:mediaApllyType){
+			if(applyInfo.getApplyType().equals(dictDO.getValue())){
+				dictDO.setRemarks("checked");
+			}
+		}
+		List<DictDO> mediaApllyTypeSecond = dictService.listByType(AppConstants.APP_MEDIA_APLLY_TYPE_SECOND);
+		for (DictDO dictDO:mediaApllyTypeSecond){
+			if(applyInfo.getApplySecodType().equals(dictDO.getValue())){
+				dictDO.setRemarks("checked");
+			}
+		}
 		model.addAttribute("applyInfo", applyInfo);
+		model.addAttribute("mediaApllyType", mediaApllyType);
+		model.addAttribute("mediaApllyTypeSecond", mediaApllyTypeSecond);
 	    return "app/applyInfo/edit";
 	}
 	
@@ -97,12 +113,34 @@ public class AppApplyInfoController {
 	@PostMapping("/save")
 //	@RequiresPermissions("app:applyInfo:add")
 	public R save( ApplyInfoDO applyInfo){
-		applyInfo.setCreateTime(DateUtils.getCurTimestamp());
-		applyInfo.setCreateUser(applyInfo.getUsername());
+		UserDO userDO = getUser();
+		Date date = DateUtils.getCurTimestamp();
+		if(userDO != null){
+			applyInfo.setUsername(userDO.getUsername());
+			applyInfo.setCreateUser(userDO.getUsername());
+			applyInfo.setUpdateUser(userDO.getUsername());
+			applyInfo.setName(userDO.getName());
+		}else{
+			applyInfo.setCreateUser(applyInfo.getUsername());
+		}
+		applyInfo.setCreateTime(date);
+		applyInfo.setUpdateTime(date);
 		if(applyInfoService.save(applyInfo) != null){
 			return R.ok();
 		}
 		return R.error();
+	}
+	/**
+	 * 保存
+	 */
+	@ResponseBody
+	@PostMapping("/commit")
+//	@RequiresPermissions("app:applyInfo:add")
+	public R commit( ApplyInfoDO applyInfo){
+		applyInfo.setCreateTime(DateUtils.getCurTimestamp());
+		applyInfo.setCreateUser(applyInfo.getUsername());
+		applyInfoService.commit(applyInfo);
+		return R.ok();
 	}
 	/**
 	 * 修改
@@ -121,7 +159,7 @@ public class AppApplyInfoController {
 	@PostMapping( "/remove")
 	@ResponseBody
 //	@RequiresPermissions("app:applyInfo:remove")
-	public R remove( Long id){
+	public R remove( String id){
 		if(applyInfoService.remove(id)>0){
 		return R.ok();
 		}
@@ -134,7 +172,7 @@ public class AppApplyInfoController {
 	@PostMapping( "/batchRemove")
 	@ResponseBody
 //	@RequiresPermissions("app:applyInfo:batchRemove")
-	public R remove(@RequestParam("ids[]") Long[] ids){
+	public R remove(@RequestParam("ids[]") String[] ids){
 		applyInfoService.batchRemove(ids);
 		return R.ok();
 	}

@@ -83,4 +83,8 @@ public class AppConstants {
      * 取消
      */
     public static final String APP_LEAVE_APLLY_STATUS_0 = "0";
+
+    public static final String APP_MEDIA_APLLY_TYPE = "APP_MEDIA_APLLY_TYPE";
+
+    public static final String APP_MEDIA_APLLY_TYPE_SECOND = "APP_MEDIA_APLLY_TYPE_SECOND";
 }

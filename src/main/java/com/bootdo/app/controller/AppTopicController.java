@@ -31,19 +31,26 @@ import com.bootdo.common.utils.R;
  
 @Controller
 @RequestMapping("/app/topic")
-public class TopicController {
+public class AppTopicController {
 	@Autowired
 	private TopicService topicService;
-	
+
 	@GetMapping()
-	@RequiresPermissions("app:topic:topic")
+//	@RequiresPermissions("app:topic:topic")
 	String Topic(){
+		return "app/topic/topic";
+	}
+	
+	@GetMapping("/fromApply/{id}")
+//	@RequiresPermissions("app:topic:topic")
+	String fromApply(@PathVariable("id") String id,Model model){
+		model.addAttribute("applyId",id);
 	    return "app/topic/topic";
 	}
 	
 	@ResponseBody
 	@GetMapping("/list")
-	@RequiresPermissions("app:topic:topic")
+//	@RequiresPermissions("app:topic:topic")
 	public PageUtils list(@RequestParam Map<String, Object> params){
 		//查询列表数据
         Query query = new Query(params);
@@ -54,13 +61,13 @@ public class TopicController {
 	}
 	
 	@GetMapping("/add")
-	@RequiresPermissions("app:topic:add")
+//	@RequiresPermissions("app:topic:add")
 	String add(){
 	    return "app/topic/add";
 	}
 
 	@GetMapping("/edit/{id}")
-	@RequiresPermissions("app:topic:edit")
+//	@RequiresPermissions("app:topic:edit")
 	String edit(@PathVariable("id") Long id,Model model){
 		TopicDO topic = topicService.get(id);
 		model.addAttribute("topic", topic);
@@ -72,7 +79,7 @@ public class TopicController {
 	 */
 	@ResponseBody
 	@PostMapping("/save")
-	@RequiresPermissions("app:topic:add")
+//	@RequiresPermissions("app:topic:add")
 	public R save( TopicDO topic){
 		if(topicService.save(topic)>0){
 			return R.ok();
@@ -84,7 +91,7 @@ public class TopicController {
 	 */
 	@ResponseBody
 	@RequestMapping("/update")
-	@RequiresPermissions("app:topic:edit")
+//	@RequiresPermissions("app:topic:edit")
 	public R update( TopicDO topic){
 		topicService.update(topic);
 		return R.ok();
@@ -95,7 +102,7 @@ public class TopicController {
 	 */
 	@PostMapping( "/remove")
 	@ResponseBody
-	@RequiresPermissions("app:topic:remove")
+//	@RequiresPermissions("app:topic:remove")
 	public R remove( Long id){
 		if(topicService.remove(id)>0){
 		return R.ok();
@@ -108,7 +115,7 @@ public class TopicController {
 	 */
 	@PostMapping( "/batchRemove")
 	@ResponseBody
-	@RequiresPermissions("app:topic:batchRemove")
+//	@RequiresPermissions("app:topic:batchRemove")
 	public R remove(@RequestParam("ids[]") Long[] ids){
 		topicService.batchRemove(ids);
 		return R.ok();

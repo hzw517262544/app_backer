@@ -102,8 +102,13 @@ function load() {
 								},
 																{
 									field : 'applyStatus', 
-									title : '申请状态' 
+									title : '申请状态' ,
+									visible: false
 								},
+								{
+                                field : 'applyStatusName',
+                                title : '状态'
+                            	},
 																{
 									field : 'createTime', 
 									title : '创建时间' 
@@ -131,10 +136,10 @@ function load() {
 										var d = '<a class="btn btn-warning btn-sm '+s_remove_h+'" href="#" title="删除"  mce_href="#" onclick="remove(\''
 												+ row.id
 												+ '\')"><i class="fa fa-remove"></i></a> ';
-										var f = '<a class="btn btn-success btn-sm" href="#" title="备用"  mce_href="#" onclick="resetPwd(\''
+										var f = '<a class="btn btn-success btn-sm " href="#" title="添加题材"  mce_href="#" onclick="addTopic(\''
 												+ row.id
-												+ '\')"><i class="fa fa-key"></i></a> ';
-										return e + d ;
+												+ '\')"><i class="fa fa-plus-square"></i></a> ';
+										return f + e + d ;
 									}
 								}]
 					});
@@ -186,7 +191,20 @@ function remove(id) {
 	})
 }
 
-function resetPwd(id) {
+/**
+ * 添加选题
+ * @param id
+ */
+function addTopic(id) {
+    var topicPage = layer.open({
+        type : 2,
+        title : '选题',
+        maxmin : true,
+        shadeClose : false, // 点击遮罩关闭层
+        area : [ '800px', '520px' ],
+        content : '/app/topic/fromApply/'+id // iframe的url
+    });
+    layer.full(topicPage);
 }
 function batchRemove() {
 	var rows = $('#exampleTable').bootstrapTable('getSelections'); // 返回所有选择的行，当没有选择的记录时，返回一个空数组

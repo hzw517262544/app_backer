@@ -139,7 +139,10 @@ function load() {
 										var f = '<a class="btn btn-success btn-sm " href="#" title="添加题材"  mce_href="#" onclick="addTopic(\''
 												+ row.id
 												+ '\')"><i class="fa fa-plus-square"></i></a> ';
-										return f + e + d ;
+                                        var g = '<a class="btn btn-success btn-sm " href="#" title="提交"  mce_href="#" onclick="commit(\''
+                                            + row.id
+                                            + '\')"><i class="fa fa-check-square"></i></a> ';
+										return f + g + e + d ;
 									}
 								}]
 					});
@@ -239,4 +242,22 @@ function batchRemove() {
 	}, function() {
 
 	});
+}
+
+function commit(id) {
+    $.ajax({
+        type : 'POST',
+        data : {
+            "id" : id
+        },
+        url : prefix + '/commit',
+        success : function(r) {
+            if (r.code == 0) {
+                layer.msg(r.msg);
+                reLoad();
+            } else {
+                layer.msg(r.msg);
+            }
+        }
+    });
 }

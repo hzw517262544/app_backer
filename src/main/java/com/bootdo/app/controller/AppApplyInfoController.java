@@ -136,9 +136,8 @@ public class AppApplyInfoController extends BaseController {
 	@ResponseBody
 	@PostMapping("/commit")
 //	@RequiresPermissions("app:applyInfo:add")
-	public R commit( ApplyInfoDO applyInfo){
-		applyInfo.setCreateTime(DateUtils.getCurTimestamp());
-		applyInfo.setCreateUser(applyInfo.getUsername());
+	public R commit( String id){
+		ApplyInfoDO applyInfo = applyInfoService.get(id);
 		applyInfoService.commit(applyInfo);
 		return R.ok();
 	}

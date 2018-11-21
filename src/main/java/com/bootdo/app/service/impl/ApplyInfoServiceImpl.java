@@ -95,10 +95,8 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 
 	@Override
 	public void commit(ApplyInfoDO applyInfo) {
-		String result = UUID.randomUUID().toString();
-		applyInfo.setId(result);
 		applyInfo.setApplyStatus("2");
-		applyInfoDao.save(applyInfo);
+		applyInfoDao.update(applyInfo);
 		Map<String,Object> var = new HashMap<String,Object>();
 		var.put("userId",applyInfo.getUsername());
 		var.put("applyer",applyInfo.getUsername());

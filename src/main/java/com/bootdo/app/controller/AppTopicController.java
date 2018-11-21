@@ -1,8 +1,15 @@
 package com.bootdo.app.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.bootdo.app.common.AppConstants;
+import com.bootdo.common.controller.BaseController;
+import com.bootdo.common.domain.DictDO;
+import com.bootdo.common.service.DictService;
+import com.bootdo.common.utils.DateUtils;
+import com.bootdo.system.domain.UserDO;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -31,9 +38,11 @@ import com.bootdo.common.utils.R;
  
 @Controller
 @RequestMapping("/app/topic")
-public class AppTopicController {
+public class AppTopicController extends BaseController {
 	@Autowired
 	private TopicService topicService;
+	@Autowired
+	private DictService dictService;
 
 	@GetMapping()
 //	@RequiresPermissions("app:topic:topic")
@@ -60,9 +69,10 @@ public class AppTopicController {
 		return pageUtils;
 	}
 	
-	@GetMapping("/add")
+	@GetMapping("/add/{applyId}")
 //	@RequiresPermissions("app:topic:add")
-	String add(){
+	String add(@PathVariable("applyId") String id,Model model){
+		model.addAttribute("applyId",id);
 	    return "app/topic/add";
 	}
 
@@ -71,6 +81,13 @@ public class AppTopicController {
 	String edit(@PathVariable("id") Long id,Model model){
 		TopicDO topic = topicService.get(id);
 		model.addAttribute("topic", topic);
+		List<DictDO> mediaTopicType = dictService.listByType(AppConstants.APP_MEDIA_TOPIC_TYPE);
+		for (DictDO dictDO:mediaTopicType){
+			if(topic.getStandby1().equals(dictDO.getValue())){
+				dictDO.setRemarks("checked");
+			}
+		}
+		model.addAttribute("topicType", mediaTopicType);
 	    return "app/topic/edit";
 	}
 	
@@ -81,6 +98,14 @@ public class AppTopicController {
 	@PostMapping("/save")
 //	@RequiresPermissions("app:topic:add")
 	public R save( TopicDO topic){
+		Date curDate = DateUtils.getCurTimestamp();
+		topic.setCreateTime(curDate);
+		topic.setUpdateTime(curDate);
+		UserDO userDO = getUser();
+		if(userDO != null){
+			topic.setCreateUser(userDO.getUsername());
+			topic.setUpdateUser(userDO.getUsername());
+		}
 		if(topicService.save(topic)>0){
 			return R.ok();
 		}
@@ -93,6 +118,12 @@ public class AppTopicController {
 	@RequestMapping("/update")
 //	@RequiresPermissions("app:topic:edit")
 	public R update( TopicDO topic){
+		Date curDate = DateUtils.getCurTimestamp();
+		topic.setUpdateTime(curDate);
+		UserDO userDO = getUser();
+		if(userDO != null){
+			topic.setUpdateUser(userDO.getUsername());
+		}
 		topicService.update(topic);
 		return R.ok();
 	}

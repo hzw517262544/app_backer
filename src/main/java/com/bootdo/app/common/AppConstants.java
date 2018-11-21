@@ -87,4 +87,6 @@ public class AppConstants {
     public static final String APP_MEDIA_APLLY_TYPE = "APP_MEDIA_APLLY_TYPE";
 
     public static final String APP_MEDIA_APLLY_TYPE_SECOND = "APP_MEDIA_APLLY_TYPE_SECOND";
+
+    public static final String APP_MEDIA_TOPIC_TYPE = "APP_MEDIA_TOPIC_TYPE";
 }

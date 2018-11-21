@@ -25,7 +25,7 @@
 														<div class="form-group">	
 								<label class="col-sm-3 control-label">申请类型：</label>
 								<div class="col-sm-8">
-									<select id="applyType" name="applyType" class="form-control" >
+									<select id="applyType" name="applyType" class="form-control" data-select-type-name="applyTypeName">
                                         <option th:each="apllyType : ${mediaApllyType}"
                                                 th:value="${apllyType.value}"
                                                 th:text="${apllyType.name}"
@@ -42,7 +42,7 @@
 														<div class="form-group">	
 								<label class="col-sm-3 control-label">申请子类型：</label>
 								<div class="col-sm-8">
-									<select id="applySecodType" name="applySecodType" class="form-control">
+									<select id="applySecodType" name="applySecodType" class="form-control" data-select-type-name="applySecodTypeName">
 										<option th:each="apllyTypeSecond : ${mediaApllyTypeSecond}"
 												 th:value="${apllyTypeSecond.value}"
 												 th:text="${apllyTypeSecond.name}"

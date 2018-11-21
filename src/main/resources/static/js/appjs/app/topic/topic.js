@@ -46,14 +46,22 @@ function load(applyId) {
 						columns : [
 								{
 									checkbox : true
-								},
-																{
-									field : 'id', 
-									title : 'id' 
-								},
+								},{
+                                field : 'Number',
+                                title : '序号',
+                                align: 'center',
+                                width: 20,
+                                formatter : function(value, row, index) {
+                                    //return index + 1;
+                                    var pageSize=$('#exampleTable').bootstrapTable('getOptions').pageSize;//通过表的#id 可以得到每页多少条
+                                    var pageNumber=$('#exampleTable').bootstrapTable('getOptions').pageNumber;//通过表的#id 可以得到当前第几页
+                                    return pageSize * (pageNumber - 1) + index + 1;//返回每条的序号： 每页条数 * （当前页 - 1 ）+ 序号
+                                }
+                            },
 																{
 									field : 'applyId', 
-									title : '申请信息id' 
+									title : '申请信息id' ,
+									visible: false
 								},
 																{
 									field : 'topicType', 
@@ -85,23 +93,28 @@ function load(applyId) {
 								},
 																{
 									field : 'standby1', 
-									title : '备用1' 
+									title : '备用1' ,
+									visible: false
 								},
 																{
 									field : 'standby2', 
-									title : '备用2' 
+									title : '备用2'  ,
+									visible: false
 								},
 																{
 									field : 'standby3', 
-									title : '备用3' 
+									title : '备用3'  ,
+									visible: false
 								},
 																{
 									field : 'standby4', 
-									title : '备用4' 
+									title : '备用4'  ,
+									visible: false
 								},
 																{
 									field : 'standby5', 
-									title : '备用5' 
+									title : '备用5'  ,
+									visible: false
 								},
 																{
 									title : '操作',
@@ -132,7 +145,7 @@ function add() {
 		maxmin : true,
 		shadeClose : false, // 点击遮罩关闭层
 		area : [ '800px', '520px' ],
-		content : prefix + '/add' // iframe的url
+		content : prefix + '/add/'+$("#applyId").val() // iframe的url
 	});
 }
 function edit(id) {

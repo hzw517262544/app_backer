@@ -131,16 +131,16 @@ function load() {
 									align : 'center',
 									formatter : function(value, row, index) {
 										var e = '<a class="btn btn-primary btn-sm '+s_edit_h+'" href="#" mce_href="#" title="编辑" onclick="edit(\''
-												+ row.id
+												+ row.id+'\',\''+row.applyStatus
 												+ '\')"><i class="fa fa-edit"></i></a> ';
 										var d = '<a class="btn btn-warning btn-sm '+s_remove_h+'" href="#" title="删除"  mce_href="#" onclick="remove(\''
-												+ row.id
+												+ row.id+'\',\''+row.applyStatus
 												+ '\')"><i class="fa fa-remove"></i></a> ';
 										var f = '<a class="btn btn-success btn-sm " href="#" title="添加题材"  mce_href="#" onclick="addTopic(\''
-												+ row.id
+												+ row.id+'\',\''+row.applyStatus
 												+ '\')"><i class="fa fa-plus-square"></i></a> ';
                                         var g = '<a class="btn btn-success btn-sm " href="#" title="提交"  mce_href="#" onclick="commit(\''
-                                            + row.id
+                                            + row.id+'\',\''+row.applyStatus
                                             + '\')"><i class="fa fa-check-square"></i></a> ';
 										return f + g + e + d ;
 									}
@@ -161,7 +161,11 @@ function add() {
 	});
     layer.full(addPage);
 }
-function edit(id) {
+function edit(id,applyStatus) {
+	if(applyStatus != '1'&&applyStatus != '3'){
+		layer.msg("只能编辑未提交、退回状态的申请!");
+		return false;
+	}
 	var editPage = layer.open({
 		type : 2,
 		title : '编辑',
@@ -172,7 +176,11 @@ function edit(id) {
 	});
     layer.full(editPage);
 }
-function remove(id) {
+function remove(id,applyStatus) {
+    if(applyStatus != '1'){
+        layer.msg("只能删除未提交状态的申请!");
+        return false;
+    }
 	layer.confirm('确定要删除选中的记录？', {
 		btn : [ '确定', '取消' ]
 	}, function() {
@@ -198,7 +206,7 @@ function remove(id) {
  * 添加选题
  * @param id
  */
-function addTopic(id) {
+function addTopic(id,applyStatus) {
     var topicPage = layer.open({
         type : 2,
         title : '选题',
@@ -244,7 +252,11 @@ function batchRemove() {
 	});
 }
 
-function commit(id) {
+function commit(id,applyStatus) {
+    if(applyStatus != '1'&&applyStatus != '3'){
+        layer.msg("只能提交未提交、退回状态的申请!");
+        return false;
+    }
     $.ajax({
         type : 'POST',
         data : {

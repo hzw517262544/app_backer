@@ -56,6 +56,8 @@ public class ApplyInfoDO implements Serializable {
 	private List<FlowDocDO> flowDocs;
 
 	private String taskId;
+	//素材
+	private List<TopicDO> topicDOS;
 
 	/**
 	 * 设置：id
@@ -267,5 +269,13 @@ public class ApplyInfoDO implements Serializable {
 
 	public void setTaskId(String taskId) {
 		this.taskId = taskId;
+	}
+
+	public List<TopicDO> getTopicDOS() {
+		return topicDOS;
+	}
+
+	public void setTopicDOS(List<TopicDO> topicDOS) {
+		this.topicDOS = topicDOS;
 	}
 }

@@ -234,6 +234,7 @@ public class AppApplyInfoController extends BaseController {
 //	@RequiresPermissions("app:applyInfo:edit")
 	public R getByTaskId( String taskId){
 		ApplyInfoDO applyInfoDO = applyInfoService.get(activitiUtils.getBusinessKeyByTaskId(taskId));
+
 		return R.ok().put("applyInfo",applyInfoDO);
 	}
 

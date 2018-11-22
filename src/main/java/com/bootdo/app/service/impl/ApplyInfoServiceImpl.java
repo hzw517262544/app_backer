@@ -6,6 +6,7 @@ import com.bootdo.activiti.utils.ActivitiUtils;
 import com.bootdo.app.common.AppConstants;
 import com.bootdo.app.domain.FlowDocDO;
 import com.bootdo.app.service.FlowDocService;
+import com.bootdo.app.service.TopicService;
 import com.bootdo.common.service.DictService;
 import com.bootdo.system.domain.UserDO;
 import com.bootdo.system.service.UserService;
@@ -38,6 +39,8 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 	TaskService taskService;
 	@Autowired
 	ActivitiUtils activitiUtils;
+	@Autowired
+	TopicService topicService;
 	
 	@Override
 	public ApplyInfoDO get(String id){
@@ -46,10 +49,13 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 			return null;
 		}
 		applyInfoDO.setApplyStatusName(dictService.getName("APP_LEAVE_APLLY_STATUS",applyInfoDO.getApplyStatus()));
-		Map<String,Object> flowDocMap = new HashMap<String,Object>();
-		flowDocMap.put("businessId",id);
-		flowDocMap.put("businessType","1");
-		applyInfoDO.setFlowDocs(flowDocService.list(flowDocMap));
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("businessId",id);
+		paramMap.put("businessType","1");
+		applyInfoDO.setFlowDocs(flowDocService.list(paramMap));
+		paramMap.clear();
+		paramMap.put("applyId",id);
+		applyInfoDO.setTopicDOS(topicService.list(paramMap));
 		return applyInfoDO;
 	}
 	

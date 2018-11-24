@@ -1,5 +1,6 @@
 package com.bootdo.app.controller;
 
+import com.bootdo.app.service.ApplyInfoService;
 import com.bootdo.common.config.Constant;
 import com.bootdo.common.controller.BaseController;
 import com.bootdo.common.domain.DictDO;
@@ -33,25 +34,23 @@ import java.util.Map;
 @RequestMapping("/app/message")
 public class AppMessageController extends BaseController {
 	@Autowired
-	private NotifyService notifyService;
-	@Autowired
 	private NotifyRecordService notifyRecordService;
 	@Autowired
-	private DictService dictService;
-	@Autowired
-	TaskService taskService;
+	ApplyInfoService applyInfoService;
 
 	@ResponseBody
 	@GetMapping("/list")
 	Map<String, Object> getMessages(Long userId,String username){
 		Map<String,Object> result = new HashMap<String,Object>();
 		//查询未读公告
-		Map<String,Object> notifyPar = new HashMap<String,Object>();
-		notifyPar.put("userId",userId);
-		notifyPar.put("isRead","0");
-		int notifyCount = notifyRecordService.count(notifyPar);
+		Map<String,Object> parMap = new HashMap<String,Object>();
+		parMap.put("userId",userId);
+		parMap.put("isRead","0");
+		int notifyCount = notifyRecordService.count(parMap);
 		result.put("notifyCount",notifyCount);
-		long todoCount = taskService.createTaskQuery().taskAssignee(username).count();
+		parMap.clear();
+		parMap.put("currentHandlerUserName",username);
+		int todoCount = applyInfoService.count(parMap);
 		result.put("todoCount",todoCount);
 		return result;
 	}

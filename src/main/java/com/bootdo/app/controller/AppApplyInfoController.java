@@ -279,6 +279,48 @@ public class AppApplyInfoController extends BaseController {
 		return R.ok();
 	}
 
+	/**
+	 * 同意
+	 * @param applyId
+	 * @param auditOpinion
+	 * @param userName
+	 * @return
+	 */
+	@ResponseBody
+	@PostMapping("/unPass")
+	public R unPass(String applyId,String auditOpinion,String userName){
+		Map<String,Object> userMap = new HashMap<String,Object>(16);
+		userMap.put("username",userName);
+		List<UserDO> userList = userService.list(userMap);
+		UserDO userDO = null;
+		if(userList!=null&&!userList.isEmpty()){
+			userDO = userList.get(0);
+		}else{
+			return R.error().put("msg","系统没有查询到当前用户信息，请联系管理员");
+		}
+		//不同意直接将申请退回到申请人
+		ApplyInfoDO applyInfoDO = applyInfoService.get(applyId);
+		applyInfoDO.setApplyStatus(AppConstants.APP_LEAVE_APLLY_STATUS_3);
+		applyInfoDO.setApplyStatusName(AppConstants.APP_LEAVE_APLLY_STATUS_NAME_3);
+		applyInfoDO.setUpdateUser(userName);
+		applyInfoDO.setUpdateTime(DateUtils.getCurTimestamp());
+		applyInfoDO.setCurrentHandlerName(applyInfoDO.getName());
+		applyInfoDO.setCurrentHandlerUserName(applyInfoDO.getUsername());
+		applyInfoService.update(applyInfoDO);
+		//新增流转记录
+		FlowDocDO flowDocDO = new FlowDocDO();
+		flowDocDO.setHdlActionId(AppConstants.APP_APLLY_ACTION_ID_0);
+		flowDocDO.setHdlAction(AppConstants.APP_APLLY_ACTION_0);
+		flowDocDO.setCreateUserId(userDO.getUsername());
+		flowDocDO.setCreateUserName(userDO.getName());
+		flowDocDO.setCreateTime(DateUtils.getCurTimestamp());
+		flowDocDO.setBusinessId(applyId);
+		flowDocDO.setBusinessType(AppConstants.BUSINESS_TYPE_APPLY);
+		flowDocDO.setHdlContent(auditOpinion);
+		flowDocService.save(flowDocDO);
+		return R.ok();
+	}
+
 	@ResponseBody
 	@GetMapping("/getByTaskId")
 //	@RequiresPermissions("app:applyInfo:edit")
@@ -318,29 +360,47 @@ public class AppApplyInfoController extends BaseController {
 //	@RequiresPermissions("app:applyInfo:add")
 	public R commitWeibo( HttpServletRequest request){
 		String applyContent = request.getParameter("applyContent");
-		String userAccount = request.getParameter("userAccount");
-		String userName = request.getParameter("userName");
+		String name = request.getParameter("name");
+		String username = request.getParameter("username");
 		String applyType = request.getParameter("applyType");
 		String applyTypeName = request.getParameter("applyTypeName");
 		String applySecodType = request.getParameter("applySecodType");
 		String applySecodTypeName = request.getParameter("applySecodTypeName");
+		Map<String,Object> userPar = new HashMap<String,Object>();
+		userPar.put("username",username);
+		List<UserDO> userDOS = userService.list(userPar);
+		UserDO userDO;
+		if(userDOS != null&&!userDOS.isEmpty()){
+			userDO = userDOS.get(0);
+		}else{
+			return R.error().put("msg","系统没有查询到当前用户的信息，请联系系统管理员");
+		}
+		//根据角色信息找审批人，然后更新到申请的当前处理人-提交找责编
+		Map<String,Object> roleSign = new HashMap<>(16);
+		roleSign.put("roleSign",AppConstants.ROLE_DUTY_EDITOR);
+		List<UserDO> dutyEditors = userService.listByRoleSign(roleSign);
+		if(dutyEditors==null||dutyEditors.isEmpty()){
+			return R.error().put("msg","系统没有找到责编对应的用户，请联系管理员");
+		}
 		Date date = DateUtils.getCurTimestamp();
 		//生成微博申请信息
 		ApplyInfoDO applyInfoDO = new ApplyInfoDO();
-//		applyInfoDO.setId(UUID.randomUUID()+"");
 		applyInfoDO.setApplyStatus(AppConstants.APP_LEAVE_APLLY_STATUS_2);
 		applyInfoDO.setApplyStatusName(AppConstants.APP_LEAVE_APLLY_STATUS_NAME_2);
 		applyInfoDO.setApplyType(applyType);
 		applyInfoDO.setApplyTypeName(applyTypeName);
 		applyInfoDO.setApplySecodType(applySecodType);
 		applyInfoDO.setApplySecodTypeName(applySecodTypeName);
-		applyInfoDO.setUsername(userAccount);
-		applyInfoDO.setName(userName);
-		applyInfoDO.setCreateUser(userAccount);
+		applyInfoDO.setUsername(userDO.getUsername());
+		applyInfoDO.setName(userDO.getName());
+		applyInfoDO.setCreateUser(userDO.getUsername());
 		applyInfoDO.setCreateTime(date);
-		applyInfoDO.setUpdateUser(userAccount);
+		applyInfoDO.setUpdateUser(userDO.getUsername());
 		applyInfoDO.setUpdateTime(date);
 		applyInfoDO.setApplyContent(applyContent);
+		//微博提交查询责编信息
+		applyInfoDO.setCurrentHandlerUserName(dutyEditors.get(0).getUsername());
+		applyInfoDO.setCurrentHandlerName(dutyEditors.get(0).getName());
 		applyInfoService.save(applyInfoDO);
 		// 复杂类型的request对象
 		MultipartHttpServletRequest mRequest = (MultipartHttpServletRequest) request;
@@ -367,37 +427,20 @@ public class AppApplyInfoController extends BaseController {
 					topicDO.setTopicType(AppConstants.APP_MEDIA_TOPIC_TYPE_NAME_2);
 					topicDO.setTopicName(sysFile.getName());
 					topicDO.setTopicUrl(sysFile.getUrl());
-					topicDO.setCreateUser(userAccount);
+					topicDO.setCreateUser(userDO.getUsername());
 					topicDO.setCreateTime(date);
-					topicDO.setUpdateUser(userAccount);
+					topicDO.setUpdateUser(userDO.getUsername());
 					topicDO.setUpdateTime(date);
 					topicService.save(topicDO);
 //					return R.ok();
 				}
 			}
 		}
-		//发起流程
-		Map<String,Object> var = new HashMap<String,Object>();
-		var.put("userId",applyInfoDO.getUsername());
-		var.put("applyer",applyInfoDO.getUsername());
-		String processInstId = actTaskService.startAppProcess(ActivitiConstant.ACTIVITI_LEAVE_APPLY[0],ActivitiConstant.ACTIVITI_LEAVE_APPLY[1],applyInfoDO.getId()+"","申请流程",var);
-		var.put("assignee","app003");
-		var.put("pass","1");
-		actTaskService.completeByProInsId(processInstId,var);
 		//记录流转记录
 		FlowDocDO flowDocDO = new FlowDocDO();
 		flowDocDO.setHdlActionId(AppConstants.APP_APLLY_ACTION_ID_3);
 		flowDocDO.setHdlAction(AppConstants.APP_APLLY_ACTION_3);
-		Map<String,Object> userPar = new HashMap<String,Object>();
-		userPar.put("username",applyInfoDO.getUsername());
-		List<UserDO> userDOS = userService.list(userPar);
-		UserDO userDO;
-		if(userDOS != null&&!userDOS.isEmpty()){
-			userDO = userDOS.get(0);
-		}else{
-			userDO = new UserDO();
-		}
-		flowDocDO.setCreateUserId(userDO.getUserId()+"");
+		flowDocDO.setCreateUserId(userDO.getUsername());
 		flowDocDO.setCreateUserName(userDO.getName());
 		flowDocDO.setCreateTime(date);
 		flowDocDO.setBusinessId(applyInfoDO.getId());

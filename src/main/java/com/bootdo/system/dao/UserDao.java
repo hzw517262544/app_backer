@@ -34,5 +34,6 @@ public interface UserDao {
 
 	List<String> listUserNames(Long[] userIds);
 
+	List<UserDO> listByRoleSign(Map<String,Object> map);
 
 }

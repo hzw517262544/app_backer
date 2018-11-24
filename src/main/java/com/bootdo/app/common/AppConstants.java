@@ -24,15 +24,7 @@ public class AppConstants {
      */
     public static final Long APP_USER_IMAGE = 200L;
     /**
-     *审核通过
-     */
-    public static final String PASS = "1";
-    /**
-     *审核不通过
-     */
-    public static final String UNPASS = "0";
-    /**
-     *申请业务类型-请假申请
+     *申请业务类型-申请
      */
     public static final String BUSINESS_TYPE_APPLY = "1";
     /**
@@ -62,11 +54,11 @@ public class AppConstants {
     /**
      *驳回
      */
-    public static final String APP_APLLY_ACTION_0 = "驳回";
+    public static final String APP_APLLY_ACTION_0 = "退回";
     /**
      *审核通过
      */
-    public static final String APP_APLLY_ACTION_1 = "审核通过";
+    public static final String APP_APLLY_ACTION_1 = "同意";
     /**
      *审核不通过
      */
@@ -83,10 +75,84 @@ public class AppConstants {
      * 取消
      */
     public static final String APP_LEAVE_APLLY_STATUS_0 = "0";
+    /**
+     *	未提交
+     */
+    public static final String APP_LEAVE_APLLY_STATUS_1 = "1";
+    /**
+     *审批中
+     */
+    public static final String APP_LEAVE_APLLY_STATUS_2 = "2";
+    /**
+     *	退回
+     */
+    public static final String APP_LEAVE_APLLY_STATUS_3 = "3";
+    /**
+     *审批通过
+     */
+    public static final String APP_LEAVE_APLLY_STATUS_4 = "4";
+    /**
+     *审批不通过
+     */
+    public static final String APP_LEAVE_APLLY_STATUS_5 = "5";
+    /**
+     * 取消
+     */
+    public static final String APP_LEAVE_APLLY_STATUS_NAME_0 = "取消";
+    /**
+     *	未提交
+     */
+    public static final String APP_LEAVE_APLLY_STATUS_NAME_1 = "未提交";
+    /**
+     *审批中
+     */
+    public static final String APP_LEAVE_APLLY_STATUS_NAME_2 = "审批中";
+    /**
+     *	退回
+     */
+    public static final String APP_LEAVE_APLLY_STATUS_NAME_3 = "退回";
+    /**
+     *审批通过
+     */
+    public static final String APP_LEAVE_APLLY_STATUS_NAME_4 = "审批通过";
+    /**
+     *审批不通过
+     */
+    public static final String APP_LEAVE_APLLY_STATUS_NAME_5 = "审批不通过";
+
 
     public static final String APP_MEDIA_APLLY_TYPE = "APP_MEDIA_APLLY_TYPE";
 
     public static final String APP_MEDIA_APLLY_TYPE_SECOND = "APP_MEDIA_APLLY_TYPE_SECOND";
 
     public static final String APP_MEDIA_TOPIC_TYPE = "APP_MEDIA_TOPIC_TYPE";
+    /**
+     *链接
+     */
+    public static final String APP_MEDIA_TOPIC_TYPE_1 = "1";
+    /**
+     *文档
+     */
+    public static final String APP_MEDIA_TOPIC_TYPE_2 = "2";
+    /**
+     *链接
+     */
+    public static final String APP_MEDIA_TOPIC_TYPE_NAME_1 = "链接";
+    /**
+     *文档
+     */
+    public static final String APP_MEDIA_TOPIC_TYPE_NAME_2 = "文档";
+
+    /**
+     *小编
+     */
+    public static final String ROLE_JUNIOR_EDITOR = "JUNIOR_EDITOR";
+    /**
+     *责编
+     */
+    public static final String ROLE_DUTY_EDITOR = "DUTY_EDITOR";
+    /**
+     *总编
+     */
+    public static final String ROLE_PRESIDENT_EDITOR = "PRESIDENT_EDITOR";
 }

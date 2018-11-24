@@ -4,23 +4,24 @@ import com.bootdo.activiti.config.ActivitiConstant;
 import com.bootdo.activiti.service.impl.ActTaskServiceImpl;
 import com.bootdo.activiti.utils.ActivitiUtils;
 import com.bootdo.app.common.AppConstants;
+import com.bootdo.app.dao.ApplyInfoDao;
+import com.bootdo.app.domain.ApplyInfoDO;
 import com.bootdo.app.domain.FlowDocDO;
+import com.bootdo.app.service.ApplyInfoService;
 import com.bootdo.app.service.FlowDocService;
 import com.bootdo.app.service.TopicService;
 import com.bootdo.common.service.DictService;
+import com.bootdo.common.utils.DateUtils;
+import com.bootdo.common.utils.R;
 import com.bootdo.system.domain.UserDO;
 import com.bootdo.system.service.UserService;
 import org.activiti.engine.TaskService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-
-import com.bootdo.app.dao.ApplyInfoDao;
-import com.bootdo.app.domain.ApplyInfoDO;
-import com.bootdo.app.service.ApplyInfoService;
-
 import javax.annotation.Resource;
+import java.util.*;
 
 
 @Service
@@ -79,7 +80,6 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 	public String save(ApplyInfoDO applyInfo){
 		String result = UUID.randomUUID().toString();
 		applyInfo.setId(result);
-		applyInfo.setApplyStatus("1");
 		applyInfoDao.save(applyInfo);
 		return result;
 	}
@@ -100,16 +100,22 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 	}
 
 	@Override
-	public void commit(ApplyInfoDO applyInfo) {
-		applyInfo.setApplyStatus("2");
+	public String commit(ApplyInfoDO applyInfo) {
+		String message = "";
+		applyInfo.setApplyStatus(AppConstants.APP_LEAVE_APLLY_STATUS_2);
+		//根据角色信息找审批人，然后更新到申请的当前处理人-提交找责编
+		Map<String,Object> roleSign = new HashMap<>(16);
+		roleSign.put("roleSign",AppConstants.ROLE_DUTY_EDITOR);
+		List<UserDO> dutyEditors = userService.listByRoleSign(roleSign);
+		if(dutyEditors==null||dutyEditors.isEmpty()){
+			message = "系统没有找到责编对应的用户，请联系管理员";
+			return message;
+		}
+		applyInfo.setCurrentHandlerUserName(dutyEditors.get(0).getUsername());
+		applyInfo.setCurrentHandlerName(dutyEditors.get(0).getName());
+		applyInfo.setUpdateUser(applyInfo.getUsername());
+		applyInfo.setUpdateTime(DateUtils.getCurTimestamp());
 		applyInfoDao.update(applyInfo);
-		Map<String,Object> var = new HashMap<String,Object>();
-		var.put("userId",applyInfo.getUsername());
-		var.put("applyer",applyInfo.getUsername());
-		String processInstId = actTaskService.startAppProcess(ActivitiConstant.ACTIVITI_LEAVE_APPLY[0],ActivitiConstant.ACTIVITI_LEAVE_APPLY[1],applyInfo.getId()+"","请假申请流程",var);
-		var.put("assignee","app003");
-		var.put("pass","1");
-		actTaskService.completeByProInsId(processInstId,var);
 		//记录流转记录
 		FlowDocDO flowDocDO = new FlowDocDO();
 		flowDocDO.setHdlActionId(AppConstants.APP_APLLY_ACTION_ID_3);
@@ -130,6 +136,7 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 		flowDocDO.setBusinessType(AppConstants.BUSINESS_TYPE_APPLY);
 		flowDocDO.setHdlContent(AppConstants.APP_APLLY_ACTION_3);
 		flowDocService.save(flowDocDO);
+		return message;
 	}
 
 	/**

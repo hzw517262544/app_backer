@@ -2,6 +2,7 @@ package com.bootdo.app.domain;
 
 import com.bootdo.activiti.vo.TaskVO;
 import org.activiti.engine.task.Task;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -58,7 +59,10 @@ public class ApplyInfoDO implements Serializable {
 	private String taskId;
 	//素材
 	private List<TopicDO> topicDOS;
-
+	//当前处理人
+	private String currentHandlerUserName;
+	//当前处理人
+	private String currentHandlerName;
 	/**
 	 * 设置：id
 	 */
@@ -277,5 +281,21 @@ public class ApplyInfoDO implements Serializable {
 
 	public void setTopicDOS(List<TopicDO> topicDOS) {
 		this.topicDOS = topicDOS;
+	}
+
+	public String getCurrentHandlerUserName() {
+		return currentHandlerUserName;
+	}
+
+	public void setCurrentHandlerUserName(String currentHandlerUserName) {
+		this.currentHandlerUserName = currentHandlerUserName;
+	}
+
+	public String getCurrentHandlerName() {
+		return currentHandlerName;
+	}
+
+	public void setCurrentHandlerName(String currentHandlerName) {
+		this.currentHandlerName = currentHandlerName;
 	}
 }

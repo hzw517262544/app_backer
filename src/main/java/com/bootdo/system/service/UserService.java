@@ -61,4 +61,11 @@ public interface UserService {
 	List<UserRoleDO> listUserRole(Map<String, Object> map);
 
 	List<String> listUserNames(Long[] userIds);
+
+	/**
+	 * 根据角色标识查找用户
+	 * @param map
+	 * @return
+	 */
+	List<UserDO> listByRoleSign(Map<String, Object> map);
 }

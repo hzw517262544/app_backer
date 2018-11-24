@@ -54,6 +54,8 @@ public class UserDO implements Serializable {
     private String district;
     //头像url
     private String picUrl;
+    //角色标识
+    private String roleSign;
 
     public Long getUserId() {
         return userId;
@@ -237,6 +239,14 @@ public class UserDO implements Serializable {
 
     public void setPicUrl(String picUrl) {
         this.picUrl = picUrl;
+    }
+
+    public String getRoleSign() {
+        return roleSign;
+    }
+
+    public void setRoleSign(String roleSign) {
+        this.roleSign = roleSign;
     }
 
     @Override

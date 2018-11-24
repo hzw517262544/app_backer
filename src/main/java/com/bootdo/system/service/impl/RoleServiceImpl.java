@@ -19,6 +19,8 @@ import com.bootdo.system.domain.RoleDO;
 import com.bootdo.system.domain.RoleMenuDO;
 import com.bootdo.system.service.RoleService;
 
+import javax.annotation.Resource;
+
 
 @Service
 public class RoleServiceImpl implements RoleService {
@@ -27,13 +29,13 @@ public class RoleServiceImpl implements RoleService {
 
     public static final String DEMO_CACHE_NAME = "role";
 
-    @Autowired
+    @Resource
     RoleDao roleMapper;
-    @Autowired
+    @Resource
     RoleMenuDao roleMenuMapper;
-    @Autowired
+    @Resource
     UserDao userMapper;
-    @Autowired
+    @Resource
     UserRoleDao userRoleMapper;
 
     @Override
@@ -118,4 +120,13 @@ public class RoleServiceImpl implements RoleService {
         return r;
     }
 
+    @Override
+    public List<RoleDO> listByUserId(Long userId) {
+        List<Long> rolesIds = userRoleMapper.listRoleId(userId);
+        List<RoleDO> roleDOS = new ArrayList<RoleDO>(16);
+        for(Long id : rolesIds){
+            roleDOS.add(get(id));
+        }
+        return roleDOS;
+    }
 }

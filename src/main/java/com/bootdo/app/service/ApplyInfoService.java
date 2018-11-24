@@ -28,7 +28,7 @@ public interface ApplyInfoService {
 	
 	int batchRemove(String[] ids);
 
-	void commit(ApplyInfoDO applyInfo);
+	String commit(ApplyInfoDO applyInfo);
 
 	void backCommit(ApplyInfoDO applyInfo);
 

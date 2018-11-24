@@ -107,7 +107,19 @@ function load() {
 								},
 								{
                                 field : 'applyStatusName',
-                                title : '状态'
+                                title : '状态',
+								align :'center',
+								formatter : function(value, row, index){
+                                        if(row.applyStatus=='1'||row.applyStatus=='2'){
+                                            return '<span class="label label-warning">'+value+'</span>';
+                                        }else if(row.applyStatus=='4'||row.applyStatus=='0'){
+                                            return '<span class="label label-primary">'+value+'</span>';
+                                        }else if(row.applyStatus=='3'||row.applyStatus=='5'){
+                                            return '<span class="label label-danger">'+value+'</span>';
+                                        }else{
+                                        	return '<span class="label label-primary">'+value+'</span>';
+										}
+                                    }
                             	},
 																{
 									field : 'createTime', 

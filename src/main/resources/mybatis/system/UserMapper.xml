@@ -159,4 +159,45 @@
 			#{userId}
 		</foreach>
 	</select>
+
+	<select id="listByRoleSign" resultType="com.bootdo.system.domain.UserDO">
+		SELECT
+		su.user_id,
+		su.username,
+		su.name,
+		su.password,
+		su.dept_id,
+		su.email,
+		su.mobile,
+		su.status,
+		su.user_id_create,
+		su.gmt_create,
+		su.gmt_modified,
+		su.sex,
+		su.birth,
+		su.pic_id,
+		su.live_address,
+		su.hobby,
+		su.province,
+		su.city,
+		su.district
+		FROM
+		sys_user su
+		LEFT JOIN sys_user_role sur ON su.user_id = sur.user_id
+		LEFT JOIN sys_role sr ON sur.role_id = sr.role_id
+		<where>
+			sr.role_sign = #{roleSign}
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by convert(su.name using gbk) asc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
 </mapper>

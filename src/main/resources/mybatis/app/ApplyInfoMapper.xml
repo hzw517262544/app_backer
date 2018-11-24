@@ -4,11 +4,11 @@
 <mapper namespace="com.bootdo.app.dao.ApplyInfoDao">
 
 	<select id="get" resultType="com.bootdo.app.domain.ApplyInfoDO">
-		select `id`,`username`,`name`,`apply_type`,`apply_type_name`,`apply_secod_type`,`apply_secod_type_name`,`apply_start_time`,`apply_end_time`,`apply_content`,`apply_status`,`create_time`,`create_user`,`update_time`,`update_user` from app_apply_info where id = #{value}
+		select `id`,`username`,`name`,`apply_type`,`apply_type_name`,`apply_secod_type`,`apply_secod_type_name`,`apply_start_time`,`apply_end_time`,`apply_content`,`apply_status`,`create_time`,`create_user`,`update_time`,`update_user`,`Current_handler_user_name`,`Current_handler_name` from app_apply_info where id = #{value}
 	</select>
 
 	<select id="list" resultType="com.bootdo.app.domain.ApplyInfoDO">
-		select `id`,`username`,`name`,`apply_type`,`apply_type_name`,`apply_secod_type`,`apply_secod_type_name`,`apply_start_time`,`apply_end_time`,`apply_content`,`apply_status`,`create_time`,`create_user`,`update_time`,`update_user` from app_apply_info
+		select `id`,`username`,`name`,`apply_type`,`apply_type_name`,`apply_secod_type`,`apply_secod_type_name`,`apply_start_time`,`apply_end_time`,`apply_content`,`apply_status`,`create_time`,`create_user`,`update_time`,`update_user`,`Current_handler_user_name`,`Current_handler_name` from app_apply_info
         <where>  
 		  		  <if test="id != null and id != ''"> and id = #{id} </if>
 		  		  <if test="username != null and username != ''"> and username = #{username} </if>
@@ -25,13 +25,15 @@
 		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
 		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
 		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+		  		  <if test="currentHandlerUserName != null and currentHandlerUserName != ''"> and Current_handler_user_name = #{currentHandlerUserName} </if>
+		  		  <if test="currentHandlerName != null and currentHandlerName != ''"> and Current_handler_name = #{currentHandlerName} </if>
 		  		</where>
         <choose>
             <when test="sort != null and sort.trim() != ''">
                 order by ${sort} ${order}
             </when>
 			<otherwise>
-                order by create_time desc
+                order by id desc
 			</otherwise>
         </choose>
 		<if test="offset != null and limit != null">
@@ -57,13 +59,15 @@
 		  		  <if test="createUser != null and createUser != ''"> and create_user = #{createUser} </if>
 		  		  <if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
 		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
+		  		  <if test="currentHandlerUserName != null and currentHandlerUserName != ''"> and Current_handler_user_name = #{currentHandlerUserName} </if>
+		  		  <if test="currentHandlerName != null and currentHandlerName != ''"> and Current_handler_name = #{currentHandlerName} </if>
 		  		</where>
 	</select>
 	 
-	<insert id="save" parameterType="com.bootdo.app.domain.ApplyInfoDO" useGeneratedKeys="true" keyProperty="id">
+	<insert id="save" parameterType="com.bootdo.app.domain.ApplyInfoDO">
 		insert into app_apply_info
 		(
-			`id`,
+			`id`, 
 			`username`, 
 			`name`, 
 			`apply_type`, 
@@ -77,11 +81,13 @@
 			`create_time`, 
 			`create_user`, 
 			`update_time`, 
-			`update_user`
+			`update_user`, 
+			`Current_handler_user_name`, 
+			`Current_handler_name`
 		)
 		values
 		(
-			#{id},
+			#{id}, 
 			#{username}, 
 			#{name}, 
 			#{applyType}, 
@@ -95,7 +101,9 @@
 			#{createTime}, 
 			#{createUser}, 
 			#{updateTime}, 
-			#{updateUser}
+			#{updateUser}, 
+			#{currentHandlerUserName}, 
+			#{currentHandlerName}
 		)
 	</insert>
 	 
@@ -115,7 +123,9 @@
 			<if test="createTime != null">`create_time` = #{createTime}, </if>
 			<if test="createUser != null">`create_user` = #{createUser}, </if>
 			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
-			<if test="updateUser != null">`update_user` = #{updateUser}</if>
+			<if test="updateUser != null">`update_user` = #{updateUser}, </if>
+			<if test="currentHandlerUserName != null">`Current_handler_user_name` = #{currentHandlerUserName}, </if>
+			<if test="currentHandlerName != null">`Current_handler_name` = #{currentHandlerName}</if>
 		</set>
 		where id = #{id}
 	</update>

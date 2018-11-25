@@ -31,46 +31,48 @@ public class AppConstants {
      * action_id
      */
     public static final String APP_APLLY_ACTION_ID = "APP_APLLY_ACTION_ID";
+
     /**
-     *驳回
-     */
-    public static final String APP_APLLY_ACTION_ID_0 = "0";
-    /**
-     *审核通过
+     *报审
      */
     public static final String APP_APLLY_ACTION_ID_1 = "1";
     /**
-     *审核不通过
+     *二审同意
      */
     public static final String APP_APLLY_ACTION_ID_2 = "2";
     /**
-     *提交
+     *二审驳回
      */
     public static final String APP_APLLY_ACTION_ID_3 = "3";
     /**
-     *取消
+     *终审同意
      */
     public static final String APP_APLLY_ACTION_ID_4 = "4";
     /**
-     *驳回
+     *终审驳回
      */
-    public static final String APP_APLLY_ACTION_0 = "退回";
+    public static final String APP_APLLY_ACTION_ID_5 = "5";
+
     /**
-     *审核通过
+     *报审
      */
-    public static final String APP_APLLY_ACTION_1 = "同意";
+    public static final String APP_APLLY_ACTION_1 = "报审";
     /**
-     *审核不通过
+     *二审同意
      */
-    public static final String APP_APLLY_ACTION_2 = "审核不通过";
+    public static final String APP_APLLY_ACTION_2 = "二审同意";
     /**
-     *提交
+     *二审驳回
      */
-    public static final String APP_APLLY_ACTION_3 = "送审";
+    public static final String APP_APLLY_ACTION_3 = "二审驳回";
     /**
-     *取消
+     *终审同意
      */
-    public static final String APP_APLLY_ACTION_4 = "取消";
+    public static final String APP_APLLY_ACTION_4 = "终审同意";
+    /**
+     *终审驳回
+     */
+    public static final String APP_APLLY_ACTION_5 = "终审驳回";
     /**
      * 取消
      */

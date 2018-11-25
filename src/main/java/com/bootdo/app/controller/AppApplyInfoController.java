@@ -243,6 +243,8 @@ public class AppApplyInfoController extends BaseController {
 		//查询当前用户的角色信息，责编通过到总编，总编通过则流程结束
 		List<RoleDO> roles = roleService.listByUserId(userDO.getUserId());
 		ApplyInfoDO applyInfoDO = applyInfoService.get(applyId);
+		String actionId = "";
+		String actionName = "";
 		if(roles != null&&!roles.isEmpty()){
 			for(RoleDO roleDO : roles){
 				if(AppConstants.ROLE_DUTY_EDITOR_WX.equals(roleDO.getRoleSign())
@@ -255,11 +257,15 @@ public class AppApplyInfoController extends BaseController {
 					}
 					applyInfoDO.setCurrentHandlerUserName(presidentEditors.get(0).getUsername());
 					applyInfoDO.setCurrentHandlerName(presidentEditors.get(0).getName());
+					actionId = AppConstants.APP_APLLY_ACTION_ID_2;
+					actionName = AppConstants.APP_APLLY_ACTION_2;
 				}else if(AppConstants.ROLE_PRESIDENT_EDITOR.equals(roleDO.getRoleSign())){
 					applyInfoDO.setApplyStatus(AppConstants.APP_LEAVE_APLLY_STATUS_4);
 					applyInfoDO.setApplyStatusName(AppConstants.APP_LEAVE_APLLY_STATUS_NAME_4);
 					applyInfoDO.setCurrentHandlerUserName("");
 					applyInfoDO.setCurrentHandlerName("");
+					actionId = AppConstants.APP_APLLY_ACTION_ID_4;
+					actionName = AppConstants.APP_APLLY_ACTION_4;
 				}
 			}
 			applyInfoDO.setUpdateUser(userName);
@@ -270,8 +276,8 @@ public class AppApplyInfoController extends BaseController {
 		}
 		//新增流转记录
 		FlowDocDO flowDocDO = new FlowDocDO();
-		flowDocDO.setHdlActionId(AppConstants.APP_APLLY_ACTION_ID_1);
-		flowDocDO.setHdlAction(AppConstants.APP_APLLY_ACTION_1);
+		flowDocDO.setHdlActionId(actionId);
+		flowDocDO.setHdlAction(actionName);
 		flowDocDO.setCreateUserId(userDO.getUsername());
 		flowDocDO.setCreateUserName(userDO.getName());
 		flowDocDO.setCreateTime(DateUtils.getCurTimestamp());
@@ -302,7 +308,27 @@ public class AppApplyInfoController extends BaseController {
 			return R.error().put("msg","系统没有查询到当前用户信息，请联系管理员");
 		}
 		//不同意直接将申请退回到申请人
+		List<RoleDO> roles = roleService.listByUserId(userDO.getUserId());
 		ApplyInfoDO applyInfoDO = applyInfoService.get(applyId);
+		String actionId = "";
+		String actionName = "";
+		if(roles != null&&!roles.isEmpty()){
+			for(RoleDO roleDO : roles){
+				if(AppConstants.ROLE_DUTY_EDITOR_WX.equals(roleDO.getRoleSign())
+						||AppConstants.ROLE_DUTY_EDITOR_WB.equals(roleDO.getRoleSign())){
+					actionId = AppConstants.APP_APLLY_ACTION_ID_3;
+					actionName = AppConstants.APP_APLLY_ACTION_3;
+				}else if(AppConstants.ROLE_PRESIDENT_EDITOR.equals(roleDO.getRoleSign())){
+					actionId = AppConstants.APP_APLLY_ACTION_ID_5;
+					actionName = AppConstants.APP_APLLY_ACTION_5;
+				}
+			}
+			applyInfoDO.setUpdateUser(userName);
+			applyInfoDO.setUpdateTime(DateUtils.getCurTimestamp());
+			applyInfoService.update(applyInfoDO);
+		}else{
+			return R.error().put("msg","系统没有查询到当前用户的角色信息，请联系管理员");
+		}
 		applyInfoDO.setApplyStatus(AppConstants.APP_LEAVE_APLLY_STATUS_3);
 		applyInfoDO.setApplyStatusName(AppConstants.APP_LEAVE_APLLY_STATUS_NAME_3);
 		applyInfoDO.setUpdateUser(userName);
@@ -312,8 +338,8 @@ public class AppApplyInfoController extends BaseController {
 		applyInfoService.update(applyInfoDO);
 		//新增流转记录
 		FlowDocDO flowDocDO = new FlowDocDO();
-		flowDocDO.setHdlActionId(AppConstants.APP_APLLY_ACTION_ID_0);
-		flowDocDO.setHdlAction(AppConstants.APP_APLLY_ACTION_0);
+		flowDocDO.setHdlActionId(actionId);
+		flowDocDO.setHdlAction(actionName);
 		flowDocDO.setCreateUserId(userDO.getUsername());
 		flowDocDO.setCreateUserName(userDO.getName());
 		flowDocDO.setCreateTime(DateUtils.getCurTimestamp());

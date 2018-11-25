@@ -124,8 +124,8 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 		applyInfoDao.update(applyInfo);
 		//记录流转记录
 		FlowDocDO flowDocDO = new FlowDocDO();
-		flowDocDO.setHdlActionId(AppConstants.APP_APLLY_ACTION_ID_3);
-		flowDocDO.setHdlAction(AppConstants.APP_APLLY_ACTION_3);
+		flowDocDO.setHdlActionId(AppConstants.APP_APLLY_ACTION_ID_1);
+		flowDocDO.setHdlAction(AppConstants.APP_APLLY_ACTION_1);
 		Map<String,Object> userPar = new HashMap<String,Object>();
 		userPar.put("username",applyInfo.getUsername());
 		List<UserDO> userDOS = userService.list(userPar);
@@ -140,7 +140,7 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 		flowDocDO.setCreateTime(new Date());
 		flowDocDO.setBusinessId(applyInfo.getId());
 		flowDocDO.setBusinessType(AppConstants.BUSINESS_TYPE_APPLY);
-		flowDocDO.setHdlContent(AppConstants.APP_APLLY_ACTION_3);
+		flowDocDO.setHdlContent(AppConstants.APP_APLLY_ACTION_1);
 		flowDocService.save(flowDocDO);
 		return message;
 	}

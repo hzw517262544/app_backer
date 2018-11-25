@@ -63,6 +63,17 @@ public class ApplyInfoDO implements Serializable {
 	private String currentHandlerUserName;
 	//当前处理人
 	private String currentHandlerName;
+	//标题
+	private String applyTitle;
+	//编号
+	private String applyNo;
+
+	private String sendPlatformName;
+	private String sendPlatform;
+	private String sendGradeName;
+	private String sendGrade;
+	private String dutyEditorOpinion;
+	private String presidentEditorOpinion;
 	/**
 	 * 设置：id
 	 */
@@ -297,5 +308,69 @@ public class ApplyInfoDO implements Serializable {
 
 	public void setCurrentHandlerName(String currentHandlerName) {
 		this.currentHandlerName = currentHandlerName;
+	}
+
+	public String getApplyTitle() {
+		return applyTitle;
+	}
+
+	public void setApplyTitle(String applyTitle) {
+		this.applyTitle = applyTitle;
+	}
+
+	public String getApplyNo() {
+		return applyNo;
+	}
+
+	public void setApplyNo(String applyNo) {
+		this.applyNo = applyNo;
+	}
+
+	public String getSendPlatformName() {
+		return sendPlatformName;
+	}
+
+	public void setSendPlatformName(String sendPlatformName) {
+		this.sendPlatformName = sendPlatformName;
+	}
+
+	public String getSendPlatform() {
+		return sendPlatform;
+	}
+
+	public void setSendPlatform(String sendPlatform) {
+		this.sendPlatform = sendPlatform;
+	}
+
+	public String getSendGradeName() {
+		return sendGradeName;
+	}
+
+	public void setSendGradeName(String sendGradeName) {
+		this.sendGradeName = sendGradeName;
+	}
+
+	public String getSendGrade() {
+		return sendGrade;
+	}
+
+	public void setSendGrade(String sendGrade) {
+		this.sendGrade = sendGrade;
+	}
+
+	public String getDutyEditorOpinion() {
+		return dutyEditorOpinion;
+	}
+
+	public void setDutyEditorOpinion(String dutyEditorOpinion) {
+		this.dutyEditorOpinion = dutyEditorOpinion;
+	}
+
+	public String getPresidentEditorOpinion() {
+		return presidentEditorOpinion;
+	}
+
+	public void setPresidentEditorOpinion(String presidentEditorOpinion) {
+		this.presidentEditorOpinion = presidentEditorOpinion;
 	}
 }

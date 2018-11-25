@@ -213,9 +213,11 @@ public class AppApplyInfoController extends BaseController {
 	}
 	@ResponseBody
 	@GetMapping("/todoList")
-	public List<ApplyInfoDO> todoList(String username){
+	public List<ApplyInfoDO> todoList(String username,String applyType,String applySecodType){
 		Map<String,Object> parMap = new HashMap<String,Object>(16);
 		parMap.put("currentHandlerUserName",username);
+		parMap.put("applyType",applyType);
+		parMap.put("applySecodType",applySecodType);
 		return applyInfoService.list(parMap);
 	}
 

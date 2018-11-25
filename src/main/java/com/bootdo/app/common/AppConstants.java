@@ -66,7 +66,7 @@ public class AppConstants {
     /**
      *提交
      */
-    public static final String APP_APLLY_ACTION_3 = "提交";
+    public static final String APP_APLLY_ACTION_3 = "送审";
     /**
      *取消
      */

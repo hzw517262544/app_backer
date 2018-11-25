@@ -4,11 +4,11 @@
 <mapper namespace="com.bootdo.app.dao.ApplyInfoDao">
 
 	<select id="get" resultType="com.bootdo.app.domain.ApplyInfoDO">
-		select `id`,`username`,`name`,`apply_type`,`apply_type_name`,`apply_secod_type`,`apply_secod_type_name`,`apply_start_time`,`apply_end_time`,`apply_content`,`apply_status`,`create_time`,`create_user`,`update_time`,`update_user`,`Current_handler_user_name`,`Current_handler_name` from app_apply_info where id = #{value}
+		select `id`,`username`,`name`,`apply_type`,`apply_type_name`,`apply_secod_type`,`apply_secod_type_name`,`apply_start_time`,`apply_end_time`,`apply_content`,`apply_status`,`create_time`,`create_user`,`update_time`,`update_user`,`Current_handler_user_name`,`Current_handler_name`,`apply_title`,`apply_no`,`send_platform_name`,`send_platform`,`send_grade_name`,`send_grade`,`DUTY_EDITOR_opinion`,`PRESIDENT_EDITOR_opinion` from app_apply_info where id = #{value}
 	</select>
 
 	<select id="list" resultType="com.bootdo.app.domain.ApplyInfoDO">
-		select `id`,`username`,`name`,`apply_type`,`apply_type_name`,`apply_secod_type`,`apply_secod_type_name`,`apply_start_time`,`apply_end_time`,`apply_content`,`apply_status`,`create_time`,`create_user`,`update_time`,`update_user`,`Current_handler_user_name`,`Current_handler_name` from app_apply_info
+		select `id`,`username`,`name`,`apply_type`,`apply_type_name`,`apply_secod_type`,`apply_secod_type_name`,`apply_start_time`,`apply_end_time`,`apply_content`,`apply_status`,`create_time`,`create_user`,`update_time`,`update_user`,`Current_handler_user_name`,`Current_handler_name`,`apply_title`,`apply_no`,`send_platform_name`,`send_platform`,`send_grade_name`,`send_grade`,`DUTY_EDITOR_opinion`,`PRESIDENT_EDITOR_opinion` from app_apply_info
         <where>  
 		  		  <if test="id != null and id != ''"> and id = #{id} </if>
 		  		  <if test="username != null and username != ''"> and username = #{username} </if>
@@ -27,6 +27,14 @@
 		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
 		  		  <if test="currentHandlerUserName != null and currentHandlerUserName != ''"> and Current_handler_user_name = #{currentHandlerUserName} </if>
 		  		  <if test="currentHandlerName != null and currentHandlerName != ''"> and Current_handler_name = #{currentHandlerName} </if>
+		  		  <if test="applyTitle != null and applyTitle != ''"> and apply_title = #{applyTitle} </if>
+		  		  <if test="applyNo != null and applyNo != ''"> and apply_no = #{applyNo} </if>
+		  		  <if test="sendPlatformName != null and sendPlatformName != ''"> and send_platform_name = #{sendPlatformName} </if>
+		  		  <if test="sendPlatform != null and sendPlatform != ''"> and send_platform = #{sendPlatform} </if>
+		  		  <if test="sendGradeName != null and sendGradeName != ''"> and send_grade_name = #{sendGradeName} </if>
+		  		  <if test="sendGrade != null and sendGrade != ''"> and send_grade = #{sendGrade} </if>
+		  		  <if test="dutyEditorOpinion != null and dutyEditorOpinion != ''"> and DUTY_EDITOR_opinion = #{dutyEditorOpinion} </if>
+		  		  <if test="presidentEditorOpinion != null and presidentEditorOpinion != ''"> and PRESIDENT_EDITOR_opinion = #{presidentEditorOpinion} </if>
 		  		</where>
         <choose>
             <when test="sort != null and sort.trim() != ''">
@@ -61,6 +69,14 @@
 		  		  <if test="updateUser != null and updateUser != ''"> and update_user = #{updateUser} </if>
 		  		  <if test="currentHandlerUserName != null and currentHandlerUserName != ''"> and Current_handler_user_name = #{currentHandlerUserName} </if>
 		  		  <if test="currentHandlerName != null and currentHandlerName != ''"> and Current_handler_name = #{currentHandlerName} </if>
+		  		  <if test="applyTitle != null and applyTitle != ''"> and apply_title = #{applyTitle} </if>
+		  		  <if test="applyNo != null and applyNo != ''"> and apply_no = #{applyNo} </if>
+		  		  <if test="sendPlatformName != null and sendPlatformName != ''"> and send_platform_name = #{sendPlatformName} </if>
+		  		  <if test="sendPlatform != null and sendPlatform != ''"> and send_platform = #{sendPlatform} </if>
+		  		  <if test="sendGradeName != null and sendGradeName != ''"> and send_grade_name = #{sendGradeName} </if>
+		  		  <if test="sendGrade != null and sendGrade != ''"> and send_grade = #{sendGrade} </if>
+		  		  <if test="dutyEditorOpinion != null and dutyEditorOpinion != ''"> and DUTY_EDITOR_opinion = #{dutyEditorOpinion} </if>
+		  		  <if test="presidentEditorOpinion != null and presidentEditorOpinion != ''"> and PRESIDENT_EDITOR_opinion = #{presidentEditorOpinion} </if>
 		  		</where>
 	</select>
 	 
@@ -83,7 +99,15 @@
 			`update_time`, 
 			`update_user`, 
 			`Current_handler_user_name`, 
-			`Current_handler_name`
+			`Current_handler_name`, 
+			`apply_title`, 
+			`apply_no`, 
+			`send_platform_name`, 
+			`send_platform`, 
+			`send_grade_name`, 
+			`send_grade`, 
+			`DUTY_EDITOR_opinion`, 
+			`PRESIDENT_EDITOR_opinion`
 		)
 		values
 		(
@@ -103,7 +127,15 @@
 			#{updateTime}, 
 			#{updateUser}, 
 			#{currentHandlerUserName}, 
-			#{currentHandlerName}
+			#{currentHandlerName}, 
+			#{applyTitle}, 
+			#{applyNo}, 
+			#{sendPlatformName}, 
+			#{sendPlatform}, 
+			#{sendGradeName}, 
+			#{sendGrade}, 
+			#{dutyEditorOpinion}, 
+			#{presidentEditorOpinion}
 		)
 	</insert>
 	 
@@ -125,7 +157,15 @@
 			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
 			<if test="updateUser != null">`update_user` = #{updateUser}, </if>
 			<if test="currentHandlerUserName != null">`Current_handler_user_name` = #{currentHandlerUserName}, </if>
-			<if test="currentHandlerName != null">`Current_handler_name` = #{currentHandlerName}</if>
+			<if test="currentHandlerName != null">`Current_handler_name` = #{currentHandlerName}, </if>
+			<if test="applyTitle != null">`apply_title` = #{applyTitle}, </if>
+			<if test="applyNo != null">`apply_no` = #{applyNo}, </if>
+			<if test="sendPlatformName != null">`send_platform_name` = #{sendPlatformName}, </if>
+			<if test="sendPlatform != null">`send_platform` = #{sendPlatform}, </if>
+			<if test="sendGradeName != null">`send_grade_name` = #{sendGradeName}, </if>
+			<if test="sendGrade != null">`send_grade` = #{sendGrade}, </if>
+			<if test="dutyEditorOpinion != null">`DUTY_EDITOR_opinion` = #{dutyEditorOpinion}, </if>
+			<if test="presidentEditorOpinion != null">`PRESIDENT_EDITOR_opinion` = #{presidentEditorOpinion}</if>
 		</set>
 		where id = #{id}
 	</update>

@@ -106,9 +106,9 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 		//根据角色信息找审批人，然后更新到申请的当前处理人-提交找责编
 		Map<String,Object> roleSign = new HashMap<>(16);
 		String roleDutyEditor = "";
-		if(AppConstants.APPLY_SECOD_TYPE_WB.equals(applyInfo.getApplySecodType())){
+		if(AppConstants.APPLY_SECOD_TYPE_WB.equals(applyInfo.getSendPlatform())){
 			roleDutyEditor = AppConstants.ROLE_DUTY_EDITOR_WB;
-		}else if(AppConstants.APPLY_SECOD_TYPE_WX.equals(applyInfo.getApplySecodType())){
+		}else if(AppConstants.APPLY_SECOD_TYPE_WX.equals(applyInfo.getSendPlatform())){
 			roleDutyEditor = AppConstants.ROLE_DUTY_EDITOR_WX;
 		}
 		roleSign.put("roleSign",roleDutyEditor);

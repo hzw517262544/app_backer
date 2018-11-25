@@ -91,7 +91,8 @@ function load() {
 								},
 																{
 									field : 'applySecodTypeName', 
-									title : '申请子类型'
+									title : '申请子类型',
+									visible: false
 								},
 								{
 									field : 'sendPlatform',

@@ -61,12 +61,20 @@ function load() {
                             },
 																{
 									field : 'username', 
-									title : '用户账号'
+									title : '用户账号' ,
+									visible: false
 								},
 																{
 									field : 'name', 
-									title : '用户姓名' 
-								},
+									title : '用户姓名'  ,
+									visible: false
+								},{
+                                field : 'applyNo',
+                                title : '编号'
+							},{
+                                field : 'applyTitle',
+                                title : '标题'
+                            },
 																{
 									field : 'applyType', 
 									title : '申请类型' ,
@@ -84,6 +92,24 @@ function load() {
 																{
 									field : 'applySecodTypeName', 
 									title : '申请子类型'
+								},
+								{
+									field : 'sendPlatform',
+									title : '发送平台'  ,
+									visible: false
+								},
+								{
+									field : 'sendPlatformName',
+									title : '发送平台'
+								},
+								{
+									field : 'sendGrade',
+									title : '发送等级'  ,
+									visible: false
+								},
+								{
+									field : 'sendGradeName',
+									title : '发送等级'
 								},
 																{
 									field : 'applyStartTime', 
@@ -131,11 +157,13 @@ function load() {
 								},
 																{
 									field : 'updateTime', 
-									title : '更新时间' 
+									title : '更新时间'  ,
+									visible: false
 								},
 																{
 									field : 'updateUser', 
-									title : '更新人' 
+									title : '更新人'  ,
+									visible: false
 								},
 																{
 									title : '操作',

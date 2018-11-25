@@ -22,6 +22,18 @@
 									<input id="name" name="name" th:value="${applyInfo.name}" class="form-control" type="text">
 								</div>
 							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">编号：</label>
+								<div class="col-sm-8">
+									<input id="applyNo" name="applyNo" th:value="${applyInfo.applyNo}"  class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">标题：</label>
+								<div class="col-sm-8">
+									<input id="applyTitle" name="applyTitle"  th:value="${applyInfo.applyTitle}" class="form-control" type="text">
+								</div>
+							</div>
 														<div class="form-group">	
 								<label class="col-sm-3 control-label">申请类型：</label>
 								<div class="col-sm-8">
@@ -54,6 +66,43 @@
 								<label class="col-sm-3 control-label">申请子类型名称：</label>
 								<div class="col-sm-8">
 									<input id="applySecodTypeName" name="applySecodTypeName" th:value="${applyInfo.applySecodTypeName}" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group" hidden="hidden">
+								<label class="col-sm-3 control-label">发送平台：</label>
+								<div class="col-sm-8">
+									<input id="sendPlatformName" name="sendPlatformName" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">发送平台：</label>
+								<div class="col-sm-8">
+									<select id="sendPlatform" name="sendPlatform" class="form-control"
+											  data-select-type-name="sendPlatformName">
+										<option th:each="sendPlatform : ${mediaSendPlatform}"
+												th:value="${sendPlatform.value}"
+												th:text="${sendPlatform.name}"
+												th:selected="${sendPlatform.remarks eq 'checked'}"></option>
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group" hidden="hidden">
+								<label class="col-sm-3 control-label">发送等级：</label>
+								<div class="col-sm-8">
+									<input id="sendGradeName" name="sendGradeName" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">发送等级：</label>
+								<div class="col-sm-8">
+									<select id="sendGrade" name="sendGrade" class="form-control"
+											data-select-type-name="sendGradeName">
+										<option th:each="sendGrade : ${mediaSendGrade}"
+												th:value="${sendGrade.value}"
+												th:text="${sendGrade.name}"
+												th:selected="${sendGrade.remarks eq 'checked'}"></option>
+									</select>
 								</div>
 							</div>
 														<div class="form-group"  hidden="hidden">

@@ -116,9 +116,24 @@ public class AppApplyInfoController extends BaseController {
 				dictDO.setRemarks("checked");
 			}
 		}
+
+		List<DictDO> mediaSendPlatform = dictService.listByType(AppConstants.APP_MEDIA_SEND_PLATFORM);
+		for (DictDO dictDO:mediaSendPlatform){
+			if(applyInfo.getSendPlatform().equals(dictDO.getValue())){
+				dictDO.setRemarks("checked");
+			}
+		}
+		List<DictDO> mediaSendGrade = dictService.listByType(AppConstants.APP_MEDIA_SEND_GRADE);
+		for (DictDO dictDO:mediaSendGrade){
+			if(applyInfo.getSendGrade().equals(dictDO.getValue())){
+				dictDO.setRemarks("checked");
+			}
+		}
 		model.addAttribute("applyInfo", applyInfo);
 		model.addAttribute("mediaApllyType", mediaApllyType);
 		model.addAttribute("mediaApllyTypeSecond", mediaApllyTypeSecond);
+		model.addAttribute("mediaSendPlatform", mediaSendPlatform);
+		model.addAttribute("mediaSendGrade", mediaSendGrade);
 	    return "app/applyInfo/edit";
 	}
 	

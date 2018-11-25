@@ -245,7 +245,8 @@ public class AppApplyInfoController extends BaseController {
 		ApplyInfoDO applyInfoDO = applyInfoService.get(applyId);
 		if(roles != null&&!roles.isEmpty()){
 			for(RoleDO roleDO : roles){
-				if(AppConstants.ROLE_DUTY_EDITOR.equals(roleDO.getRoleSign())){
+				if(AppConstants.ROLE_DUTY_EDITOR_WX.equals(roleDO.getRoleSign())
+				||AppConstants.ROLE_DUTY_EDITOR_WB.equals(roleDO.getRoleSign())){
 					Map<String,Object> roleSign = new HashMap<>(16);
 					roleSign.put("roleSign",AppConstants.ROLE_PRESIDENT_EDITOR);
 					List<UserDO> presidentEditors = userService.listByRoleSign(roleSign);
@@ -379,7 +380,7 @@ public class AppApplyInfoController extends BaseController {
 		}
 		//根据角色信息找审批人，然后更新到申请的当前处理人-提交找责编
 		Map<String,Object> roleSign = new HashMap<>(16);
-		roleSign.put("roleSign",AppConstants.ROLE_DUTY_EDITOR);
+		roleSign.put("roleSign",AppConstants.ROLE_DUTY_EDITOR_WB);
 		List<UserDO> dutyEditors = userService.listByRoleSign(roleSign);
 		if(dutyEditors==null||dutyEditors.isEmpty()){
 			return R.error().put("msg","系统没有找到责编对应的用户，请联系管理员");

@@ -148,11 +148,19 @@ public class AppConstants {
      */
     public static final String ROLE_JUNIOR_EDITOR = "JUNIOR_EDITOR";
     /**
-     *责编
+     *责编-微信
      */
-    public static final String ROLE_DUTY_EDITOR = "DUTY_EDITOR";
+    public static final String ROLE_DUTY_EDITOR_WX = "DUTY_EDITOR_WX";
+    /**
+     *责编-微博
+     */
+    public static final String ROLE_DUTY_EDITOR_WB = "DUTY_EDITOR_WB";
     /**
      *总编
      */
     public static final String ROLE_PRESIDENT_EDITOR = "PRESIDENT_EDITOR";
+
+    public static final String APPLY_SECOD_TYPE_WX = "weixin";
+
+    public static final String APPLY_SECOD_TYPE_WB = "weibo";
 }

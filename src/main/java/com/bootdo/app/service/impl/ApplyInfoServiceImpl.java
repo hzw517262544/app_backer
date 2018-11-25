@@ -135,7 +135,7 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 		}else{
 			userDO = new UserDO();
 		}
-		flowDocDO.setCreateUserId(userDO.getUserId()+"");
+		flowDocDO.setCreateUserId(userDO.getUsername());
 		flowDocDO.setCreateUserName(userDO.getName());
 		flowDocDO.setCreateTime(new Date());
 		flowDocDO.setBusinessId(applyInfo.getId());
@@ -206,5 +206,18 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 		Map<String,Object> vars = new HashMap<>(16);
 		vars.put("pass","0");
 		actTaskService.complete(applyInfo.getTaskId(),vars);
+	}
+
+	@Override
+	public List<ApplyInfoDO> listApproved(Map<String, Object> map) {
+		{
+			List<ApplyInfoDO> list = applyInfoDao.listApproved(map);
+			if(list != null&&!list.isEmpty()){
+				for(ApplyInfoDO applyInfoDO : list){
+					applyInfoDO.setApplyStatusName(dictService.getName("APP_LEAVE_APLLY_STATUS",applyInfoDO.getApplyStatus()));
+				}
+			}
+			return list;
+		}
 	}
 }

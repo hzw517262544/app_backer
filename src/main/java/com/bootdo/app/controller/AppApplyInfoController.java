@@ -93,6 +93,18 @@ public class AppApplyInfoController extends BaseController {
 		PageUtils pageUtils = new PageUtils(applyInfoList, total);
 		return pageUtils;
 	}
+
+	@ResponseBody
+	@GetMapping("/listApproved")
+//	@RequiresPermissions("app:applyInfo:applyInfo")
+	public PageUtils listApproved(@RequestParam Map<String, Object> params){
+		//查询列表数据
+		Query query = new Query(params);
+		List<ApplyInfoDO> applyInfoList = applyInfoService.list(query);
+		int total = applyInfoService.count(query);
+		PageUtils pageUtils = new PageUtils(applyInfoList, total);
+		return pageUtils;
+	}
 	
 	@GetMapping("/add")
 //	@RequiresPermissions("app:applyInfo:add")

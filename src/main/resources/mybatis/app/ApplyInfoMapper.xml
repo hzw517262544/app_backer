@@ -41,7 +41,7 @@
                 order by ${sort} ${order}
             </when>
 			<otherwise>
-                order by id desc
+                order by create_time desc
 			</otherwise>
         </choose>
 		<if test="offset != null and limit != null">
@@ -180,5 +180,59 @@
 			#{id}
 		</foreach>
 	</delete>
+	<!--查询已审核数据-->
+	<select id="listApproved" resultType="com.bootdo.app.domain.ApplyInfoDO">
+		select
+		aai.id,
+		aai.username,
+		aai.name,
+		aai.apply_type,
+		aai.apply_type_name,
+		aai.apply_secod_type,
+		aai.apply_secod_type_name,
+		aai.apply_start_time,
+		aai.apply_end_time,
+		aai.apply_content,
+		aai.apply_status,
+		aai.create_time,
+		aai.create_user,
+		aai.update_time,
+		aai.update_user,
+		aai.Current_handler_user_name,
+		aai.Current_handler_name,
+		aai.apply_title,
+		aai.apply_no,
+		aai.send_platform_name,
+		aai.send_platform,
+		aai.send_grade_name,
+		aai.send_grade,
+		aai.DUTY_EDITOR_opinion,
+		aai.PRESIDENT_EDITOR_opinion
+		from app_apply_info
+		<where>
+			EXISTS (
+			SELECT
+			1
+			FROM
+			app_flow_doc afd
+			WHERE
+			aai.id = afd.business_id
+			AND afd.create_user_id = #{handlerUserName}
+			)
+			<if test="applyType != null and applyType != ''"> and apply_type = #{applyType} </if>
+			<if test="sendPlatform != null and sendPlatform != ''"> and send_platform = #{sendPlatform} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by create_time desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
 
 </mapper>

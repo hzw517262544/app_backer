@@ -33,4 +33,6 @@ public interface ApplyInfoService {
 	void backCommit(ApplyInfoDO applyInfo);
 
     void cancel(ApplyInfoDO applyInfo);
+
+	List<ApplyInfoDO> listApproved(Map<String, Object> map);
 }

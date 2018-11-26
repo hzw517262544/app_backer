@@ -208,7 +208,7 @@
 		aai.send_grade,
 		aai.DUTY_EDITOR_opinion,
 		aai.PRESIDENT_EDITOR_opinion
-		from app_apply_info
+		from app_apply_info aai
 		<where>
 			EXISTS (
 			SELECT
@@ -219,6 +219,7 @@
 			aai.id = afd.business_id
 			AND afd.create_user_id = #{handlerUserName}
 			)
+            and aai.Current_handler_user_name != #{handlerUserName}
 			<if test="applyType != null and applyType != ''"> and apply_type = #{applyType} </if>
 			<if test="sendPlatform != null and sendPlatform != ''"> and send_platform = #{sendPlatform} </if>
 		</where>

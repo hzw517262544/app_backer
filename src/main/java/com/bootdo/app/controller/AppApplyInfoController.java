@@ -100,7 +100,7 @@ public class AppApplyInfoController extends BaseController {
 	public PageUtils listApproved(@RequestParam Map<String, Object> params){
 		//查询列表数据
 		Query query = new Query(params);
-		List<ApplyInfoDO> applyInfoList = applyInfoService.list(query);
+		List<ApplyInfoDO> applyInfoList = applyInfoService.listApproved(query);
 		int total = applyInfoService.count(query);
 		PageUtils pageUtils = new PageUtils(applyInfoList, total);
 		return pageUtils;

@@ -4,11 +4,11 @@
 <mapper namespace="com.bootdo.app.dao.ApplyInfoDao">
 
 	<select id="get" resultType="com.bootdo.app.domain.ApplyInfoDO">
-		select `id`,`username`,`name`,`apply_type`,`apply_type_name`,`apply_secod_type`,`apply_secod_type_name`,`apply_start_time`,`apply_end_time`,`apply_content`,`apply_status`,`create_time`,`create_user`,`update_time`,`update_user`,`Current_handler_user_name`,`Current_handler_name`,`apply_title`,`apply_no`,`send_platform_name`,`send_platform`,`send_grade_name`,`send_grade`,`DUTY_EDITOR_opinion`,`PRESIDENT_EDITOR_opinion` from app_apply_info where id = #{value}
+		select `id`,`username`,`name`,`apply_type`,`apply_type_name`,`apply_secod_type`,`apply_secod_type_name`,`apply_start_time`,`apply_end_time`,`apply_content`,`apply_status`,`create_time`,`create_user`,`update_time`,`update_user`,`Current_handler_user_name`,`Current_handler_name`,`apply_title`,`apply_no`,`send_platform_name`,`send_platform`,`send_grade_name`,`send_grade`,`DUTY_EDITOR_opinion`,`PRESIDENT_EDITOR_opinion`,`send_time`,`publish_time` from app_apply_info where id = #{value}
 	</select>
 
 	<select id="list" resultType="com.bootdo.app.domain.ApplyInfoDO">
-		select `id`,`username`,`name`,`apply_type`,`apply_type_name`,`apply_secod_type`,`apply_secod_type_name`,`apply_start_time`,`apply_end_time`,`apply_content`,`apply_status`,`create_time`,`create_user`,`update_time`,`update_user`,`Current_handler_user_name`,`Current_handler_name`,`apply_title`,`apply_no`,`send_platform_name`,`send_platform`,`send_grade_name`,`send_grade`,`DUTY_EDITOR_opinion`,`PRESIDENT_EDITOR_opinion` from app_apply_info
+		select `id`,`username`,`name`,`apply_type`,`apply_type_name`,`apply_secod_type`,`apply_secod_type_name`,`apply_start_time`,`apply_end_time`,`apply_content`,`apply_status`,`create_time`,`create_user`,`update_time`,`update_user`,`Current_handler_user_name`,`Current_handler_name`,`apply_title`,`apply_no`,`send_platform_name`,`send_platform`,`send_grade_name`,`send_grade`,`DUTY_EDITOR_opinion`,`PRESIDENT_EDITOR_opinion`,`send_time`,`publish_time` from app_apply_info
         <where>  
 		  		  <if test="id != null and id != ''"> and id = #{id} </if>
 		  		  <if test="username != null and username != ''"> and username = #{username} </if>
@@ -35,6 +35,8 @@
 		  		  <if test="sendGrade != null and sendGrade != ''"> and send_grade = #{sendGrade} </if>
 		  		  <if test="dutyEditorOpinion != null and dutyEditorOpinion != ''"> and DUTY_EDITOR_opinion = #{dutyEditorOpinion} </if>
 		  		  <if test="presidentEditorOpinion != null and presidentEditorOpinion != ''"> and PRESIDENT_EDITOR_opinion = #{presidentEditorOpinion} </if>
+		  		  <if test="sendTime != null and sendTime != ''"> and send_time = #{sendTime} </if>
+		  		  <if test="publishTime != null and publishTime != ''"> and publish_time = #{publishTime} </if>
 		  		</where>
         <choose>
             <when test="sort != null and sort.trim() != ''">
@@ -77,6 +79,8 @@
 		  		  <if test="sendGrade != null and sendGrade != ''"> and send_grade = #{sendGrade} </if>
 		  		  <if test="dutyEditorOpinion != null and dutyEditorOpinion != ''"> and DUTY_EDITOR_opinion = #{dutyEditorOpinion} </if>
 		  		  <if test="presidentEditorOpinion != null and presidentEditorOpinion != ''"> and PRESIDENT_EDITOR_opinion = #{presidentEditorOpinion} </if>
+		  		  <if test="sendTime != null and sendTime != ''"> and send_time = #{sendTime} </if>
+		  		  <if test="publishTime != null and publishTime != ''"> and publish_time = #{publishTime} </if>
 		  		</where>
 	</select>
 	 
@@ -107,7 +111,9 @@
 			`send_grade_name`, 
 			`send_grade`, 
 			`DUTY_EDITOR_opinion`, 
-			`PRESIDENT_EDITOR_opinion`
+			`PRESIDENT_EDITOR_opinion`, 
+			`send_time`, 
+			`publish_time`
 		)
 		values
 		(
@@ -135,7 +141,9 @@
 			#{sendGradeName}, 
 			#{sendGrade}, 
 			#{dutyEditorOpinion}, 
-			#{presidentEditorOpinion}
+			#{presidentEditorOpinion}, 
+			#{sendTime}, 
+			#{publishTime}
 		)
 	</insert>
 	 
@@ -165,7 +173,9 @@
 			<if test="sendGradeName != null">`send_grade_name` = #{sendGradeName}, </if>
 			<if test="sendGrade != null">`send_grade` = #{sendGrade}, </if>
 			<if test="dutyEditorOpinion != null">`DUTY_EDITOR_opinion` = #{dutyEditorOpinion}, </if>
-			<if test="presidentEditorOpinion != null">`PRESIDENT_EDITOR_opinion` = #{presidentEditorOpinion}</if>
+			<if test="presidentEditorOpinion != null">`PRESIDENT_EDITOR_opinion` = #{presidentEditorOpinion}, </if>
+			<if test="sendTime != null">`send_time` = #{sendTime}, </if>
+			<if test="publishTime != null">`publish_time` = #{publishTime}</if>
 		</set>
 		where id = #{id}
 	</update>

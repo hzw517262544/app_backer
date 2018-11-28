@@ -47,6 +47,18 @@ function load() {
 								{
 									checkbox : true
 								},
+								{
+									field : 'Number',
+									title : '序号',
+									align: 'center',
+									width: 20,
+									formatter : function(value, row, index) {
+										//return index + 1;
+										var pageSize=$('#exampleTable').bootstrapTable('getOptions').pageSize;//通过表的#id 可以得到每页多少条
+										var pageNumber=$('#exampleTable').bootstrapTable('getOptions').pageNumber;//通过表的#id 可以得到当前第几页
+										return pageSize * (pageNumber - 1) + index + 1;//返回每条的序号： 每页条数 * （当前页 - 1 ）+ 序号
+									}
+								},
 								#foreach($column in $columns)
 								{
 									field : '${column.attrname}', 

@@ -169,4 +169,12 @@ public class AppConstants {
     public static final String APPLY_SECOD_TYPE_WX = "weixin";
 
     public static final String APPLY_SECOD_TYPE_WB = "weibo";
+    /**
+     * 微信选题编号前缀
+     */
+    public static final String WXXT = "WXXT-";
+    /**
+     * 微信报审编号前缀
+     */
+    public static final String WXBS = "WXBS-";
 }

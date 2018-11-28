@@ -412,16 +412,23 @@ public class AppApplyInfoController extends BaseController {
 	 * app微博提交
 	 */
 	@ResponseBody
-	@PostMapping("/commitWeibo")
+	@PostMapping("/appCommit")
 //	@RequiresPermissions("app:applyInfo:add")
-	public R commitWeibo( HttpServletRequest request){
-		String applyContent = request.getParameter("applyContent");
+	public R appCommit( HttpServletRequest request){
 		String name = request.getParameter("name");
 		String username = request.getParameter("username");
 		String applyType = request.getParameter("applyType");
 		String applyTypeName = request.getParameter("applyTypeName");
-		String applySecodType = request.getParameter("applySecodType");
-		String applySecodTypeName = request.getParameter("applySecodTypeName");
+		String applyTitle = request.getParameter("applyTitle");
+		String sendTime = request.getParameter("sendTime");
+		String publishTime = request.getParameter("publishTime");
+		String sendPlatform = request.getParameter("sendPlatform");
+		String sendPlatformName = request.getParameter("sendPlatformName");
+		String sendGrade = request.getParameter("sendGrade");
+		String sendGradeName = request.getParameter("sendGradeName");
+		String applyContent = request.getParameter("applyContent");
+
+
 		Map<String,Object> userPar = new HashMap<String,Object>();
 		userPar.put("username",username);
 		List<UserDO> userDOS = userService.list(userPar);
@@ -433,28 +440,41 @@ public class AppApplyInfoController extends BaseController {
 		}
 		//根据角色信息找审批人，然后更新到申请的当前处理人-提交找责编
 		Map<String,Object> roleSign = new HashMap<>(16);
-		roleSign.put("roleSign",AppConstants.ROLE_DUTY_EDITOR_WB);
+		String roleDutyEditor = "";
+		if(AppConstants.APPLY_SECOD_TYPE_WB.equals(sendPlatform)){
+			roleDutyEditor = AppConstants.ROLE_DUTY_EDITOR_WB;
+		}else if(AppConstants.APPLY_SECOD_TYPE_WX.equals(sendPlatform)){
+			roleDutyEditor = AppConstants.ROLE_DUTY_EDITOR_WX;
+		}
+		roleSign.put("roleSign",roleDutyEditor);
 		List<UserDO> dutyEditors = userService.listByRoleSign(roleSign);
 		if(dutyEditors==null||dutyEditors.isEmpty()){
 			return R.error().put("msg","系统没有找到责编对应的用户，请联系管理员");
 		}
 		Date date = DateUtils.getCurTimestamp();
-		//生成微博申请信息
+		//生成申请信息
 		ApplyInfoDO applyInfoDO = new ApplyInfoDO();
 		applyInfoDO.setApplyStatus(AppConstants.APP_LEAVE_APLLY_STATUS_2);
 		applyInfoDO.setApplyStatusName(AppConstants.APP_LEAVE_APLLY_STATUS_NAME_2);
 		applyInfoDO.setApplyType(applyType);
 		applyInfoDO.setApplyTypeName(applyTypeName);
-		applyInfoDO.setApplySecodType(applySecodType);
-		applyInfoDO.setApplySecodTypeName(applySecodTypeName);
+		applyInfoDO.setApplyTitle(applyTitle);
+		applyInfoDO.setSendTime(sendTime);
+		applyInfoDO.setPublishTime(publishTime);
+		applyInfoDO.setSendPlatform(sendPlatform);
+		applyInfoDO.setSendPlatformName(sendPlatformName);
+		applyInfoDO.setSendGrade(sendGrade);
+		applyInfoDO.setSendGradeName(sendGradeName);
+		applyInfoDO.setApplyContent(applyContent);
+
 		applyInfoDO.setUsername(userDO.getUsername());
 		applyInfoDO.setName(userDO.getName());
 		applyInfoDO.setCreateUser(userDO.getUsername());
 		applyInfoDO.setCreateTime(date);
 		applyInfoDO.setUpdateUser(userDO.getUsername());
 		applyInfoDO.setUpdateTime(date);
-		applyInfoDO.setApplyContent(applyContent);
-		//微博提交查询责编信息
+
+		//提交查询责编信息
 		applyInfoDO.setCurrentHandlerUserName(dutyEditors.get(0).getUsername());
 		applyInfoDO.setCurrentHandlerName(dutyEditors.get(0).getName());
 		applyInfoService.save(applyInfoDO);
@@ -494,14 +514,14 @@ public class AppApplyInfoController extends BaseController {
 		}
 		//记录流转记录
 		FlowDocDO flowDocDO = new FlowDocDO();
-		flowDocDO.setHdlActionId(AppConstants.APP_APLLY_ACTION_ID_3);
-		flowDocDO.setHdlAction(AppConstants.APP_APLLY_ACTION_3);
+		flowDocDO.setHdlActionId(AppConstants.APP_APLLY_ACTION_ID_1);
+		flowDocDO.setHdlAction(AppConstants.APP_APLLY_ACTION_1);
 		flowDocDO.setCreateUserId(userDO.getUsername());
 		flowDocDO.setCreateUserName(userDO.getName());
 		flowDocDO.setCreateTime(date);
 		flowDocDO.setBusinessId(applyInfoDO.getId());
 		flowDocDO.setBusinessType(AppConstants.BUSINESS_TYPE_APPLY);
-		flowDocDO.setHdlContent(AppConstants.APP_APLLY_ACTION_3);
+		flowDocDO.setHdlContent(AppConstants.APP_APLLY_ACTION_1);
 		flowDocService.save(flowDocDO);
 		return R.ok();
 	}

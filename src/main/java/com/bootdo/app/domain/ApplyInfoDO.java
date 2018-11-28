@@ -74,6 +74,9 @@ public class ApplyInfoDO implements Serializable {
 	private String sendGrade;
 	private String dutyEditorOpinion;
 	private String presidentEditorOpinion;
+
+	private String sendTime;
+	private String publishTime;
 	/**
 	 * 设置：id
 	 */
@@ -372,5 +375,21 @@ public class ApplyInfoDO implements Serializable {
 
 	public void setPresidentEditorOpinion(String presidentEditorOpinion) {
 		this.presidentEditorOpinion = presidentEditorOpinion;
+	}
+
+	public String getSendTime() {
+		return sendTime;
+	}
+
+	public void setSendTime(String sendTime) {
+		this.sendTime = sendTime;
+	}
+
+	public String getPublishTime() {
+		return publishTime;
+	}
+
+	public void setPublishTime(String publishTime) {
+		this.publishTime = publishTime;
 	}
 }

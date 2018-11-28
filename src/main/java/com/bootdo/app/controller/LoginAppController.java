@@ -58,10 +58,13 @@ public class LoginAppController extends BaseController {
 			userMap.put("userId",userDO.getUserId());
 			List<UserRoleDO> userRoleDOS = userService.listUserRole(userMap);
 			String userRoleNames = "";
+			String roleSigns = "";
 			for(UserRoleDO userRoleDO : userRoleDOS){
 				RoleDO roleDO = roleService.get(userRoleDO.getRoleId());
 				userRoleNames += roleDO.getRoleName();
+				roleSigns += roleDO.getRoleSign();
 			}
+			userDO.setRoleSign(roleSigns);
 			userDO.setRoleNames(userRoleNames);
 			DeptDO deptDO = deptService.get(userDO.getDeptId());
 			userDO.setDeptName(deptDO.getName());

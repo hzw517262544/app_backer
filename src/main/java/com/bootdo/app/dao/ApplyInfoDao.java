@@ -31,4 +31,6 @@ public interface ApplyInfoDao {
 	int batchRemove(String[] ids);
 
 	List<ApplyInfoDO> listApproved(Map<String, Object> map);
+
+	int countApplyNo(Map<String, Object> map);
 }

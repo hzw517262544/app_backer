@@ -170,11 +170,12 @@ public class AppConstants {
 
     public static final String APPLY_SECOD_TYPE_WB = "weibo";
     /**
-     * 微信选题编号前缀
+     * 选题
      */
-    public static final String WXXT = "WXXT-";
+    public static final String APP_MEDIA_APLLY_TYPE_1 = "1";
     /**
-     * 微信报审编号前缀
+     * 编辑
      */
-    public static final String WXBS = "WXBS-";
+    public static final String APP_MEDIA_APLLY_TYPE_2 = "2";
+
 }

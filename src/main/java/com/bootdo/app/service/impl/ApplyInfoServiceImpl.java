@@ -80,6 +80,9 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 	public String save(ApplyInfoDO applyInfo){
 		String result = UUID.randomUUID().toString();
 		applyInfo.setId(result);
+		if(StringUtils.isEmpty(applyInfo.getApplyNo())){
+			applyInfo.setApplyNo(getApplyNo(applyInfo));
+		}
 		applyInfoDao.save(applyInfo);
 		return result;
 	}
@@ -219,5 +222,50 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 			}
 			return list;
 		}
+	}
+
+	/**
+	 * 生成申请编号：WX-weixin WB-weibo XT-选题 BS-报审
+	 * @param applyInfo
+	 * @return
+	 */
+	@Override
+	public String getApplyNo(ApplyInfoDO applyInfo) {
+		StringBuffer applyNo = new StringBuffer();
+		if(AppConstants.APPLY_SECOD_TYPE_WX.equals(applyInfo.getSendPlatform())){
+			applyNo.append("WX");
+		}else if(AppConstants.APPLY_SECOD_TYPE_WB.equals(applyInfo.getSendPlatform())){
+			applyNo.append("WB");
+		}else{
+			applyNo.append("QT");
+		}
+		if(AppConstants.APP_MEDIA_APLLY_TYPE_1.equals(applyInfo.getApplyType())){
+			applyNo.append("XT");
+		}else if(AppConstants.APP_MEDIA_APLLY_TYPE_2.equals(applyInfo.getApplyType())){
+			applyNo.append("BS");
+		}else {
+			applyNo.append("QT");
+		}
+		applyNo.append("-");
+		applyNo.append(DateUtils.getStrFormTime("yyyyMMdd",new Date()));
+		applyNo.append("-");
+		//查询当日已有的编号
+		Map<String,Object> parMap = new HashMap<String,Object>(16);
+		parMap.put("applyType",applyInfo.getApplyType());
+		parMap.put("sendPlatform",applyInfo.getSendPlatform());
+		parMap.put("createTime",DateUtils.getCurTimestamp());
+		int countApplyNo = applyInfoDao.countApplyNo(parMap);
+		switch ((countApplyNo+"").length()){
+			case 1:
+				applyNo.append("00"+(countApplyNo+1));
+				break;
+			case 2:
+				applyNo.append("0"+(countApplyNo+1));
+				break;
+			case 3:
+				applyNo.append(countApplyNo+1);
+				break;
+		}
+		return applyNo.toString();
 	}
 }

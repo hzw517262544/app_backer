@@ -246,4 +246,13 @@
 		</if>
 	</select>
 
+	<select id="countApplyNo" resultType="int">
+		select count(*) from app_apply_info
+		<where>
+			apply_type = #{applyType}
+			and send_platform = #{sendPlatform}
+			and DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_FORMAT(SYSDATE(),'%Y-%m-%d')
+		</where>
+	</select>
+
 </mapper>

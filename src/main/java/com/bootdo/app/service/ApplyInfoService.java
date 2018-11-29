@@ -35,4 +35,6 @@ public interface ApplyInfoService {
     void cancel(ApplyInfoDO applyInfo);
 
 	List<ApplyInfoDO> listApproved(Map<String, Object> map);
+
+	String getApplyNo(ApplyInfoDO applyInfo);
 }

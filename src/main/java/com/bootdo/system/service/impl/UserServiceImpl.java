@@ -107,16 +107,18 @@ public class UserServiceImpl implements UserService {
         int r = userMapper.update(user);
         Long userId = user.getUserId();
         List<Long> roles = user.getRoleIds();
-        userRoleMapper.removeByUserId(userId);
-        List<UserRoleDO> list = new ArrayList<>();
-        for (Long roleId : roles) {
-            UserRoleDO ur = new UserRoleDO();
-            ur.setUserId(userId);
-            ur.setRoleId(roleId);
-            list.add(ur);
-        }
-        if (list.size() > 0) {
-            userRoleMapper.batchSave(list);
+        if(roles != null&&!roles.isEmpty()){
+            userRoleMapper.removeByUserId(userId);
+            List<UserRoleDO> list = new ArrayList<>();
+            for (Long roleId : roles) {
+                UserRoleDO ur = new UserRoleDO();
+                ur.setUserId(userId);
+                ur.setRoleId(roleId);
+                list.add(ur);
+            }
+            if (list.size() > 0) {
+                userRoleMapper.batchSave(list);
+            }
         }
         return r;
     }

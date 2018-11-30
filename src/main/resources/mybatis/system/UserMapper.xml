@@ -134,6 +134,7 @@
 			<if test="province != null">`province` = #{province}, </if>
 			<if test="city != null">`city` = #{city}, </if>
 			<if test="district != null">`district` = #{district}</if>
+			<if test="cid != null">`cid` = #{cid}</if>
 		</set>
 		where user_id = #{userId}
 	</update>

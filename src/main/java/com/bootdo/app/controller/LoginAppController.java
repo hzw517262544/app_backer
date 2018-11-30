@@ -46,7 +46,7 @@ public class LoginAppController extends BaseController {
 
 	@PostMapping("/login")
 	@ResponseBody
-	R ajaxLogin(String username, String password) {
+	R ajaxLogin(String username, String password,String cid) {
 		password = MD5Utils.encrypt(username, password);
 		Map<String,Object> userMap = new HashMap<String,Object>();
 		userMap.put("username",username);
@@ -55,6 +55,9 @@ public class LoginAppController extends BaseController {
 			R r = R.ok();
 			List<UserDO> userDOS = userService.list(userMap);
 			UserDO userDO = userDOS.get(0);
+			userDO.setCid(cid);
+			//更新用户客户端id
+			userService.update(userDO);
 			userMap.put("userId",userDO.getUserId());
 			List<UserRoleDO> userRoleDOS = userService.listUserRole(userMap);
 			String userRoleNames = "";

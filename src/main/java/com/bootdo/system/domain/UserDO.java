@@ -56,6 +56,8 @@ public class UserDO implements Serializable {
     private String picUrl;
     //角色标识
     private String roleSign;
+    //客户端id
+    private String cid;
 
     public Long getUserId() {
         return userId;
@@ -247,6 +249,14 @@ public class UserDO implements Serializable {
 
     public void setRoleSign(String roleSign) {
         this.roleSign = roleSign;
+    }
+
+    public String getCid() {
+        return cid;
+    }
+
+    public void setCid(String cid) {
+        this.cid = cid;
     }
 
     @Override

@@ -1,5 +1,15 @@
 package com.bootdo.app.push;
 
+import com.gexin.rp.sdk.base.IPushResult;
+import com.gexin.rp.sdk.base.impl.AppMessage;
+import com.gexin.rp.sdk.base.uitls.AppConditions;
+import com.gexin.rp.sdk.http.IGtPush;
+import com.gexin.rp.sdk.template.LinkTemplate;
+import com.gexin.rp.sdk.template.style.Style0;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author haozw
  * @describe:
@@ -12,7 +22,6 @@ public class AppPush extends PushBase {
     static String host = "http://sdk.open.api.igexin.com/apiex.htm";
 
     public static void main(String[] args) throws Exception {
-/*
         IGtPush push = new IGtPush(host, APPKEY, MASTERSECRET);
 
         LinkTemplate template = linkTemplateDemo();
@@ -41,10 +50,9 @@ public class AppPush extends PushBase {
 
         IPushResult ret = push.pushMessageToApp(message,"任务别名_toApp");
         System.out.println(ret.getResponse().toString());
-        System.out.println("1111");*/
     }
 
-    /*public static LinkTemplate linkTemplateDemo() throws Exception {
+    public static LinkTemplate linkTemplateDemo() throws Exception {
         LinkTemplate template = new LinkTemplate();
         template.setAppId(APPID);
         template.setAppkey(APPKEY);
@@ -66,5 +74,7 @@ public class AppPush extends PushBase {
         template.setUrl("http://www.baidu.com");
 
         return template;
-    }*/
+    }
+
+
 }

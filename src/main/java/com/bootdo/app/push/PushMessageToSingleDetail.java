@@ -1,5 +1,12 @@
 package com.bootdo.app.push;
 
+import com.gexin.rp.sdk.base.IIGtPush;
+import com.gexin.rp.sdk.base.IPushResult;
+import com.gexin.rp.sdk.base.impl.SingleMessage;
+import com.gexin.rp.sdk.base.impl.Target;
+import com.gexin.rp.sdk.http.IGtPush;
+import com.gexin.rp.sdk.template.NotyPopLoadTemplate;
+
 /**
  * @author haozw
  * @describe:
@@ -11,7 +18,7 @@ package com.bootdo.app.push;
 public class PushMessageToSingleDetail  extends PushBase{
     public static void main(String[] args) {
         // 推送主类
-        /*IIGtPush push = new IGtPush(API, APPKEY, MASTERSECRET);
+        IIGtPush push = new IGtPush(API, APPKEY, MASTERSECRET);
 
         try {
 
@@ -76,6 +83,6 @@ public class PushMessageToSingleDetail  extends PushBase{
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }*/
+        }
     }
 }

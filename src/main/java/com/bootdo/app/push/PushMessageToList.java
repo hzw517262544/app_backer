@@ -1,5 +1,15 @@
 package com.bootdo.app.push;
 
+import com.gexin.rp.sdk.base.IIGtPush;
+import com.gexin.rp.sdk.base.IPushResult;
+import com.gexin.rp.sdk.base.impl.ListMessage;
+import com.gexin.rp.sdk.base.impl.Target;
+import com.gexin.rp.sdk.http.IGtPush;
+import com.gexin.rp.sdk.template.NotificationTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author haozw
  * @describe:
@@ -11,7 +21,7 @@ package com.bootdo.app.push;
 public class PushMessageToList extends PushBase {
     public static void main(String[] args) {
         //显示每个用户的用户状态，false:不显示，true：显示
-        /*System.setProperty("gexin.rp.sdk.pushlist.needDetails", "true");
+        System.setProperty("gexin.rp.sdk.pushlist.needDetails", "true");
 
         // 推送主类
         IIGtPush push = new IGtPush(API, APPKEY, MASTERSECRET);
@@ -62,6 +72,6 @@ public class PushMessageToList extends PushBase {
             System.out.println(ret.getResponse().toString());
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
     }
 }

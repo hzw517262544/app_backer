@@ -1,9 +1,7 @@
 package com.bootdo.app.controller;
 
-import com.bootdo.activiti.config.ActivitiConstant;
 import com.bootdo.activiti.service.impl.ActTaskServiceImpl;
 import com.bootdo.activiti.utils.ActivitiUtils;
-import com.bootdo.activiti.vo.TaskVO;
 import com.bootdo.app.common.AppConstants;
 import com.bootdo.app.domain.ApplyInfoDO;
 import com.bootdo.app.domain.FlowDocDO;
@@ -23,7 +21,6 @@ import com.bootdo.system.domain.UserDO;
 import com.bootdo.system.service.RoleService;
 import com.bootdo.system.service.UserService;
 import org.activiti.engine.TaskService;
-import org.activiti.engine.task.Task;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -257,7 +254,7 @@ public class AppApplyInfoController extends BaseController {
 	 */
 	@ResponseBody
 	@PostMapping("/pass")
-	public R pass(String applyId,String auditOpinion,String userName){
+	public R pass(String applyId,String auditOpinion,String userName,String imgData,Long sourceType){
 		Map<String,Object> userMap = new HashMap<String,Object>(16);
 		userMap.put("username",userName);
 		List<UserDO> userList = userService.list(userMap);
@@ -301,6 +298,9 @@ public class AppApplyInfoController extends BaseController {
 		}else{
 			return R.error().put("msg","系统没有查询到当前用户的角色信息，请联系管理员");
 		}
+		//上传签图片
+		R singR = fileService.saveBase64(userDO.getUserId(),imgData,sourceType,"signName/"+DateUtils.getReqDate() +"/");
+		FileDO signImg = (FileDO)singR.get("file");
 		//新增流转记录
 		FlowDocDO flowDocDO = new FlowDocDO();
 		flowDocDO.setHdlActionId(actionId);
@@ -311,6 +311,8 @@ public class AppApplyInfoController extends BaseController {
 		flowDocDO.setBusinessId(applyId);
 		flowDocDO.setBusinessType(AppConstants.BUSINESS_TYPE_APPLY);
 		flowDocDO.setHdlContent(auditOpinion);
+		//备用字段2存放签名图片路径
+		flowDocDO.setStandby2(signImg.getUrl());
 		flowDocService.save(flowDocDO);
 		return R.ok();
 	}

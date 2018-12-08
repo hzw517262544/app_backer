@@ -2,6 +2,7 @@ package com.bootdo.app.push;
 
 import com.gexin.rp.sdk.base.IPushResult;
 import com.gexin.rp.sdk.base.impl.AppMessage;
+import com.gexin.rp.sdk.base.impl.Target;
 import com.gexin.rp.sdk.base.uitls.AppConditions;
 import com.gexin.rp.sdk.http.IGtPush;
 import com.gexin.rp.sdk.template.LinkTemplate;
@@ -47,6 +48,10 @@ public class AppPush extends PushBase {
         cdt.addCondition(AppConditions.REGION, provinceList);
         cdt.addCondition(AppConditions.TAG,tagList);
         message.setConditions(cdt);
+
+        Target target = new Target();
+        target.setAppId(APPID);
+        target.setClientId(CLIENTID);
 
         IPushResult ret = push.pushMessageToApp(message,"任务别名_toApp");
         System.out.println(ret.getResponse().toString());

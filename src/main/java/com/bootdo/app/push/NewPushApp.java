@@ -1,5 +1,6 @@
 package com.bootdo.app.push;
 
+import com.bootdo.app.config.AppConfig;
 import com.gexin.fastjson.JSONObject;
 import com.gexin.rp.sdk.base.IPushResult;
 import com.gexin.rp.sdk.base.impl.AppMessage;
@@ -12,6 +13,7 @@ import com.gexin.rp.sdk.template.LinkTemplate;
 import com.gexin.rp.sdk.template.NotificationTemplate;
 import com.gexin.rp.sdk.template.TransmissionTemplate;
 import com.gexin.rp.sdk.template.style.Style0;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,13 +32,15 @@ public class NewPushApp {
     public static String appKey = "g9JjTm2NqM7ntygAxgHXI7";
     public static String appSecret = "Q5Z7yQEYBu8ECSyaHy8rL6";
     public static String masterSecret = "5P5YCPESzC8dleVuxcruX7";
-    public static String clientId = "dca0cafa8df4b613b3c161f96a1dc303";
+    public static String clientId = "a1268154f2b81a033f071adccdebf05b";
 
     // 定义常量, appId、appKey、masterSecret 采用本文档 "第二步 获取访问凭证 "中获得的应用配置
     private static String url = "https://api.getui.com/apiex.htm";
+    @Autowired
+    private AppConfig appConfig;
 
     public static void main(String[] args) throws IOException {
-        test3();
+        test1();
     }
 
     /**

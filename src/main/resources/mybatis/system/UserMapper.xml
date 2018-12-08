@@ -181,7 +181,8 @@
 		su.hobby,
 		su.province,
 		su.city,
-		su.district
+		su.district,
+		su.cid
 		FROM
 		sys_user su
 		LEFT JOIN sys_user_role sur ON su.user_id = sur.user_id

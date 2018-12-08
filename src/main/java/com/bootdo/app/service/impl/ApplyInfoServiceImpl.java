@@ -1,18 +1,17 @@
 package com.bootdo.app.service.impl;
 
-import com.bootdo.activiti.config.ActivitiConstant;
 import com.bootdo.activiti.service.impl.ActTaskServiceImpl;
 import com.bootdo.activiti.utils.ActivitiUtils;
 import com.bootdo.app.common.AppConstants;
 import com.bootdo.app.dao.ApplyInfoDao;
 import com.bootdo.app.domain.ApplyInfoDO;
 import com.bootdo.app.domain.FlowDocDO;
+import com.bootdo.app.service.AppPushService;
 import com.bootdo.app.service.ApplyInfoService;
 import com.bootdo.app.service.FlowDocService;
 import com.bootdo.app.service.TopicService;
 import com.bootdo.common.service.DictService;
 import com.bootdo.common.utils.DateUtils;
-import com.bootdo.common.utils.R;
 import com.bootdo.system.domain.UserDO;
 import com.bootdo.system.service.UserService;
 import org.activiti.engine.TaskService;
@@ -42,6 +41,8 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 	ActivitiUtils activitiUtils;
 	@Autowired
 	TopicService topicService;
+	@Autowired
+	AppPushService appPushService;
 	
 	@Override
 	public ApplyInfoDO get(String id){
@@ -145,6 +146,8 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 		flowDocDO.setBusinessType(AppConstants.BUSINESS_TYPE_APPLY);
 		flowDocDO.setHdlContent(AppConstants.APP_APLLY_ACTION_1);
 		flowDocService.save(flowDocDO);
+		//最后推送消息到app客户端
+		appPushService.pushMessage(dutyEditors.get(0).getCid(),"三审平台待审核信息","您有一条消息需要审核","");
 		return message;
 	}
 

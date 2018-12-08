@@ -40,7 +40,7 @@ public class NewPushApp {
     private AppConfig appConfig;
 
     public static void main(String[] args) throws IOException {
-        test1();
+        test4();
     }
 
     /**
@@ -153,8 +153,7 @@ public class NewPushApp {
         // payload.setAlertMsg(getDictionaryAlertMsg());
 
         // 添加多媒体资源
-        payload
-                .addMultiMedia(new MultiMedia().setResType(
+        payload.addMultiMedia(new MultiMedia().setResType(
                         MultiMedia.MediaType.video).setResUrl(
                         "--")
                         .setOnlyWifi(true));
@@ -193,7 +192,7 @@ public class NewPushApp {
         template.setAppId(appId);
         template.setAppkey(appKey);
         // 透传消息设置，1为强制启动应用，客户端接收到消息后就会立即启动应用；2为等待应用启动
-        template.setTransmissionType(1);
+        template.setTransmissionType(2);
 
         JSONObject jo = new JSONObject();
         jo.put("AAA", "aba");
@@ -223,7 +222,7 @@ public class NewPushApp {
         // 单推情况下只能设置一个推送目标，toList群推时，可以设置多个目标，目前建议一批设置50个左右。
         Target target = new Target();
         target.setAppId(appId);
-        target.setClientId("--");
+        target.setClientId(clientId);
         IPushResult result = push.pushMessageToSingle(singleMessage, target);
         String response = result.getResponse().toString();
         System.out.println("返回值：" + response);

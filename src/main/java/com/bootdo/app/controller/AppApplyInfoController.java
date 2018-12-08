@@ -6,6 +6,7 @@ import com.bootdo.app.common.AppConstants;
 import com.bootdo.app.domain.ApplyInfoDO;
 import com.bootdo.app.domain.FlowDocDO;
 import com.bootdo.app.domain.TopicDO;
+import com.bootdo.app.service.AppPushService;
 import com.bootdo.app.service.ApplyInfoService;
 import com.bootdo.app.service.FlowDocService;
 import com.bootdo.app.service.TopicService;
@@ -72,6 +73,8 @@ public class AppApplyInfoController extends BaseController {
 	private TopicService topicService;
 	@Autowired
 	private RoleService roleService;
+	@Autowired
+	AppPushService appPushService;
 
 	@GetMapping()
 //	@RequiresPermissions("app:applyInfo:applyInfo")
@@ -179,7 +182,7 @@ public class AppApplyInfoController extends BaseController {
 		return R.error();
 	}
 	/**
-	 * 客户端提交
+	 * 电脑端提交
 	 */
 	@ResponseBody
 	@PostMapping("/commit")
@@ -269,6 +272,7 @@ public class AppApplyInfoController extends BaseController {
 		ApplyInfoDO applyInfoDO = applyInfoService.get(applyId);
 		String actionId = "";
 		String actionName = "";
+		String clientId = "";
 		if(roles != null&&!roles.isEmpty()){
 			for(RoleDO roleDO : roles){
 				if(AppConstants.ROLE_DUTY_EDITOR_WX.equals(roleDO.getRoleSign())
@@ -283,6 +287,7 @@ public class AppApplyInfoController extends BaseController {
 					applyInfoDO.setCurrentHandlerName(presidentEditors.get(0).getName());
 					actionId = AppConstants.APP_APLLY_ACTION_ID_2;
 					actionName = AppConstants.APP_APLLY_ACTION_2;
+					clientId = presidentEditors.get(0).getCid();
 				}else if(AppConstants.ROLE_PRESIDENT_EDITOR.equals(roleDO.getRoleSign())){
 					applyInfoDO.setApplyStatus(AppConstants.APP_LEAVE_APLLY_STATUS_4);
 					applyInfoDO.setApplyStatusName(AppConstants.APP_LEAVE_APLLY_STATUS_NAME_4);
@@ -314,6 +319,10 @@ public class AppApplyInfoController extends BaseController {
 		//备用字段2存放签名图片路径
 		flowDocDO.setStandby2(signImg.getUrl());
 		flowDocService.save(flowDocDO);
+		//最后发送消息到app客户端
+		if(StringUtils.isNotEmpty(clientId)){
+			appPushService.pushMessage(clientId,"三审平台待审核信息","您有一条消息需要审核","");
+		}
 		return R.ok();
 	}
 

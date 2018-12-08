@@ -13,40 +13,49 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix="app")
 public class AppConfig {
-    public static String appId;
-    public static String appKey;
-    public static String appSecret;
-    public static String masterSecret;
+    public String url;
+    public String appId;
+    public String appKey;
+    public String appSecret;
+    public String masterSecret;
 
-    public static String getAppId() {
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getAppId() {
         return appId;
     }
 
-    public static void setAppId(String appId) {
-        AppConfig.appId = appId;
+    public void setAppId(String appId) {
+        this.appId = appId;
     }
 
-    public static String getAppKey() {
+    public String getAppKey() {
         return appKey;
     }
 
-    public static void setAppKey(String appKey) {
-        AppConfig.appKey = appKey;
+    public void setAppKey(String appKey) {
+        this.appKey = appKey;
     }
 
-    public static String getAppSecret() {
+    public String getAppSecret() {
         return appSecret;
     }
 
-    public static void setAppSecret(String appSecret) {
-        AppConfig.appSecret = appSecret;
+    public void setAppSecret(String appSecret) {
+        this.appSecret = appSecret;
     }
 
-    public static String getMasterSecret() {
+    public String getMasterSecret() {
         return masterSecret;
     }
 
-    public static void setMasterSecret(String masterSecret) {
-        AppConfig.masterSecret = masterSecret;
+    public void setMasterSecret(String masterSecret) {
+        this.masterSecret = masterSecret;
     }
 }

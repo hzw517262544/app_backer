@@ -51,6 +51,7 @@ spring:
         # 连接池最大阻塞等待时间（使用负值表示没有限制）
         max-wait: -1
 app:
+  url: https://api.getui.com/apiex.htm
   appId: 5DkSOFXXyt8Tv0W4J66vs8
   appKey: g9JjTm2NqM7ntygAxgHXI7
   appSecret: Q5Z7yQEYBu8ECSyaHy8rL6

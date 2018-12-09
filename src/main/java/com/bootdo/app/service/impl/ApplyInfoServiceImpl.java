@@ -147,7 +147,12 @@ public class ApplyInfoServiceImpl implements ApplyInfoService {
 		flowDocDO.setHdlContent(AppConstants.APP_APLLY_ACTION_1);
 		flowDocService.save(flowDocDO);
 		//最后推送消息到app客户端
-		appPushService.pushMessage(dutyEditors.get(0).getCid(),"三审平台待审核信息","您有一条消息需要审核","");
+		StringBuffer msgContent = new StringBuffer();
+		msgContent.append("编号："+applyInfo.getApplyNo()+",");
+		msgContent.append(applyInfo.getApplyTitle());
+		msgContent.append("，");
+		msgContent.append("需要您审核！");
+		appPushService.pushMessage(dutyEditors.get(0).getCid(),"三审平台",msgContent.toString(),"");
 		return message;
 	}
 

@@ -7,6 +7,8 @@ import com.gexin.fastjson.JSONObject;
 import com.gexin.rp.sdk.base.IPushResult;
 import com.gexin.rp.sdk.base.impl.SingleMessage;
 import com.gexin.rp.sdk.base.impl.Target;
+import com.gexin.rp.sdk.base.payload.APNPayload;
+import com.gexin.rp.sdk.base.payload.MultiMedia;
 import com.gexin.rp.sdk.http.IGtPush;
 import com.gexin.rp.sdk.template.NotificationTemplate;
 import com.gexin.rp.sdk.template.style.Style0;
@@ -48,9 +50,6 @@ public class AppPushServiceImpl implements AppPushService {
             template.setTransmissionType(1);
 
             JSONObject jo = new JSONObject();
-            jo.put("AAA", "aba");
-            jo.put("BBB", "bab");
-            jo.put("CCC", "ccc");
             //template.setTransmissionContent(jo.toJSONString());
             template.setTransmissionContent(jo.toString());
             // 设置定时展示时间
@@ -69,8 +68,37 @@ public class AppPushServiceImpl implements AppPushService {
             style.setVibrate(true);
             style.setClearable(true);
             template.setStyle(style);
-            singleMessage.setData(template);
 
+            APNPayload payload = new APNPayload();
+            // 在已有数字基础上加1显示，设置为-1时，在已有数字上减1显示，设置为数字时，显示指定数字
+            payload.setAutoBadge("+1");
+            payload.setContentAvailable(1);
+            payload.setSound("default");
+            payload.setCategory("$由客户端定义");
+
+            // 简单模式APNPayload.SimpleMsg
+            payload.setAlertMsg(new APNPayload.SimpleAlertMsg("hello"));
+
+            // 字典模式使用APNPayload.DictionaryAlertMsg
+            // payload.setAlertMsg(getDictionaryAlertMsg());
+
+            // 添加多媒体资源
+            payload.addMultiMedia(new MultiMedia().setResType(
+                    MultiMedia.MediaType.video).setResUrl(
+                    "--")
+                    .setOnlyWifi(true));
+
+            // 需要使用IOS语音推送，请使用VoIPPayload代替APNPayload
+            // VoIPPayload payload = new VoIPPayload();
+            // JSONObject jo = new JSONObject();
+            // jo.put("key1","value1");
+            // payload.setVoIPPayload(jo.toString());
+            //
+            template.setAPNInfo(payload);
+
+            singleMessage.setData(template);
+            singleMessage.setOffline(true);
+            singleMessage.setOfflineExpireTime(1000*60);
             // 新建一个推送目标，填入appid和clientId
             // 单推情况下只能设置一个推送目标，toList群推时，可以设置多个目标，目前建议一批设置50个左右。
             Target target = new Target();

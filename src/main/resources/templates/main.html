@@ -1,36 +1,175 @@
+
 <!DOCTYPE html>
-<html>
+<html class="no-js css-menubar" lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>欢迎页</title>
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="bootstrap material admin template">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+    <meta name="author" content="">
+    <meta name="referrer" content="never">
+    <title>U媒-新媒体账号一站式管理工具</title>
+    <link rel="stylesheet" href="/css/um/bootstrap.min.css"/>
+    <link rel="stylesheet"  href="/css/um/bootstrap-extend.min.css"/>
+    <link rel="stylesheet"  href="/css/um/site.min.css"/>
+    <link rel="stylesheet" href="/css/um/iconfont.css"/>
+    <link rel="stylesheet" href="/css/um/cropper.min.css"/>
+    <link rel="stylesheet" href="/css/um/ImgCropping.css"/>
+    <link rel="stylesheet"  href="/css/um/common.css"/>
+    <link rel="stylesheet"  href="/css/um/pages.css"/>
+    <script src="/js/um/breakpoints.min.js"></script>
+    <script src="/js/um/jquery.min.js"></script>
+    <script src="/js/um/layer/layer.js"></script>
+    <script src="/js/um/login-timeout.js"></script>
+    <script src="/js/um/jquery.cookie.js"></script>
+    <script src="/js/um/webupload/webuploader.js"></script>
+    <script src="/js/um/acount/account.js"></script>
+    <script src="/js/um/bootstrap.min.js"></script>
+    <script src="/js/um/jquery.asScrollable.all.min.js"></script>
+    <script src="/js/um/jquery-asHoverScroll.min.js"></script>
+    <!-- Scripts -->
+    <script src="/js/um/core.min.js"></script>
+    <script src="/js/um/site.min.js"></script><!--上面两个控制了图片切换-->
+    <script src="/js/um/menu.min.js"></script>
+    <script src="/js/um/menubar.min.js"></script>
+    <script src="/js/um/scrollable.min.js"></script>
+    <script src="/js/um/acount/cropper.min.js"></script>
+    <script src="/js/um/expression.js"></script>
+    <script>
+        Breakpoints();
+    </script>
 </head>
 <body>
-<div class="panel panel-default">
-    <div class="panel-heading">了解BootDo</div>
-    <div style="padding: 10px 0 20px 10px;">
-        <h3>&nbsp;&nbsp;&nbsp;项目介绍</h3>
-        <ul>
-            <li>面向学习型的开源框架，简洁高效，减少过渡封装，展现技术本质</li>
-            <li>Springboot作为基础框架，使用mybatis作为持久层框架</li>
-            <li>使用官方推荐的thymeleaf做为模板引擎，shiro作为安全框架,主流技术，“一网打尽”</li>
-            <li>极简配置，一键前后台代码生成</li>
-        </ul>
+    <div class="page" style="background-color: #f1f4f5;">
+        <div class="page-main">
+            <div class="page-content container-fluid padding-0" id="homepage-page">
+                <div class="padding-15 padding-bottom-0" style="padding-top: 8px !important;">
+                    <div class="text-center font-size-14 padding-top-30 add_flowinfo_brn cards-item">
+                        <p class="font-size-18 margin-bottom-25">设置您的信息流</p>
+                        <p>您可以将下列媒体平台的账号内容或平台热门内容以信息流的方式显示在首页。</p>
+                        <p>在信息流中，您可以快捷的跟踪媒体最新动态、发现并收藏素材内容、转发或评论热门微博等。</p>
+                        <p>快来设置您的信息流吧！</p>
+                        <ul class="blocks blocks-4 page-tem_ul font-size-12">
+                            <li>
+                                <div>
+                                    <p class="page-tem_tit"><img src="https://cdn-files.u-mei.com/web/static/images/icon-svg/icon-weibo.svg" width="26" class="margin-right-15"/> 微博</p>
+                                    <p>我的微博</p>
+                                    <p>我的首页</p>
+                                    <p>热门微博</p>
+                                    <p>热门话题</p>
+                                    <p>精选素材</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <p class="page-tem_tit"><img src="https://cdn-files.u-mei.com/web/static/images/icon-svg/icon-weixin2.svg" width="26" class="margin-right-15"/> 微信公众号</p>
+                                    <p>我的微信</p>
+                                    <p>微信首页</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <p class="page-tem_tit"><img src="https://cdn-files.u-mei.com/web/static/images/icon-svg/icon-uc.svg" width="26" class="margin-right-15"/> UC自媒体</p>
+                                    <p>UC热门文章</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <p class="page-tem_tit"><img src="https://cdn-files.u-mei.com/web/static/images/icon-svg/icon-qq.svg" width="26" class="margin-right-15"/> 企鹅号</p>
+                                    <p>我的文章</p>
+                                </div>
+                            </li>
+                        </ul>
+                        <button class="btn btn-primary width-lg-400" data-target="#add_info-flow" data-toggle="modal">立即设置</button>
+                    </div><!--添加信息流按钮-->
+                    <div class="flow_infomation" style="display: none">
+                        <!-- 设置栏 start -->
+                        <div style="padding-bottom: 8px;"><button class="btn btn-default btn-icon-block" onclick="location.reload()"><i class="ico textColor">&#xe798;</i></button><button class="btn btn-default margin-left-5 add_info-flow"  data-toggle="modal">添加新模块</button><button class="btn btn-default margin-left-5" data-target="#page_add-accound" data-toggle="modal">添加新账号</button></div>
+                        <div class="homepage-con">
+                            <ul id="homepage-lists" class="clearfix">
 
-        <h3>&nbsp;&nbsp;&nbsp;获取源码</h3>
-        <ul>
-            <li>Github地址：<a href="https://github.com/lcg0124/bootdo.git" th:href="@{https://github.com/lcg0124/bootdo.git}" target="_blank">https://github.com/lcg0124/bootdo.git</a></li>
-            <li>Oschina地址：<a href="https://gitee.com/lcg0124/bootdo.git" target="_blank">https://gitee.com/lcg0124/bootdo.git</a></li>
-        </ul>
+                            </ul>
+                        </div>
+                    </div>
+                    <!--模块内容-->
+                </div>
+            </div>
+            <!--添加信息流Modal-->
+            <div class="modal fade" id="add_info-flow" aria-hidden="true" aria-labelledby="add_info-flow" data-backdrop="static"  role="dialog" tabindex="-1">
+                <div class="modal-dialog modal-center">
+                    <div class="modal-content">
+                        <div class="modal-header add_info-head padding-15">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title font-size-14">添加信息流模块</h4>
+                        </div>
+                        <div class="modal-body padding-0">
+                            <table class="table add_info-tabs font-size-12 margin-0">
+                                <thead>
+                                <tr>
+                                    <th style="width: 27%"  class="text-center">平台</th>
+                                    <th style="width: 35%" class="text-center">添加模块</th>
+                                    <th style="width: 38%" class="text-center">选择账号</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td class="padding-left-0" style="width: 27%">
+                                        <ul class="list-group add_ul-platform add_uls margin-0">
+                                            <li class="list-group-item act" data-type="weibo"><img src="https://cdn-files.u-mei.com/web/static/images/icon-svg/icon-weibo.svg" width="25px" class="margin-right-15"/>微博</li>
+                                            <li class="list-group-item"  data-type="weixin"><img src="https://cdn-files.u-mei.com/web/static/images/icon-svg/icon-weixin2.svg" width="25px" class="margin-right-15"/>微信</li>
+                                            <li class="list-group-item"  data-type="toutiao"><img src="https://cdn-files.u-mei.com/web/static/images/icon-svg/icon-toutiao.svg" width="25px" class="margin-right-15"/>头条号</li>
+                                            <li class="list-group-item"  data-type="uc"><img src="https://cdn-files.u-mei.com/web/static/images/icon-svg/icon-uc.svg" width="25px" class="margin-right-15"/>UC自媒体</li>
+                                            <li class="list-group-item"  data-type="qq"><img src="https://cdn-files.u-mei.com/web/static/images/icon-svg/icon-qq.svg" width="25px" class="margin-right-15"/>企鹅号</li>
+                                            <li class="list-group-item"  data-type="yd"><img src="https://cdn-files.u-mei.com/web/static/images/1.png" width="25px" class="margin-right-15"/>一点资讯</li>
+                                        </ul>
+                                    </td>
+                                    <td class="add_select-td" style="width: 35%">
+                                        <ul class="list-group add_ul-module add_uls margin-0">
+                                            <li class="list-group-item act" data-filter="1" data-group="1" data-ctype="1" data-look="3">微博账号<i class="ico font-size-16 pull-right">&#xe60a;</i></li>
+                                            <li class="list-group-item" data-filter="2" data-group="1" data-ctype="2" data-look="4">关注账号（仅授权）<i class="ico font-size-16 pull-right">&#xe60a;</i></li>
+                                            <li class="list-group-item" data-ctype="3">热门微博<i class="ico font-size-16 pull-right">&#xe60a;</i></li>
+                                            <li class="list-group-item" data-ctype="4">热门话题<i class="ico font-size-16 pull-right">&#xe60a;</i></li>
+                                            <li class="list-group-item" data-ctype="5">精选素材<i class="ico font-size-16 pull-right">&#xe60a;</i></li>
+                                        </ul>
+                                        <ul class="list-group add_ul-module add_uls margin-0" style="display: none">
+                                            <li class="list-group-item" data-filter="2" data-group="2" data-ctype="7" data-look="4">微信素材（仅授权）<i class="ico font-size-16 pull-right">&#xe60a;</i></li>
+                                            <li class="list-group-item" data-filter="1" data-group="2" data-ctype="6" data-look="3">微信账号<i class="ico font-size-16 pull-right">&#xe60a;</i></li>
+                                        </ul>
+                                        <ul class="list-group add_ul-module add_uls margin-0" style="display: none">
+                                            <li class="list-group-item" data-ctype="11" data-filter="1" data-group="3" data-look="4">头条账号<i class="ico font-size-16 pull-right">&#xe60a;</i></li>
+                                        </ul>
+                                        <ul class="list-group add_ul-module add_uls margin-0" style="display: none">
+                                            <li class="list-group-item" data-ctype="8">UC热门文章<i class="ico font-size-16 pull-right">&#xe60a;</i></li>
+                                        </ul>
+                                        <ul class="list-group add_ul-module add_uls margin-0" style="display: none">
+                                            <li class="list-group-item" data-ctype="9" data-group="4" data-filter="1" data-look="4">我的文章<i class="ico font-size-16 pull-right">&#xe60a;</i></li>
+                                        </ul>
+                                        <ul class="list-group add_ul-module add_uls margin-0" style="display: none">
+                                            <li class="list-group-item" data-ctype="10">热门文章<i class="ico font-size-16 pull-right">&#xe60a;</i></li>
+                                        </ul>
+                                    </td>
+                                    <td style="widoth:38%;">
+                                        <ul class="list-group add_ul-account margin-0" style="height: 250px;overflow: hidden;overflow-y: auto;width: 100%">
 
-        <h3>&nbsp;&nbsp;&nbsp;官方QQ群</h3>
-        <ul>
-            <li>点击链接加入群【BootDo交流群】：<a href="https://jq.qq.com/?_wv=1027&k=5EYXfiZ">669039323(满)</a></li>
-            <li>点击链接加入群聊【BootDo交流二群】：<a href="https://jq.qq.com/?_wv=1027&k=5M659N4">614726589</a></li>
-        </ul>
+
+                                        </ul>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer text-center padding-0 row margin-0">
+                            <button type="button" class="btn btn-primary col-xs-12 add_info-btn"  style="border-top-right-radius: 0;border-top-left-radius: 0;">添加</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 添加信息流End Modal -->
+        </div>
     </div>
-</div>
+
 </body>
 </html>
